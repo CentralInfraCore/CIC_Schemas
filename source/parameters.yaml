@@ -29,7 +29,6 @@ categories:
     - ssl_crl_file
     - ssl_passphrase_command
     - ssl_passphrase_command_supports_reload
-    - db_user_namespace
     - krb_caseins_users
     - krb_server_keyfile
     - ssl_crl_dir
@@ -51,6 +50,12 @@ categories:
     - max_prepared_transactions
     - max_stack_depth
     - min_dynamic_shared_memory
+    - multixact_member_buffers
+    - multixact_offset_buffers
+    - notify_buffers
+    - serializable_buffers
+    - subtransaction_buffers
+    - transaction_buffers
 
   resource:
     - max_files_per_process
@@ -63,9 +68,9 @@ categories:
     - maintenance_io_concurrency
     - max_logical_replication_workers
     - max_parallel_maintenance_workers
-    - old_snapshot_threshold
     - parallel_leader_participation
     - temp_file_limit
+    - io_combine_limit
 
   wal:
     - wal_level
@@ -89,6 +94,9 @@ categories:
     - wal_init_zero
     - wal_log_hints
     - wal_skip_threshold
+    - commit_timestamp_buffers
+    - summarize_wal
+    - wal_summary_keep_time
 
   replication:
     - max_wal_senders
@@ -112,6 +120,8 @@ categories:
     - wal_receiver_create_temp_slot
     - wal_receiver_status_interval
     - wal_retrieve_retry_interval
+    - sync_replication_slots
+    - synchronized_standby_slots
 
   checkpoint:
     - checkpoint_timeout
@@ -174,6 +184,7 @@ categories:
     - syslog_ident
     - syslog_sequence_numbers
     - syslog_split_messages
+    - trace_connection_negotiation
 
   stats:
     - track_activities
@@ -236,6 +247,7 @@ categories:
     - parallel_tuple_cost
     - plan_cache_mode
     - seq_page_cost
+    - enable_group_by_reordering
 
   locale:
     - lc_messages
@@ -284,6 +296,7 @@ categories:
     - vacuum_multixact_freeze_table_age
     - xmlbinary
     - xmloption
+    - transaction_timeout
 
   lock:
     - deadlock_timeout
@@ -353,7 +366,6 @@ categories:
     - standard_conforming_strings
     - synchronize_seqscans
     - trace_notify
-    - trace_recovery_messages
     - trace_sort
     - transaction_deferrable
     - transaction_isolation
@@ -380,3 +392,6 @@ categories:
     - send_abort_for_crash
     - send_abort_for_kill
     - vacuum_buffer_usage_limit
+    - allow_alter_system
+    - event_triggers
+    - max_notify_queue_pages

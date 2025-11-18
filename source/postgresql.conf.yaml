@@ -88,10 +88,6 @@ properties:
         default: 60
         minimum: 1
         maximum: 600
-      db_user_namespace:
-        type: boolean
-        description: Enables per-database user names.
-        default: false
       krb_caseins_users:
         type: boolean
         description: Sets whether Kerberos and GSSAPI user names should be treated
@@ -169,7 +165,7 @@ properties:
         default: ''
       ssl_passphrase_command_supports_reload:
         type: boolean
-        description: Controls whether ssl_passphrase_command is called during server
+        description: Controls whether "ssl_passphrase_command" is called during server
           reload.
         default: false
       ssl_prefer_server_ciphers:
@@ -196,7 +192,7 @@ properties:
         maximum: 2147483647
       hash_mem_multiplier:
         type: number
-        description: Multiple of work_mem to use for hash tables.
+        description: Multiple of "work_mem" to use for hash tables.
         default: 2.0
         minimum: 1.0
         maximum: 1000.0
@@ -226,7 +222,7 @@ properties:
         description: 'Sets the maximum memory to be used for maintenance operations.
           (Unit: kB)'
         default: 65536
-        minimum: 1024
+        minimum: 64
         maximum: 2147483647
       max_prepared_transactions:
         type: integer
@@ -247,6 +243,34 @@ properties:
         default: 0
         minimum: 0
         maximum: 2147483647
+      multixact_member_buffers:
+        type: integer
+        description: 'Sets the size of the dedicated buffer pool used for the MultiXact
+          member cache. (Unit: 8kB)'
+        default: 32
+        minimum: 16
+        maximum: 131072
+      multixact_offset_buffers:
+        type: integer
+        description: 'Sets the size of the dedicated buffer pool used for the MultiXact
+          offset cache. (Unit: 8kB)'
+        default: 16
+        minimum: 16
+        maximum: 131072
+      notify_buffers:
+        type: integer
+        description: 'Sets the size of the dedicated buffer pool used for the LISTEN/NOTIFY
+          message cache. (Unit: 8kB)'
+        default: 16
+        minimum: 16
+        maximum: 131072
+      serializable_buffers:
+        type: integer
+        description: 'Sets the size of the dedicated buffer pool used for the serializable
+          transaction cache. (Unit: 8kB)'
+        default: 32
+        minimum: 16
+        maximum: 131072
       shared_buffers:
         type: integer
         description: 'Sets the number of shared memory buffers used by the server.
@@ -262,6 +286,13 @@ properties:
         enum:
         - sysv
         - mmap
+      subtransaction_buffers:
+        type: integer
+        description: 'Sets the size of the dedicated buffer pool used for the subtransaction
+          cache. (Unit: 8kB)'
+        default: 32
+        minimum: 0
+        maximum: 131072
       temp_buffers:
         type: integer
         description: 'Sets the maximum number of temporary buffers used by each session.
@@ -269,6 +300,13 @@ properties:
         default: 1024
         minimum: 100
         maximum: 1073741823
+      transaction_buffers:
+        type: integer
+        description: 'Sets the size of the dedicated buffer pool used for the transaction
+          status cache. (Unit: 8kB)'
+        default: 32
+        minimum: 0
+        maximum: 131072
       work_mem:
         type: integer
         description: 'Sets the maximum memory to be used for query workspaces. (Unit:
@@ -302,9 +340,15 @@ properties:
         default: 1
         minimum: 0
         maximum: 1000
+      io_combine_limit:
+        type: integer
+        description: 'Limit on the size of data reads and writes. (Unit: 8kB)'
+        default: 16
+        minimum: 1
+        maximum: 32
       maintenance_io_concurrency:
         type: integer
-        description: A variant of effective_io_concurrency that is used for maintenance
+        description: A variant of "effective_io_concurrency" that is used for maintenance
           work.
         default: 10
         minimum: 0
@@ -348,13 +392,6 @@ properties:
         default: 8
         minimum: 0
         maximum: 262143
-      old_snapshot_threshold:
-        type: integer
-        description: 'Time before a snapshot is too old to read pages changed after
-          the snapshot was taken. (Unit: min)'
-        default: -1
-        minimum: -1
-        maximum: 86400
       parallel_leader_participation:
         type: boolean
         description: Controls whether Gather and Gather Merge also run subplans.
@@ -381,7 +418,7 @@ properties:
         default: ''
       archive_mode:
         type: string
-        description: Allows archiving of WAL files using archive_command.
+        description: Allows archiving of WAL files using "archive_command".
         default: 'off'
         enum:
         - always
@@ -404,10 +441,17 @@ properties:
       commit_siblings:
         type: integer
         description: Sets the minimum number of concurrent open transactions required
-          before performing commit_delay.
+          before performing "commit_delay".
         default: 5
         minimum: 0
         maximum: 1000
+      commit_timestamp_buffers:
+        type: integer
+        description: 'Sets the size of the dedicated buffer pool used for the commit
+          timestamp cache. (Unit: 8kB)'
+        default: 32
+        minimum: 0
+        maximum: 131072
       full_page_writes:
         type: boolean
         description: Writes full pages to WAL when first modified after a checkpoint.
@@ -434,6 +478,10 @@ properties:
         description: Sets the shell command that will be called to retrieve an archived
           WAL file.
         default: ''
+      summarize_wal:
+        type: boolean
+        description: Starts the WAL summarizer process to enable incremental backup.
+        default: false
       wal_buffers:
         type: integer
         description: 'Sets the number of disk-page buffers in shared memory for WAL.
@@ -480,6 +528,12 @@ properties:
         default: 2048
         minimum: 0
         maximum: 2147483647
+      wal_summary_keep_time:
+        type: integer
+        description: 'Time for which WAL summary files should be kept. (Unit: min)'
+        default: 14400
+        minimum: 0
+        maximum: 35791394
       wal_sync_method:
         type: string
         description: Selects the method used for forcing WAL updates to disk.
@@ -577,6 +631,16 @@ properties:
         type: string
         description: Set to "immediate" to end recovery as soon as a consistent state
           is reached.
+        default: ''
+      sync_replication_slots:
+        type: boolean
+        description: Enables a physical standby to synchronize logical failover replication
+          slots from the primary server.
+        default: false
+      synchronized_standby_slots:
+        type: string
+        description: Lists streaming replication standby server replication slot names
+          that logical WAL sender processes will wait for.
         default: ''
       synchronous_commit:
         type: string
@@ -938,8 +1002,8 @@ properties:
         - all
       log_statement_sample_rate:
         type: number
-        description: Fraction of statements exceeding log_min_duration_sample to be
-          logged.
+        description: Fraction of statements exceeding "log_min_duration_sample" to
+          be logged.
         default: 1.0
         minimum: 0.0
         maximum: 1.0
@@ -995,6 +1059,10 @@ properties:
         type: boolean
         description: Split messages sent to syslog by lines and to fit into 1024 bytes.
         default: true
+      trace_connection_negotiation:
+        type: boolean
+        description: Logs details of pre-authentication connection handshake.
+        default: false
   stats:
     type: object
     description: Settings for the stats category.
@@ -1119,6 +1187,10 @@ properties:
       enable_gathermerge:
         type: boolean
         description: Enables the planner's use of gather merge plans.
+        default: true
+      enable_group_by_reordering:
+        type: boolean
+        description: Enables reordering of GROUP BY keys.
         default: true
       enable_hashagg:
         type: boolean
@@ -1513,6 +1585,13 @@ properties:
         type: string
         description: Sets the tablespace(s) to use for temporary tables and sort files.
         default: ''
+      transaction_timeout:
+        type: integer
+        description: 'Sets the maximum allowed duration of any transaction within
+          a session (not a prepared transaction). (Unit: ms)'
+        default: 0
+        minimum: 0
+        maximum: 2147483647
       vacuum_failsafe_age:
         type: integer
         description: Age at which VACUUM should trigger failsafe to avoid a wraparound
@@ -1685,6 +1764,10 @@ properties:
     type: object
     description: Settings for the misc category.
     properties:
+      allow_alter_system:
+        type: boolean
+        description: Allows running the ALTER SYSTEM command.
+        default: true
       allow_in_place_tablespaces:
         type: boolean
         description: Allows tablespaces directly inside pg_tblspc, for testing.
@@ -1769,6 +1852,10 @@ properties:
       escape_string_warning:
         type: boolean
         description: Warn about backslash escapes in ordinary string literals.
+        default: true
+      event_triggers:
+        type: boolean
+        description: Enables event triggers.
         default: true
       exit_on_error:
         type: boolean
@@ -1855,6 +1942,13 @@ properties:
           (Unit: ms)'
         default: 10000
         minimum: 0
+        maximum: 2147483647
+      max_notify_queue_pages:
+        type: integer
+        description: Sets the maximum number of allocated pages for NOTIFY / LISTEN
+          queue.
+        default: 1048576
+        minimum: 64
         maximum: 2147483647
       max_parallel_apply_workers_per_subscription:
         type: integer
@@ -1986,20 +2080,6 @@ properties:
         type: boolean
         description: Generates debugging output for LISTEN and NOTIFY.
         default: false
-      trace_recovery_messages:
-        type: string
-        description: Enables logging of recovery-related debugging information.
-        default: log
-        enum:
-        - debug5
-        - debug4
-        - debug3
-        - debug2
-        - debug1
-        - log
-        - notice
-        - warning
-        - error
       trace_sort:
         type: boolean
         description: Emit information about resource usage in sorting.
@@ -2038,7 +2118,7 @@ properties:
         type: integer
         description: 'Sets the buffer pool size for VACUUM, ANALYZE, and autovacuum.
           (Unit: kB)'
-        default: 256
+        default: 2048
         minimum: 0
         maximum: 16777216
       wal_consistency_checking:
