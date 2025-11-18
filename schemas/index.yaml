@@ -9,7 +9,7 @@ metadata:
     - meta-schema
   validatedBy:
     name: "template-schema"
-    version: "v0.1.dev"
+    version: "v0.9.4"
   validity:
     from: "2025-11-12T00:00:00Z"
     until: "2026-11-12T00:00:00Z"
