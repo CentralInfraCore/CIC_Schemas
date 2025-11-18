@@ -1,2 +1,2 @@
 dependencies:
-  postgres: 15.15-alpine3.22
+  postgres: 16.11-alpine3.22

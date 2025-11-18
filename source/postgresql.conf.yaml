@@ -566,10 +566,6 @@ properties:
         type: string
         description: Sets the name of the replication slot to use on the sending server.
         default: ''
-      promote_trigger_file:
-        type: string
-        description: Specifies a file name whose presence ends recovery in the standby.
-        default: ''
       recovery_min_apply_delay:
         type: integer
         description: 'Sets the minimum delay for applying changes during recovery.
@@ -601,13 +597,6 @@ properties:
         type: boolean
         description: Collects transaction commit time.
         default: false
-      vacuum_defer_cleanup_age:
-        type: integer
-        description: Number of transactions by which VACUUM and HOT cleanup should
-          be deferred, if any.
-        default: 0
-        minimum: 0
-        maximum: 1000000
       wal_keep_size:
         type: integer
         description: 'Sets the size of WAL files held for standby servers. (Unit:
@@ -1733,6 +1722,11 @@ properties:
         type: string
         description: Sets the server's main configuration file.
         default: /var/lib/postgresql/data/postgresql.conf
+      createrole_self_grant:
+        type: string
+        description: Sets whether a CREATEROLE user automatically grants the role
+          to themselves, and with which options.
+        default: ''
       data_directory:
         type: string
         description: Sets the server's data directory.
@@ -1747,6 +1741,31 @@ properties:
         default: 0
         minimum: 0
         maximum: 0
+      debug_io_direct:
+        type: string
+        description: Use direct I/O for file access.
+        default: ''
+      debug_logical_replication_streaming:
+        type: string
+        description: Forces immediate streaming or serialization of changes in large
+          transactions.
+        default: buffered
+        enum:
+        - buffered
+        - immediate
+      debug_parallel_query:
+        type: string
+        description: Forces the planner's use parallel query nodes.
+        default: 'off'
+        enum:
+        - 'off'
+        - 'on'
+        - regress
+      enable_presorted_aggregate:
+        type: boolean
+        description: Enables the planner's ability to produce plans that provide presorted
+          input for ORDER BY / DISTINCT aggregate functions.
+        default: true
       escape_string_warning:
         type: boolean
         description: Warn about backslash escapes in ordinary string literals.
@@ -1758,22 +1777,33 @@ properties:
       external_pid_file:
         type: string
         description: Writes the postmaster PID to the specified file.
-      force_parallel_mode:
-        type: string
-        description: Forces use of parallel query facilities.
-        default: 'off'
-        enum:
-        - 'off'
-        - 'on'
-        - regress
       fsync:
         type: boolean
         description: Forces synchronization of updates to disk.
         default: true
+      gss_accept_delegation:
+        type: boolean
+        description: Sets whether GSSAPI delegation should be accepted from the client.
+        default: false
       hba_file:
         type: string
         description: Sets the server's "hba" configuration file.
         default: /var/lib/postgresql/data/pg_hba.conf
+      icu_validation_level:
+        type: string
+        description: Log level for reporting invalid ICU locale strings.
+        default: warning
+        enum:
+        - disabled
+        - debug5
+        - debug4
+        - debug3
+        - debug2
+        - debug1
+        - log
+        - notice
+        - warning
+        - error
       ident_file:
         type: string
         description: Sets the server's "ident" configuration file.
@@ -1826,6 +1856,12 @@ properties:
         default: 10000
         minimum: 0
         maximum: 2147483647
+      max_parallel_apply_workers_per_subscription:
+        type: integer
+        description: Maximum number of parallel apply workers per subscription.
+        default: 2
+        minimum: 0
+        maximum: 1024
       post_auth_delay:
         type: integer
         description: 'Sets the amount of time to wait after authentication on connection
@@ -1905,10 +1941,31 @@ properties:
         type: boolean
         description: Remove temporary files after backend crash.
         default: true
+      reserved_connections:
+        type: integer
+        description: Sets the number of connection slots reserved for roles with privileges
+          of pg_use_reserved_connections.
+        default: 0
+        minimum: 0
+        maximum: 262143
       restart_after_crash:
         type: boolean
         description: Reinitialize server after backend crash.
         default: true
+      scram_iterations:
+        type: integer
+        description: Sets the iteration count for SCRAM secret generation.
+        default: 4096
+        minimum: 1
+        maximum: 2147483647
+      send_abort_for_crash:
+        type: boolean
+        description: Send SIGABRT not SIGQUIT to child processes after backend crash.
+        default: false
+      send_abort_for_kill:
+        type: boolean
+        description: Send SIGABRT not SIGKILL to stuck child processes.
+        default: false
       standard_conforming_strings:
         type: boolean
         description: Causes '...' strings to treat backslashes literally.
@@ -1977,6 +2034,13 @@ properties:
         type: string
         description: Sets the owning group of the Unix-domain socket.
         default: ''
+      vacuum_buffer_usage_limit:
+        type: integer
+        description: 'Sets the buffer pool size for VACUUM, ANALYZE, and autovacuum.
+          (Unit: kB)'
+        default: 256
+        minimum: 0
+        maximum: 16777216
       wal_consistency_checking:
         type: string
         description: Sets the WAL resource managers for which WAL consistency checks

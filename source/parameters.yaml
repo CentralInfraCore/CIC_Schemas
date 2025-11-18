@@ -102,13 +102,11 @@ categories:
     - synchronous_standby_names
     - wal_keep_size
     - max_slot_wal_keep_size
-    - vacuum_defer_cleanup_age
     - hot_standby_feedback
     - max_standby_archive_delay
     - max_standby_streaming_delay
     - max_sync_workers_per_subscription
     - primary_slot_name
-    - promote_trigger_file
     - recovery_min_apply_delay
     - track_commit_timestamp
     - wal_receiver_create_temp_slot
@@ -327,7 +325,6 @@ categories:
     - debug_discard_caches
     - escape_string_warning
     - external_pid_file
-    - force_parallel_mode
     - fsync
     - hba_file
     - ident_file
@@ -370,3 +367,16 @@ categories:
     - recursive_worktable_factor
     - stats_fetch_consistency
     - wal_decode_buffer_size
+    - createrole_self_grant
+    - debug_io_direct
+    - debug_logical_replication_streaming
+    - debug_parallel_query
+    - enable_presorted_aggregate
+    - gss_accept_delegation
+    - icu_validation_level
+    - max_parallel_apply_workers_per_subscription
+    - reserved_connections
+    - scram_iterations
+    - send_abort_for_crash
+    - send_abort_for_kill
+    - vacuum_buffer_usage_limit
