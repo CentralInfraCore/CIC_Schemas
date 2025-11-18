@@ -9,25 +9,32 @@ all: help
 # The Python command to be executed inside the container
 PYTHON_CMD = python3 tools/compiler.py
 
+# Get current git branch name and sanitize it for Docker project name
+GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "local")
+COMPOSE_PROJECT_NAME := $(shell echo "$(GIT_BRANCH)" | sed 's|/|-|g')
+
+# Export this variable for all docker compose commands
+export COMPOSE_PROJECT_NAME
+
 # =============================================================================
 # Container Lifecycle Management
 # =============================================================================
 
 up:
-	@echo "--- Starting development environment in the background ---"
+	@echo "--- Starting development environment in the background (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@export POSTGRES_VERSION=$(shell yq '.dependencies.postgres' dependency.yaml) && \
 	docker compose up -d
 
 down:
-	@echo "--- Stopping development environment ---"
+	@echo "--- Stopping development environment (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose down -v
 
 shell:
-	@echo "--- Opening a shell into the running builder container ---"
+	@echo "--- Opening a shell into the running builder container (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder bash
 
 build:
-	@echo "--- Building Docker images ---"
+	@echo "--- Building Docker images (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose build
 
 # =============================================================================
@@ -35,30 +42,30 @@ build:
 # =============================================================================
 
 validate:
-	@echo "--- Validating current schema against its declared validator ---"
+	@echo "--- Validating current schema against its declared validator (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder $(PYTHON_CMD) validate
 
 test:
-	@echo "--- Running pytest for the compiler infrastructure ---"
+	@echo "--- Running pytest for the compiler infrastructure (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder python3 -m pytest --cov=tools --cov-report=term-missing tests/
 
 fmt:
-	@echo "--- Formatting Python code with Black and Isort ---"
+	@echo "--- Formatting Python code with Black and Isort (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder python3 -m black --exclude p_venv .
 	@docker compose exec builder python3 -m isort --skip-glob "p_venv/*" .
 
 lint:
-	@echo "--- Linting Python code with Ruff ---"
+	@echo "--- Linting Python code with Ruff (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder python3 -m ruff check .
-	@echo "--- Linting YAML files with yamllint ---"
+	@echo "--- Linting YAML files with yamllint (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder python3 -m yamllint .
 
 typecheck:
-	@echo "--- Running static type checking with MyPy ---"
+	@echo "--- Running static type checking with MyPy (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder python3 -m mypy --exclude p_venv .
 
 check: fmt lint typecheck
-	@echo "--- Running all code quality checks (format, lint, typecheck) ---"
+	@echo "--- Running all code quality checks (format, lint, typecheck) (Project: $(COMPOSE_PROJECT_NAME)) ---"
 
 # =============================================================================
 # Release Management
@@ -66,12 +73,12 @@ check: fmt lint typecheck
 
 release-dependency:
 	@if [ -z "$(VERSION)" ]; then echo "[ERROR] VERSION is required. Usage: make release-dependency VERSION=v1.0.0"; exit 1; fi
-	@echo "--- Releasing Dependency Schema version $(VERSION) ---"
+	@echo "--- Releasing Dependency Schema version $(VERSION) (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@GIT_AUTHOR_NAME="$(shell git config user.name)" GIT_AUTHOR_EMAIL="$(shell git config user.email)" docker compose exec builder bash tools/release.sh dependency $(VERSION)
 
 release-schema:
 	@if [ -z "$(VERSION)" ]; then echo "[ERROR] VERSION is required. Usage: make release-schema VERSION=v1.0.0"; exit 1; fi
-	@echo "--- Releasing Application Schema version $(VERSION) ---"
+	@echo "--- Releasing Application Schema version $(VERSION) (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@GIT_AUTHOR_NAME="$(shell git config user.name)" GIT_AUTHOR_EMAIL="$(shell git config user.email)" docker compose exec builder bash tools/release.sh schema $(VERSION)
 
 # =============================================================================
@@ -79,7 +86,7 @@ release-schema:
 # =============================================================================
 
 repo.init:
-	@echo "--- Initializing repository hooks ---"
+	@echo "--- Initializing repository hooks (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@sh tools/init-hooks.sh
 
 # =============================================================================
@@ -87,16 +94,16 @@ repo.init:
 # =============================================================================
 
 infra.deps:
-	@echo "--- Initializing Python dependencies into ./p_venv cache ---"
+	@echo "--- Initializing Python dependencies into ./p_venv cache (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose run --rm setup
 
 infra.coverage:
-	@echo "--- Generating HTML coverage report ---"
+	@echo "--- Generating HTML coverage report (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder python3 -m pytest --cov=tools --cov-report=html
 	@echo "HTML coverage report generated in ./htmlcov/index.html"
 
 infra.clean:
-	@echo "--- Cleaning up all generated files and caches ---"
+	@echo "--- Cleaning up all generated files and caches (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose down -v --remove-orphans
 	@rm -rf ./p_venv
 	@rm -f ./requirements.txt
