@@ -97,6 +97,10 @@ properties:
         type: string
         description: Sets the location of the Kerberos server key file.
         default: FILE:/usr/local/etc/postgresql/krb5.keytab
+      md5_password_warnings:
+        type: boolean
+        description: Enables deprecation warnings for MD5 passwords.
+        default: true
       password_encryption:
         type: string
         description: Chooses the algorithm for encrypting passwords.
@@ -118,7 +122,7 @@ properties:
         default: server.crt
       ssl_ciphers:
         type: string
-        description: Sets the list of allowed SSL ciphers.
+        description: Sets the list of allowed TLSv1.2 (and lower) ciphers.
         default: HIGH:MEDIUM:+3DES:!aNULL
       ssl_crl_dir:
         type: string
@@ -132,10 +136,10 @@ properties:
         type: string
         description: Location of the SSL DH parameters file.
         default: ''
-      ssl_ecdh_curve:
+      ssl_groups:
         type: string
-        description: Sets the curve to use for ECDH.
-        default: prime256v1
+        description: Sets the group(s) to use for Diffie-Hellman key exchange.
+        default: X25519:prime256v1
       ssl_key_file:
         type: string
         description: Location of the SSL server private key file.
@@ -172,6 +176,10 @@ properties:
         type: boolean
         description: Give priority to server ciphersuite order.
         default: true
+      ssl_tls13_ciphers:
+        type: string
+        description: Sets the list of allowed TLSv1.3 cipher suites.
+        default: ''
   memory:
     type: object
     description: Settings for the memory category.
@@ -337,7 +345,7 @@ properties:
         type: integer
         description: Number of simultaneous requests that can be handled efficiently
           by the disk subsystem.
-        default: 1
+        default: 16
         minimum: 0
         maximum: 1000
       io_combine_limit:
@@ -345,18 +353,44 @@ properties:
         description: 'Limit on the size of data reads and writes. (Unit: 8kB)'
         default: 16
         minimum: 1
+        maximum: 128
+      io_max_combine_limit:
+        type: integer
+        description: 'Server-wide limit that clamps io_combine_limit. (Unit: 8kB)'
+        default: 16
+        minimum: 1
+        maximum: 128
+      io_max_concurrency:
+        type: integer
+        description: Max number of IOs that one process can execute simultaneously.
+        default: 64
+        minimum: -1
+        maximum: 1024
+      io_method:
+        type: string
+        description: Selects the method for executing asynchronous I/O.
+        default: worker
+        enum:
+        - sync
+        - worker
+        - io_uring
+      io_workers:
+        type: integer
+        description: Number of IO worker processes, for io_method=worker.
+        default: 3
+        minimum: 1
         maximum: 32
       maintenance_io_concurrency:
         type: integer
         description: A variant of "effective_io_concurrency" that is used for maintenance
           work.
-        default: 10
+        default: 16
         minimum: 0
         maximum: 1000
       max_files_per_process:
         type: integer
-        description: Sets the maximum number of simultaneously open files for each
-          server process.
+        description: Sets the maximum number of files each server process is allowed
+          to open simultaneously.
         default: 1000
         minimum: 64
         maximum: 2147483647
@@ -570,6 +604,19 @@ properties:
         description: Allows feedback from a hot standby to the primary that will avoid
           query conflicts.
         default: false
+      idle_replication_slot_timeout:
+        type: integer
+        description: 'Sets the duration a replication slot can remain idle before
+          it is invalidated. (Unit: s)'
+        default: 0
+        minimum: 0
+        maximum: 2147483647
+      max_active_replication_origins:
+        type: integer
+        description: Sets the maximum number of active replication origins.
+        default: 10
+        minimum: 0
+        maximum: 262143
       max_replication_slots:
         type: integer
         description: Sets the maximum number of simultaneously defined replication
@@ -801,9 +848,14 @@ properties:
         maximum: 100.0
       autovacuum_vacuum_insert_threshold:
         type: integer
-        description: Minimum number of tuple inserts prior to vacuum, or -1 to disable
-          insert vacuums.
+        description: Minimum number of tuple inserts prior to vacuum.
         default: 1000
+        minimum: -1
+        maximum: 2147483647
+      autovacuum_vacuum_max_threshold:
+        type: integer
+        description: Maximum number of tuple updates or deletes prior to vacuum.
+        default: 100000000
         minimum: -1
         maximum: 2147483647
       autovacuum_vacuum_scale_factor:
@@ -819,6 +871,12 @@ properties:
         default: 50
         minimum: 0
         maximum: 2147483647
+      autovacuum_worker_slots:
+        type: integer
+        description: Sets the number of backend slots to allocate for autovacuum workers.
+        default: 16
+        minimum: 1
+        maximum: 262143
   logging:
     type: object
     description: Settings for the logging category.
@@ -856,9 +914,9 @@ properties:
         description: Logs each checkpoint.
         default: true
       log_connections:
-        type: boolean
-        description: Logs each successful connection.
-        default: false
+        type: string
+        description: Logs specified aspects of connection establishment and setup.
+        default: ''
       log_destination:
         type: string
         description: Sets the destination for server log output.
@@ -901,6 +959,10 @@ properties:
         type: string
         description: Controls information prefixed to each log line.
         default: '%m [%p] '
+      log_lock_failures:
+        type: boolean
+        description: Logs lock failures.
+        default: false
       log_lock_waits:
         type: boolean
         description: Logs long lock waits.
@@ -908,7 +970,7 @@ properties:
       log_min_duration_sample:
         type: integer
         description: 'Sets the minimum execution time above which a sample of statements
-          will be logged. Sampling is determined by log_statement_sample_rate. (Unit:
+          will be logged. Sampling is determined by "log_statement_sample_rate". (Unit:
           ms)'
         default: -1
         minimum: -1
@@ -990,7 +1052,7 @@ properties:
           (Unit: kB)'
         default: 10240
         minimum: 0
-        maximum: 2097151
+        maximum: 2147483647
       log_statement:
         type: string
         description: Sets the type of statements logged.
@@ -1103,6 +1165,10 @@ properties:
         default: 1024
         minimum: 100
         maximum: 1048576
+      track_cost_delay_timing:
+        type: boolean
+        description: Collects timing statistics for cost-based vacuum delay.
+        default: false
       track_counts:
         type: boolean
         description: Collects statistics on database activity.
@@ -1173,7 +1239,7 @@ properties:
         type: integer
         description: Number of simultaneous requests that can be handled efficiently
           by the disk subsystem.
-        default: 1
+        default: 16
         minimum: 0
         maximum: 1000
       enable_async_append:
@@ -1183,6 +1249,10 @@ properties:
       enable_bitmapscan:
         type: boolean
         description: Enables the planner's use of bitmap-scan plans.
+        default: true
+      enable_distinct_reordering:
+        type: boolean
+        description: Enables reordering of DISTINCT keys.
         default: true
       enable_gathermerge:
         type: boolean
@@ -1248,6 +1318,10 @@ properties:
         type: boolean
         description: Enables partitionwise join.
         default: false
+      enable_self_join_elimination:
+        type: boolean
+        description: Enables removal of unique self-joins.
+        default: true
       enable_seqscan:
         type: boolean
         description: Enables the planner's use of sequential-scan plans.
@@ -1553,7 +1627,7 @@ properties:
         default: ''
       row_security:
         type: boolean
-        description: Enable row security.
+        description: Enables row security.
         default: true
       search_path:
         type: string
@@ -1753,6 +1827,13 @@ properties:
         default: 1600000000
         minimum: 0
         maximum: 2100000000
+      vacuum_max_eager_freeze_failure_rate:
+        type: number
+        description: Fraction of pages in a relation vacuum can scan and fail to freeze
+          before disabling eager scanning.
+        default: 0.03
+        minimum: 0.0
+        maximum: 1.0
       vacuum_multixact_failsafe_age:
         type: integer
         description: Multixact age at which VACUUM should trigger failsafe to avoid
@@ -1760,6 +1841,10 @@ properties:
         default: 1600000000
         minimum: 0
         maximum: 2100000000
+      vacuum_truncate:
+        type: boolean
+        description: Enables vacuum to truncate empty pages at the end of the table.
+        default: true
   misc:
     type: object
     description: Settings for the misc category.
@@ -1782,7 +1867,7 @@ properties:
         default: ''
       array_nulls:
         type: boolean
-        description: Enable input of NULL elements in arrays.
+        description: Enables input of NULL elements in arrays.
         default: true
       backslash_quote:
         type: string
@@ -1804,7 +1889,7 @@ properties:
       config_file:
         type: string
         description: Sets the server's main configuration file.
-        default: /var/lib/postgresql/data/postgresql.conf
+        default: /var/lib/postgresql/18/docker/postgresql.conf
       createrole_self_grant:
         type: string
         description: Sets whether a CREATEROLE user automatically grants the role
@@ -1813,7 +1898,7 @@ properties:
       data_directory:
         type: string
         description: Sets the server's data directory.
-        default: /var/lib/postgresql/data
+        default: /var/lib/postgresql/18/docker
       data_sync_retry:
         type: boolean
         description: Whether to continue running after a failure to sync data files.
@@ -1861,9 +1946,20 @@ properties:
         type: boolean
         description: Terminate session on any error.
         default: false
+      extension_control_path:
+        type: string
+        description: Sets the path for extension control files.
+        default: $system
       external_pid_file:
         type: string
         description: Writes the postmaster PID to the specified file.
+      file_copy_method:
+        type: string
+        description: Selects the file copy method.
+        default: copy
+        enum:
+        - copy
+        - clone
       fsync:
         type: boolean
         description: Forces synchronization of updates to disk.
@@ -1875,7 +1971,7 @@ properties:
       hba_file:
         type: string
         description: Sets the server's "hba" configuration file.
-        default: /var/lib/postgresql/data/pg_hba.conf
+        default: /var/lib/postgresql/18/docker/pg_hba.conf
       icu_validation_level:
         type: string
         description: Log level for reporting invalid ICU locale strings.
@@ -1894,7 +1990,7 @@ properties:
       ident_file:
         type: string
         description: Sets the server's "ident" configuration file.
-        default: /var/lib/postgresql/data/pg_ident.conf
+        default: /var/lib/postgresql/18/docker/pg_ident.conf
       ignore_checksum_failure:
         type: boolean
         description: Continues processing after a checksum failure.
@@ -1956,6 +2052,11 @@ properties:
         default: 2
         minimum: 0
         maximum: 1024
+      oauth_validator_libraries:
+        type: string
+        description: Lists libraries that may be called to validate OAuth v2 bearer
+          tokens.
+        default: ''
       post_auth_delay:
         type: integer
         description: 'Sets the amount of time to wait after authentication on connection
@@ -2074,7 +2175,7 @@ properties:
         - snapshot
       synchronize_seqscans:
         type: boolean
-        description: Enable synchronized sequential scans.
+        description: Enables synchronized sequential scans.
         default: true
       trace_notify:
         type: boolean

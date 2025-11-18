@@ -33,7 +33,9 @@ categories:
     - krb_server_keyfile
     - ssl_crl_dir
     - ssl_dh_params_file
-    - ssl_ecdh_curve
+    - md5_password_warnings
+    - ssl_groups
+    - ssl_tls13_ciphers
 
   memory:
     - shared_buffers
@@ -71,6 +73,10 @@ categories:
     - parallel_leader_participation
     - temp_file_limit
     - io_combine_limit
+    - io_max_combine_limit
+    - io_max_concurrency
+    - io_method
+    - io_workers
 
   wal:
     - wal_level
@@ -122,6 +128,8 @@ categories:
     - wal_retrieve_retry_interval
     - sync_replication_slots
     - synchronized_standby_slots
+    - idle_replication_slot_timeout
+    - max_active_replication_origins
 
   checkpoint:
     - checkpoint_timeout
@@ -143,6 +151,8 @@ categories:
     - autovacuum_vacuum_insert_scale_factor
     - autovacuum_vacuum_insert_threshold
     - autovacuum_vacuum_threshold
+    - autovacuum_vacuum_max_threshold
+    - autovacuum_worker_slots
 
   logging:
     - log_destination
@@ -185,6 +195,7 @@ categories:
     - syslog_sequence_numbers
     - syslog_split_messages
     - trace_connection_negotiation
+    - log_lock_failures
 
   stats:
     - track_activities
@@ -198,6 +209,7 @@ categories:
     - log_statement_stats
     - track_activity_query_size
     - track_functions
+    - track_cost_delay_timing
 
   planner:
     - geqo
@@ -248,6 +260,8 @@ categories:
     - plan_cache_mode
     - seq_page_cost
     - enable_group_by_reordering
+    - enable_distinct_reordering
+    - enable_self_join_elimination
 
   locale:
     - lc_messages
@@ -319,6 +333,8 @@ categories:
     - vacuum_cost_page_miss
     - vacuum_failsafe_age
     - vacuum_multixact_failsafe_age
+    - vacuum_max_eager_freeze_failure_rate
+    - vacuum_truncate
 
   # Parameters that the script could not automatically categorize
   misc:
@@ -395,3 +411,6 @@ categories:
     - allow_alter_system
     - event_triggers
     - max_notify_queue_pages
+    - extension_control_path
+    - file_copy_method
+    - oauth_validator_libraries
