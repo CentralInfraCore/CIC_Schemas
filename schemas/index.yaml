@@ -9,7 +9,7 @@ metadata:
     - meta-schema
   validatedBy:
     name: "template-schema"
-    version: "v0.9.4"
+    version: "v0.9.5_2025"
   validity:
     from: "2025-11-12T00:00:00Z"
     until: "2026-11-12T00:00:00Z"
@@ -33,7 +33,7 @@ spec:
           type: string
           description: |
             The version of the schema component (e.g., v1.0.0 or v1.0.dev).
-          pattern: '^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*|dev)$'
+          pattern: '^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.((0|[1-9]\d*)(_[0-9]{4})?|dev)$'
         description:
           type: string
           description: "A brief description of the schema's purpose."

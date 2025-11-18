@@ -1,6 +1,6 @@
 metadata:
   name: template-schema
-  version: v0.9.4
+  version: v0.9.5_2025
   description: This is a template for creating new schemas. The actual schema definition
     is in the 'spec' block.
   owner: Gabor Zoltan Sinko
@@ -10,13 +10,13 @@ metadata:
   validatedBy:
     name: template-schema
     version: v0.1.dev
-    checksum: d82ca3ffa3d5d49cadfea37a50f1c09de9052d9847aea70e2cb427f87daafc3e
+    checksum: 31d6ad98eb3da9a94436edf24e51fcbd9da52b4586b7a82dc465a4d0455c6fde
   validity:
     from: '2025-11-12T00:00:00Z'
     until: '2026-11-12T00:00:00Z'
-  checksum: d82ca3ffa3d5d49cadfea37a50f1c09de9052d9847aea70e2cb427f87daafc3e
-  sign: vault:v1:MEYCIQDBgZU7HGSlS0px08PU9zjPVi13HVzVm74SXOX0yb4xTQIhAK8p8m8PgLj/z47PBXDB41a2ZAS0fWUGo5nrEwnPgKTY
-  build_timestamp: '2025-11-18T10:56:58.711607+00:00'
+  checksum: 31d6ad98eb3da9a94436edf24e51fcbd9da52b4586b7a82dc465a4d0455c6fde
+  sign: vault:v1:MEQCIGa3GeM7jid3XLqPg7ZpGtFLv3XpQyZWqLdGk01js2+HAiBOc0teT1Z2NJ+VXHtf65YrP6ZMhB6Bmjsi0MNjZYOJ0w==
+  build_timestamp: '2025-11-18T16:04:43.169557+00:00'
   createdBy:
     name: Gabor Zoltan Sinko
     email: sgz@centralinfracore.hu
@@ -96,7 +96,7 @@ spec:
           description: 'The version of the schema component (e.g., v1.0.0 or v1.0.dev).
 
             '
-          pattern: ^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*|dev)$
+          pattern: ^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.((0|[1-9]\d*)(_[0-9]{4})?|dev)$
         description:
           type: string
           description: A brief description of the schema's purpose.
@@ -216,7 +216,7 @@ spec:
           additionalProperties: false
         checksum:
           type: string
-          description: 'A checksum (e.g., SHA256) of the ''spec'' block content for
+          description: 'A checksum (e.2., SHA256) of the ''spec'' block content for
 
             integrity checks.
 
