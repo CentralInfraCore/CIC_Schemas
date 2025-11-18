@@ -1,0 +1,19 @@
+# Schema for postgresql.auto.conf
+type: object
+description: |
+  WARNING: This file is managed automatically by PostgreSQL via the
+  'ALTER SYSTEM' command. It should NOT be edited manually.
+  Any manual changes will be overwritten.
+
+  This schema describes the structure of postgresql.auto.conf, which contains
+  key-value pairs of configuration parameters that override the settings in
+  postgresql.conf.
+additionalProperties:
+  type: string
+  description: |
+    The value of a PostgreSQL configuration parameter. The value is always
+    stored as a string and interpreted by the server upon reading.
+# Example of content managed by ALTER SYSTEM
+example:
+  work_mem: "128MB"
+  max_connections: "150"

@@ -11,6 +11,9 @@ categories:
     - unix_socket_directories
     - unix_socket_permissions
     - client_connection_check_interval
+    - bonjour
+    - bonjour_name
+    - tcp_user_timeout
 
   authentication:
     - password_encryption
@@ -26,6 +29,12 @@ categories:
     - ssl_crl_file
     - ssl_passphrase_command
     - ssl_passphrase_command_supports_reload
+    - db_user_namespace
+    - krb_caseins_users
+    - krb_server_keyfile
+    - ssl_crl_dir
+    - ssl_dh_params_file
+    - ssl_ecdh_curve
 
   memory:
     - shared_buffers
@@ -36,6 +45,12 @@ categories:
     - huge_pages
     - huge_page_size
     - shared_memory_type
+    - autovacuum_work_mem
+    - hash_mem_multiplier
+    - logical_decoding_work_mem
+    - max_prepared_transactions
+    - max_stack_depth
+    - min_dynamic_shared_memory
 
   resource:
     - max_files_per_process
@@ -43,6 +58,14 @@ categories:
     - max_worker_processes
     - max_parallel_workers
     - max_parallel_workers_per_gather
+    - backend_flush_after
+    - effective_io_concurrency
+    - maintenance_io_concurrency
+    - max_logical_replication_workers
+    - max_parallel_maintenance_workers
+    - old_snapshot_threshold
+    - parallel_leader_participation
+    - temp_file_limit
 
   wal:
     - wal_level
@@ -54,6 +77,18 @@ categories:
     - max_wal_size
     - min_wal_size
     - wal_recycle
+    - archive_cleanup_command
+    - archive_command
+    - archive_mode
+    - archive_timeout
+    - commit_delay
+    - commit_siblings
+    - full_page_writes
+    - recovery_end_command
+    - restore_command
+    - wal_init_zero
+    - wal_log_hints
+    - wal_skip_threshold
 
   replication:
     - max_wal_senders
@@ -68,6 +103,17 @@ categories:
     - wal_keep_size
     - max_slot_wal_keep_size
     - vacuum_defer_cleanup_age
+    - hot_standby_feedback
+    - max_standby_archive_delay
+    - max_standby_streaming_delay
+    - max_sync_workers_per_subscription
+    - primary_slot_name
+    - promote_trigger_file
+    - recovery_min_apply_delay
+    - track_commit_timestamp
+    - wal_receiver_create_temp_slot
+    - wal_receiver_status_interval
+    - wal_retrieve_retry_interval
 
   checkpoint:
     - checkpoint_timeout
@@ -84,6 +130,11 @@ categories:
     - autovacuum_vacuum_cost_limit
     - autovacuum_vacuum_cost_delay
     - autovacuum_freeze_max_age
+    - autovacuum_analyze_threshold
+    - autovacuum_multixact_freeze_max_age
+    - autovacuum_vacuum_insert_scale_factor
+    - autovacuum_vacuum_insert_threshold
+    - autovacuum_vacuum_threshold
 
   logging:
     - log_destination
@@ -100,14 +151,45 @@ categories:
     - log_error_verbosity
     - log_line_prefix
     - log_timezone
+    - debug_pretty_print
+    - debug_print_parse
+    - debug_print_plan
+    - debug_print_rewritten
+    - event_source
+    - log_autovacuum_min_duration
+    - log_checkpoints
+    - log_duration
+    - log_file_mode
+    - log_hostname
+    - log_lock_waits
+    - log_min_duration_sample
+    - log_min_messages
+    - log_parameter_max_length
+    - log_parameter_max_length_on_error
+    - log_recovery_conflict_waits
+    - log_replication_commands
+    - log_statement_sample_rate
+    - log_temp_files
+    - log_transaction_sample_rate
+    - log_truncate_on_rotation
+    - syslog_facility
+    - syslog_ident
+    - syslog_sequence_numbers
+    - syslog_split_messages
 
   stats:
     - track_activities
     - track_counts
     - track_io_timing
-    - stats_fetch_consistency
     - update_process_title
     - compute_query_id
+    - log_executor_stats
+    - log_parser_stats
+    - log_planner_stats
+    - log_statement_stats
+    - stats_temp_directory
+    - track_activity_query_size
+    - track_functions
 
   planner:
     - geqo
@@ -129,14 +211,46 @@ categories:
     - jit_above_cost
     - jit_inline_above_cost
     - jit_optimize_above_cost
+    - constraint_exclusion
+    - cursor_tuple_fraction
+    - default_statistics_target
+    - enable_async_append
+    - enable_gathermerge
+    - enable_hashagg
+    - enable_incremental_sort
+    - enable_material
+    - enable_memoize
+    - enable_nestloop
+    - enable_parallel_append
+    - enable_parallel_hash
+    - enable_partition_pruning
+    - enable_partitionwise_aggregate
+    - enable_partitionwise_join
+    - enable_tidscan
+    - from_collapse_limit
+    - geqo_effort
+    - geqo_generations
+    - geqo_pool_size
+    - geqo_selection_bias
+    - join_collapse_limit
+    - min_parallel_index_scan_size
+    - min_parallel_table_scan_size
+    - parallel_setup_cost
+    - parallel_tuple_cost
+    - plan_cache_mode
+    - seq_page_cost
 
   locale:
     - lc_messages
     - lc_monetary
     - lc_numeric
     - lc_time
-    - timezone
-    - datestyle
+    - DateStyle
+    - TimeZone
+    - default_text_search_config
+    - extra_float_digits
+    - IntervalStyle
+    - timezone_abbreviations
 
   client:
     - application_name
@@ -146,6 +260,33 @@ categories:
     - statement_timeout
     - lock_timeout
     - idle_in_transaction_session_timeout
+    - bytea_output
+    - check_function_bodies
+    - client_encoding
+    - client_min_messages
+    - default_table_access_method
+    - default_toast_compression
+    - default_transaction_deferrable
+    - default_transaction_read_only
+    - dynamic_library_path
+    - gin_fuzzy_search_limit
+    - gin_pending_list_limit
+    - idle_session_timeout
+    - local_preload_libraries
+    - restrict_nonsystem_relation_kind
+    - row_security
+    - session_preload_libraries
+    - session_replication_role
+    - shared_preload_libraries
+    - temp_tablespaces
+    - vacuum_failsafe_age
+    - vacuum_freeze_min_age
+    - vacuum_freeze_table_age
+    - vacuum_multixact_failsafe_age
+    - vacuum_multixact_freeze_min_age
+    - vacuum_multixact_freeze_table_age
+    - xmlbinary
+    - xmloption
 
   lock:
     - deadlock_timeout
@@ -158,6 +299,7 @@ categories:
     - bgwriter_lru_maxpages
     - bgwriter_delay
     - bgwriter_flush_after
+    - bgwriter_lru_multiplier
 
   vacuum:
     - vacuum_cost_delay
@@ -168,7 +310,7 @@ categories:
     - vacuum_failsafe_age
     - vacuum_multixact_failsafe_age
 
-  # ide kerül minden paraméter, amit a script nem tud egyértelműen párosítani
+  # Parameters that the script could not automatically categorize
   misc:
     - allow_system_table_mods
     - track_wal_io_timing
@@ -176,4 +318,50 @@ categories:
     - ignore_checksum_failure
     - zero_damaged_pages
     - cluster_name
-    - debug_assertions
+    - allow_in_place_tablespaces
+    - array_nulls
+    - backslash_quote
+    - backtrace_functions
+    - config_file
+    - data_directory
+    - data_sync_retry
+    - debug_discard_caches
+    - escape_string_warning
+    - external_pid_file
+    - force_parallel_mode
+    - fsync
+    - hba_file
+    - ident_file
+    - ignore_invalid_pages
+    - ignore_system_indexes
+    - jit_debugging_support
+    - jit_dump_bitcode
+    - jit_expressions
+    - jit_profiling_support
+    - jit_provider
+    - jit_tuple_deforming
+    - lo_compat_privileges
+    - post_auth_delay
+    - pre_auth_delay
+    - quote_all_identifiers
+    - recovery_init_sync_method
+    - recovery_target_action
+    - recovery_target_inclusive
+    - recovery_target_lsn
+    - recovery_target_name
+    - recovery_target_time
+    - recovery_target_timeline
+    - recovery_target_xid
+    - remove_temp_files_after_crash
+    - restart_after_crash
+    - standard_conforming_strings
+    - synchronize_seqscans
+    - trace_notify
+    - trace_recovery_messages
+    - trace_sort
+    - transaction_deferrable
+    - transaction_isolation
+    - transaction_read_only
+    - transform_null_equals
+    - unix_socket_group
+    - wal_consistency_checking

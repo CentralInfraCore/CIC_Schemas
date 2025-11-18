@@ -1,0 +1,32 @@
+# Schema for pg_ident.conf (Ident Authentication)
+type: array
+description: |
+  A list of user name mappings. Each mapping specifies a map name,
+  the operating system user name, and the corresponding database user name.
+items:
+  type: object
+  required:
+    - map_name
+    - system_user
+    - pg_user
+  properties:
+    map_name:
+      type: string
+      description: |
+        An arbitrary name for the mapping. This is used to refer to the
+        mapping in pg_hba.conf.
+    system_user:
+      type: string
+      description: |
+        The name of the operating system user. Can be a specific user name
+        or a regular expression if starting with a slash (/).
+    pg_user:
+      type: string
+      description: |
+        The name of the database user that the system user is allowed to
+        be mapped to.
+  # Example of a simple record
+  example:
+    map_name: "my_map"
+    system_user: "nginx"
+    pg_user: "web_reporter"

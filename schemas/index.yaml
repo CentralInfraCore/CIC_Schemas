@@ -166,4 +166,13 @@ spec:
       description: |
         The core schema definition itself, which should follow \
         the JSON Schema specification.
+      properties:
+        postgresql_conf:
+          $ref: '../source/postgresql.conf.yaml'
+        pg_hba_conf:
+          $ref: '../source/pg_hba.conf.yaml'
+        pg_ident_conf:
+          $ref: '../source/pg_ident.conf.yaml'
+        postgresql_auto_conf:
+          $ref: '../source/postgresql.auto.conf.yaml'
   additionalProperties: false

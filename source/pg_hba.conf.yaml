@@ -1,0 +1,73 @@
+# Schema for pg_hba.conf (Host-Based Authentication)
+type: array
+description: |
+  A list of host-based authentication rules. Each rule specifies a connection
+  type, a client address, a database name, a user name, and the authentication
+  method to be used for connections matching these parameters.
+items:
+  type: object
+  required:
+    - type
+    - database
+    - user
+    - address
+    - method
+  properties:
+    type:
+      type: string
+      description: "Specifies the connection type."
+      enum:
+        - local     # Unix-domain sockets
+        - host      # Plain TCP/IP
+        - hostssl   # SSL-encrypted TCP/IP
+        - hostnossl # Non-SSL TCP/IP
+    database:
+      type: string
+      description: |
+        Specifies which database(s) the record matches. Can be "all",
+        "sameuser", "samerole", "replication", or a specific database name.
+        Multiple names can be comma-separated.
+    user:
+      type: string
+      description: |
+        Specifies which database user(s) the record matches. Can be "all",
+        a specific user name, or a group name prefixed with '+'.
+        Multiple names can be comma-separated.
+    address:
+      type: string
+      description: |
+        Specifies the client machine address(es) that this record matches.
+        Can be a hostname, IP address range (e.g., 192.168.0.0/24), or special
+        keywords like "all". This field is only relevant for 'host', 'hostssl',
+        and 'hostnossl' records.
+    method:
+      type: string
+      description: "Specifies the authentication method to use."
+      enum:
+        - trust
+        - reject
+        - scram-sha-256
+        - md5
+        - password # Sends password in clear-text, not recommended
+        - ident
+        - peer
+        - ldap
+        - gss
+        - sspi
+        - pam
+        - bsd
+        - cert
+    options:
+      type: object
+      description: |
+        Optional authentication method options (e.g., for LDAP or PAM).
+        This is represented as a key-value map.
+      additionalProperties:
+        type: string
+  # Example of a simple record
+  example:
+    type: "host"
+    database: "all"
+    user: "all"
+    address: "127.0.0.1/32"
+    method: "scram-sha-256"

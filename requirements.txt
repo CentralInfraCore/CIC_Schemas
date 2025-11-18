@@ -57,6 +57,8 @@ pluggy==1.6.0
     # via
     #   pytest
     #   pytest-cov
+psycopg2-binary==2.9.11
+    # via -r requirements.in
 pycparser==2.23
     # via cffi
 pygments==2.19.2
