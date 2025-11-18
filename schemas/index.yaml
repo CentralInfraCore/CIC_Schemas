@@ -1,7 +1,7 @@
 ---
 metadata:
-  name: "template-schema"
-  version: "v0.1.dev"
+  name: "postgresql"
+  version: "v0.14.dev"
   description: "This is a template for creating new schemas. The actual schema definition is in the 'spec' block."
   owner: "Gabor Zoltan Sinko"
   tags:
