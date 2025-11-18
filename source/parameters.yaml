@@ -187,7 +187,6 @@ categories:
     - log_parser_stats
     - log_planner_stats
     - log_statement_stats
-    - stats_temp_directory
     - track_activity_query_size
     - track_functions
 
@@ -365,3 +364,9 @@ categories:
     - transform_null_equals
     - unix_socket_group
     - wal_consistency_checking
+    - archive_library
+    - log_startup_progress_interval
+    - recovery_prefetch
+    - recursive_worktable_factor
+    - stats_fetch_consistency
+    - wal_decode_buffer_size
