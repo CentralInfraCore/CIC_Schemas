@@ -27,6 +27,30 @@ VAULT_CA_CERT_FILE = "/var/run/secrets/vault-ca.crt"
 
 # --- Helper Functions ---
 
+def convert_to_json_serializable(obj):
+    """
+    Recursively converts JsonRef objects, datetime objects, and other non-JSON-serializable
+    types within an object to plain Python dicts, lists, and strings.
+    """
+    if isinstance(obj, JsonRef):
+        # If it's a JsonRef, first resolve it to its underlying value.
+        # JsonRef objects can be dict-like, list-like, or primitive.
+        if hasattr(obj, 'keys'): # It's dict-like
+            obj = dict(obj)
+        elif isinstance(obj, list): # It's list-like
+            obj = list(obj)
+        else: # It's a primitive JsonRef, just return its value
+            return obj
+
+    if isinstance(obj, dict):
+        return {k: convert_to_json_serializable(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_to_json_serializable(elem) for elem in obj]
+    elif isinstance(obj, datetime.datetime):
+        return obj.isoformat()
+    # Add other non-serializable types here if they appear
+    else:
+        return obj
 
 def load_and_resolve_schema(path):
     """
@@ -48,10 +72,23 @@ def load_and_resolve_schema(path):
             base_uri = f"file://{os.path.dirname(os.path.abspath(path))}/"
             unresolved_data = yaml.safe_load(f)
 
-            resolved_data = JsonRef.replace_refs(
+            resolved_data_jsonref = JsonRef.replace_refs(
                 unresolved_data, base_uri=base_uri, loader=yaml_loader
             )
-            return resolved_data
+
+            # First, convert the entire structure to plain Python types
+            plain_python_data = convert_to_json_serializable(resolved_data_jsonref)
+
+            # Now, json.dumps should work without needing to handle JsonRef
+            class CustomJsonEncoder(json.JSONEncoder):
+                def default(self, obj):
+                    if isinstance(obj, datetime.datetime):
+                        return obj.isoformat()
+                    # Let the base class default method raise the TypeError.
+                    return json.JSONEncoder.default(self, obj)
+
+            resolved_data_plain = json.loads(json.dumps(plain_python_data, cls=CustomJsonEncoder))
+            return resolved_data_plain
 
     except FileNotFoundError:
         print(f"[FATAL] File not found: {path}")
@@ -370,8 +407,6 @@ def run_validation(args):
     except Exception as e:
         print(f"\n  [91m✗ UNEXPECTED ERROR: {e}[0m")
         sys.exit(1)
-
-    print("\nValidation successful.")
 
 
 def run_release_dependency(args):
