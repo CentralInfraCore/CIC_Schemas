@@ -33,7 +33,7 @@ spec:
           type: string
           description: |
             The version of the schema component (e.g., v1.0.0 or v1.0.dev).
-          pattern: '^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*|dev)$'
+          pattern: '^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.((0|[1-9]\d*)(_[0-9]{4})?|dev)$'
         description:
           type: string
           description: "A brief description of the schema's purpose."
@@ -128,7 +128,7 @@ spec:
         checksum:
           type: string
           description: |
-            A checksum (e.g., SHA256) of the 'spec' block content for
+            A checksum (e.2., SHA256) of the 'spec' block content for
             integrity checks.
         sign:
           type: string
