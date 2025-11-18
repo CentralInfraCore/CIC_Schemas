@@ -1,0 +1,2623 @@
+metadata:
+  name: postgresql
+  version: v0.17.0_2025
+  description: This is a template for creating new schemas. The actual schema definition
+    is in the 'spec' block.
+  owner: Gabor Zoltan Sinko
+  tags:
+  - template
+  - meta-schema
+  validatedBy:
+    name: template-schema
+    version: v0.9.5_2025
+    checksum: 31d6ad98eb3da9a94436edf24e51fcbd9da52b4586b7a82dc465a4d0455c6fde
+  validity:
+    from: '2025-11-12T00:00:00Z'
+    until: '2026-11-12T00:00:00Z'
+  checksum: 66124dc52a09c03becdfde893b9e99078b0a2d801ad15e9524f99738f43769a3
+  sign: vault:v1:MEYCIQCRFNu4lkK1SfXwK0lfRFRWIFr6ntxioEBt8EYcdyMm1gIhAPgbeAG7dvY/Ls5fnus+wbBI0Luwz5TUttGZ2/lhFkJF
+  build_timestamp: '2025-11-18T16:24:20.203079+00:00'
+  createdBy:
+    name: Gabor Zoltan Sinko
+    email: sgz@centralinfracore.hu
+    certificate: "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial\
+      \ Number: 4097 (0x1001)\n        Signature Algorithm: ecdsa-with-SHA256\n  \
+      \      Issuer: C=HU, O=CentralInfraCore, CN=CIC Root CA\n        Validity\n\
+      \            Not Before: Oct 10 20:23:22 2025 GMT\n            Not After : Oct\
+      \  5 20:23:22 2026 GMT\n        Subject: C=HU, O=CentralInfraCore, CN=Gabor\
+      \ Zoltan Sinko\n        Subject Public Key Info:\n            Public Key Algorithm:\
+      \ id-ecPublicKey\n                Public-Key: (256 bit)\n                pub:\n\
+      \                    04:e8:75:85:c9:5e:cd:2e:fe:b2:b3:dd:4d:2e:b5:\n       \
+      \             7a:d6:c0:de:5b:77:68:ea:ad:6f:f9:c6:12:b1:e5:\n              \
+      \      5b:a2:07:08:54:e0:77:24:33:5f:c6:4a:8a:8d:c4:\n                    99:8c:cd:68:14:23:00:80:26:43:d5:ff:f6:96:b3:\n\
+      \                    8d:de:b9:6a:56\n                ASN1 OID: prime256v1\n\
+      \                NIST CURVE: P-256\n        X509v3 extensions:\n           \
+      \ X509v3 Basic Constraints: \n                CA:FALSE\n            X509v3 Subject\
+      \ Key Identifier: \n                18:2B:65:8D:21:54:18:D0:14:DD:15:8D:DB:A7:D3:6A:A4:B3:61:0C\n\
+      \            X509v3 Authority Key Identifier: \n                04:AF:7A:55:90:FB:06:56:DD:89:34:F4:1B:B9:37:0A:2C:47:41:09\n\
+      \            X509v3 Subject Alternative Name: \n                email:sgz@centralinfracore.hu\n\
+      \            X509v3 Key Usage: \n                Digital Signature, Key Encipherment\n\
+      \            X509v3 Extended Key Usage: \n                TLS Web Client Authentication\n\
+      \    Signature Algorithm: ecdsa-with-SHA256\n    Signature Value:\n        30:44:02:20:50:3a:73:e6:dc:89:a5:63:c4:82:00:ff:18:8c:\n\
+      \        6e:dd:1f:9d:2b:ac:36:24:db:9d:e9:4b:67:53:12:d7:f8:90:\n        02:20:21:18:37:fe:3e:6c:54:c2:28:6b:f1:1b:44:6e:93:b8:\n\
+      \        a0:b4:f7:8b:42:4d:d5:48:22:af:83:da:5f:0b:2b:16\n-----BEGIN CERTIFICATE-----\n\
+      MIICBzCCAa6gAwIBAgICEAEwCgYIKoZIzj0EAwIwPjELMAkGA1UEBhMCSFUxGTAX\nBgNVBAoMEENlbnRyYWxJbmZyYUNvcmUxFDASBgNVBAMMC0NJQyBSb290IENBMB4X\n\
+      DTI1MTAxMDIwMjMyMloXDTI2MTAwNTIwMjMyMlowRTELMAkGA1UEBhMCSFUxGTAX\nBgNVBAoMEENlbnRyYWxJbmZyYUNvcmUxGzAZBgNVBAMMEkdhYm9yIFpvbHRhbiBT\n\
+      aW5rbzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABOh1hclezS7+srPdTS61etbA\n3lt3aOqtb/nGErHlW6IHCFTgdyQzX8ZKio3EmYzNaBQjAIAmQ9X/9pazjd65alaj\n\
+      gZQwgZEwCQYDVR0TBAIwADAdBgNVHQ4EFgQUGCtljSFUGNAU3RWN26fTaqSzYQww\nHwYDVR0jBBgwFoAUBK96VZD7BlbdiTT0G7k3CixHQQkwIgYDVR0RBBswGYEXc2d6\n\
+      QGNlbnRyYWxpbmZyYWNvcmUuaHUwCwYDVR0PBAQDAgWgMBMGA1UdJQQMMAoGCCsG\nAQUFBwMCMAoGCCqGSM49BAMCA0cAMEQCIFA6c+bciaVjxIIA/xiMbt0fnSusNiTb\n\
+      nelLZ1MS1/iQAiAhGDf+PmxUwihr8RtEbpO4oLT3i0JN1Ugir4PaXwsrFg==\n-----END CERTIFICATE-----\n"
+    issuer_certificate: '-----BEGIN CERTIFICATE-----
+
+      MIICPDCCAeOgAwIBAgIUCuXu5zvoytWl7tbouWpFcu47FVUwCgYIKoZIzj0EAwIw
+
+      PjELMAkGA1UEBhMCSFUxGTAXBgNVBAoMEENlbnRyYWxJbmZyYUNvcmUxFDASBgNV
+
+      BAMMC0NJQyBSb290IENBMB4XDTI1MDgwNjA2MDUwMloXDTI2MDgwNjA2MDUwMlow
+
+      PjELMAkGA1UEBhMCSFUxGTAXBgNVBAoMEENlbnRyYWxJbmZyYUNvcmUxFDASBgNV
+
+      BAMMC0NJQyBSb290IENBMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEFHIGqGtI
+
+      3yPXQtoGpWXpO3xDcKvSvgORxxO9N0bD6okADsTk2/3Wl1PeUEcy7uRRSBAwBHoA
+
+      i1gt2iHCt57W3KOBvjCBuzAdBgNVHQ4EFgQUBK96VZD7BlbdiTT0G7k3CixHQQkw
+
+      eQYDVR0jBHIwcIAUBK96VZD7BlbdiTT0G7k3CixHQQmhQqRAMD4xCzAJBgNVBAYT
+
+      AkhVMRkwFwYDVQQKDBBDZW50cmFsSW5mcmFDb3JlMRQwEgYDVQQDDAtDSUMgUm9v
+
+      dCBDQYIUCuXu5zvoytWl7tbouWpFcu47FVUwDwYDVR0TAQH/BAUwAwEB/zAOBgNV
+
+      HQ8BAf8EBAMCAYYwCgYIKoZIzj0EAwIDRwAwRAIgJ7gfxb3oddHx1u8CBA/t5QQM
+
+      av7F6hkOBwVfKA/ErA4CIAZIx2CSJde1c4guvORJCj8qXiJJFNeMBS7Gvq1+r0hG
+
+      -----END CERTIFICATE-----
+
+      '
+spec:
+  type: object
+  required:
+  - metadata
+  - spec
+  properties:
+    metadata:
+      type: object
+      description: 'Common metadata block for all versioned components.
+
+        '
+      properties:
+        name:
+          type: string
+          description: The name of the schema component.
+        version:
+          type: string
+          description: 'The version of the schema component (e.g., v1.0.0 or v1.0.dev).
+
+            '
+          pattern: ^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.((0|[1-9]\d*)(_[0-9]{4})?|dev)$
+        description:
+          type: string
+          description: A brief description of the schema's purpose.
+        owner:
+          type: string
+          description: The team or entity responsible for maintaining this schema
+            (e.g., platform-engineering).
+        tags:
+          type: array
+          description: A list of tags for categorization and discovery.
+          items:
+            type: string
+        validatedBy:
+          type: object
+          description: 'A mandatory receipt proving which meta-schema was used for
+            validation.
+
+            The ''checksum'' field is auto-generated and required for released (non-dev)
+            versions.
+
+            '
+          properties:
+            name:
+              type: string
+              description: The name of the validating meta-schema.
+            version:
+              type: string
+              description: The version of the validating meta-schema.
+            checksum:
+              type: string
+              description: The checksum (SHA256) of the validating meta-schema's 'spec'
+                block.
+          required:
+          - name
+          - version
+          additionalProperties: false
+        createdBy:
+          type: object
+          description: 'Identifies the entity responsible for the schema and provides
+
+            the cryptographic proof of identity. This block is auto-generated
+
+            during the release process and should not be present in .dev versions.
+
+            '
+          required:
+          - name
+          - email
+          - certificate
+          - issuer_certificate
+          properties:
+            name:
+              type: string
+              description: 'Human-readable name of the author (e.g., from the certificate''s
+
+                Common Name).
+
+                '
+            email:
+              type: string
+              format: email
+              description: 'Contact email of the author (e.g., from the certificate''s
+                Subject
+
+                Alternative Name).
+
+                '
+            certificate:
+              type: string
+              description: 'A data block containing a PEM-encoded entity (e.g., certificate,
+                CRL).
+
+                The full output of ''openssl x509 -text'' is acceptable.
+
+                '
+              pattern: '-----BEGIN [A-Z0-9 ]+-----(.|\n|\r)+-----END [A-Z0-9 ]+-----.?'
+            issuer_certificate:
+              type: string
+              description: 'A data block containing the PEM-encoded Issuing Authority
+                (CA)
+
+                that signed the entity in the ''certificate'' field.
+
+                '
+              pattern: '-----BEGIN [A-Z0-9 ]+-----(.|\n|\r)+-----END [A-Z0-9 ]+-----.?'
+          additionalProperties: false
+        build_timestamp:
+          type: string
+          format: date-time
+          description: 'The exact timestamp when this version of the schema was
+
+            built and signed.
+
+            '
+        validity:
+          type: object
+          description: Defines the support lifecycle for this schema version.
+          required:
+          - from
+          - until
+          properties:
+            from:
+              type: string
+              format: date-time
+              description: 'The date from which this schema version is considered
+                valid.
+
+                '
+            until:
+              type: string
+              format: date-time
+              description: 'The date until which this schema version is supported.
+
+                After this date, it should be considered deprecated.
+
+                '
+          additionalProperties: false
+        checksum:
+          type: string
+          description: 'A checksum (e.g., SHA256) of the ''spec'' block content for
+
+            integrity checks.
+
+            '
+        sign:
+          type: string
+          description: 'A cryptographic signature of the metadata block  \
+
+            (excluding ''checksum'' and ''sign'' fields).
+
+            '
+      additionalProperties: false
+      required:
+      - name
+      - version
+      - description
+      - owner
+      - validatedBy
+      allOf:
+      - if:
+          properties:
+            version:
+              not:
+                pattern: \.dev$
+        then:
+          required:
+          - createdBy
+          - build_timestamp
+          - validity
+          - checksum
+          - sign
+          properties:
+            validatedBy:
+              required:
+              - checksum
+    spec:
+      type: object
+      description: 'The core schema definition itself, which should follow \
+
+        the JSON Schema specification.
+
+        '
+      properties:
+        postgresql_conf:
+          type: object
+          description: Schema for PostgreSQL configuration settings (postgresql.conf),
+            grouped by category.
+          properties:
+            connection:
+              type: object
+              description: Settings for the connection category.
+              properties:
+                bonjour:
+                  type: boolean
+                  description: Enables advertising the server via Bonjour.
+                  default: false
+                bonjour_name:
+                  type: string
+                  description: Sets the Bonjour service name.
+                  default: ''
+                client_connection_check_interval:
+                  type: integer
+                  description: 'Sets the time interval between checks for disconnection
+                    while running queries. (Unit: ms)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                listen_addresses:
+                  type: string
+                  description: Sets the host name or IP address(es) to listen to.
+                  default: '*'
+                max_connections:
+                  type: integer
+                  description: Sets the maximum number of concurrent connections.
+                  default: 100
+                  minimum: 1
+                  maximum: 262143
+                port:
+                  type: integer
+                  description: Sets the TCP port the server listens on.
+                  default: 5432
+                  minimum: 1
+                  maximum: 65535
+                superuser_reserved_connections:
+                  type: integer
+                  description: Sets the number of connection slots reserved for superusers.
+                  default: 3
+                  minimum: 0
+                  maximum: 262143
+                tcp_keepalives_count:
+                  type: integer
+                  description: Maximum number of TCP keepalive retransmits.
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                tcp_keepalives_idle:
+                  type: integer
+                  description: 'Time between issuing TCP keepalives. (Unit: s)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                tcp_keepalives_interval:
+                  type: integer
+                  description: 'Time between TCP keepalive retransmits. (Unit: s)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                tcp_user_timeout:
+                  type: integer
+                  description: 'TCP user timeout. (Unit: ms)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                unix_socket_directories:
+                  type: string
+                  description: Sets the directories where Unix-domain sockets will
+                    be created.
+                  default: /var/run/postgresql
+                unix_socket_permissions:
+                  type: integer
+                  description: Sets the access permissions of the Unix-domain socket.
+                  default: 511
+                  minimum: 0
+                  maximum: 511
+            authentication:
+              type: object
+              description: Settings for the authentication category.
+              properties:
+                authentication_timeout:
+                  type: integer
+                  description: 'Sets the maximum allowed time to complete client authentication.
+                    (Unit: s)'
+                  default: 60
+                  minimum: 1
+                  maximum: 600
+                krb_caseins_users:
+                  type: boolean
+                  description: Sets whether Kerberos and GSSAPI user names should
+                    be treated as case-insensitive.
+                  default: false
+                krb_server_keyfile:
+                  type: string
+                  description: Sets the location of the Kerberos server key file.
+                  default: FILE:/usr/local/etc/postgresql/krb5.keytab
+                password_encryption:
+                  type: string
+                  description: Chooses the algorithm for encrypting passwords.
+                  default: scram-sha-256
+                  enum:
+                  - md5
+                  - scram-sha-256
+                ssl:
+                  type: boolean
+                  description: Enables SSL connections.
+                  default: false
+                ssl_ca_file:
+                  type: string
+                  description: Location of the SSL certificate authority file.
+                  default: ''
+                ssl_cert_file:
+                  type: string
+                  description: Location of the SSL server certificate file.
+                  default: server.crt
+                ssl_ciphers:
+                  type: string
+                  description: Sets the list of allowed SSL ciphers.
+                  default: HIGH:MEDIUM:+3DES:!aNULL
+                ssl_crl_dir:
+                  type: string
+                  description: Location of the SSL certificate revocation list directory.
+                  default: ''
+                ssl_crl_file:
+                  type: string
+                  description: Location of the SSL certificate revocation list file.
+                  default: ''
+                ssl_dh_params_file:
+                  type: string
+                  description: Location of the SSL DH parameters file.
+                  default: ''
+                ssl_ecdh_curve:
+                  type: string
+                  description: Sets the curve to use for ECDH.
+                  default: prime256v1
+                ssl_key_file:
+                  type: string
+                  description: Location of the SSL server private key file.
+                  default: server.key
+                ssl_max_protocol_version:
+                  type: string
+                  description: Sets the maximum SSL/TLS protocol version to use.
+                  default: ''
+                  enum:
+                  - ''
+                  - TLSv1
+                  - TLSv1.1
+                  - TLSv1.2
+                  - TLSv1.3
+                ssl_min_protocol_version:
+                  type: string
+                  description: Sets the minimum SSL/TLS protocol version to use.
+                  default: TLSv1.2
+                  enum:
+                  - TLSv1
+                  - TLSv1.1
+                  - TLSv1.2
+                  - TLSv1.3
+                ssl_passphrase_command:
+                  type: string
+                  description: Command to obtain passphrases for SSL.
+                  default: ''
+                ssl_passphrase_command_supports_reload:
+                  type: boolean
+                  description: Controls whether "ssl_passphrase_command" is called
+                    during server reload.
+                  default: false
+                ssl_prefer_server_ciphers:
+                  type: boolean
+                  description: Give priority to server ciphersuite order.
+                  default: true
+            memory:
+              type: object
+              description: Settings for the memory category.
+              properties:
+                autovacuum_work_mem:
+                  type: integer
+                  description: 'Sets the maximum memory to be used by each autovacuum
+                    worker process. (Unit: kB)'
+                  default: -1
+                  minimum: -1
+                  maximum: 2147483647
+                effective_cache_size:
+                  type: integer
+                  description: 'Sets the planner''s assumption about the total size
+                    of the data caches. (Unit: 8kB)'
+                  default: 524288
+                  minimum: 1
+                  maximum: 2147483647
+                hash_mem_multiplier:
+                  type: number
+                  description: Multiple of "work_mem" to use for hash tables.
+                  default: 2.0
+                  minimum: 1.0
+                  maximum: 1000.0
+                huge_page_size:
+                  type: integer
+                  description: 'The size of huge page that should be requested. (Unit:
+                    kB)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                huge_pages:
+                  type: string
+                  description: Use of huge pages on Linux or Windows.
+                  default: try
+                  enum:
+                  - 'off'
+                  - 'on'
+                  - try
+                logical_decoding_work_mem:
+                  type: integer
+                  description: 'Sets the maximum memory to be used for logical decoding.
+                    (Unit: kB)'
+                  default: 65536
+                  minimum: 64
+                  maximum: 2147483647
+                maintenance_work_mem:
+                  type: integer
+                  description: 'Sets the maximum memory to be used for maintenance
+                    operations. (Unit: kB)'
+                  default: 65536
+                  minimum: 64
+                  maximum: 2147483647
+                max_prepared_transactions:
+                  type: integer
+                  description: Sets the maximum number of simultaneously prepared
+                    transactions.
+                  default: 0
+                  minimum: 0
+                  maximum: 262143
+                max_stack_depth:
+                  type: integer
+                  description: 'Sets the maximum stack depth, in kilobytes. (Unit:
+                    kB)'
+                  default: 2048
+                  minimum: 100
+                  maximum: 2147483647
+                min_dynamic_shared_memory:
+                  type: integer
+                  description: 'Amount of dynamic shared memory reserved at startup.
+                    (Unit: MB)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                multixact_member_buffers:
+                  type: integer
+                  description: 'Sets the size of the dedicated buffer pool used for
+                    the MultiXact member cache. (Unit: 8kB)'
+                  default: 32
+                  minimum: 16
+                  maximum: 131072
+                multixact_offset_buffers:
+                  type: integer
+                  description: 'Sets the size of the dedicated buffer pool used for
+                    the MultiXact offset cache. (Unit: 8kB)'
+                  default: 16
+                  minimum: 16
+                  maximum: 131072
+                notify_buffers:
+                  type: integer
+                  description: 'Sets the size of the dedicated buffer pool used for
+                    the LISTEN/NOTIFY message cache. (Unit: 8kB)'
+                  default: 16
+                  minimum: 16
+                  maximum: 131072
+                serializable_buffers:
+                  type: integer
+                  description: 'Sets the size of the dedicated buffer pool used for
+                    the serializable transaction cache. (Unit: 8kB)'
+                  default: 32
+                  minimum: 16
+                  maximum: 131072
+                shared_buffers:
+                  type: integer
+                  description: 'Sets the number of shared memory buffers used by the
+                    server. (Unit: 8kB)'
+                  default: 16384
+                  minimum: 16
+                  maximum: 1073741823
+                shared_memory_type:
+                  type: string
+                  description: Selects the shared memory implementation used for the
+                    main shared memory region.
+                  default: mmap
+                  enum:
+                  - sysv
+                  - mmap
+                subtransaction_buffers:
+                  type: integer
+                  description: 'Sets the size of the dedicated buffer pool used for
+                    the subtransaction cache. (Unit: 8kB)'
+                  default: 32
+                  minimum: 0
+                  maximum: 131072
+                temp_buffers:
+                  type: integer
+                  description: 'Sets the maximum number of temporary buffers used
+                    by each session. (Unit: 8kB)'
+                  default: 1024
+                  minimum: 100
+                  maximum: 1073741823
+                transaction_buffers:
+                  type: integer
+                  description: 'Sets the size of the dedicated buffer pool used for
+                    the transaction status cache. (Unit: 8kB)'
+                  default: 32
+                  minimum: 0
+                  maximum: 131072
+                work_mem:
+                  type: integer
+                  description: 'Sets the maximum memory to be used for query workspaces.
+                    (Unit: kB)'
+                  default: 4096
+                  minimum: 64
+                  maximum: 2147483647
+            resource:
+              type: object
+              description: Settings for the resource category.
+              properties:
+                backend_flush_after:
+                  type: integer
+                  description: 'Number of pages after which previously performed writes
+                    are flushed to disk. (Unit: 8kB)'
+                  default: 0
+                  minimum: 0
+                  maximum: 256
+                dynamic_shared_memory_type:
+                  type: string
+                  description: Selects the dynamic shared memory implementation used.
+                  default: posix
+                  enum:
+                  - posix
+                  - sysv
+                  - mmap
+                effective_io_concurrency:
+                  type: integer
+                  description: Number of simultaneous requests that can be handled
+                    efficiently by the disk subsystem.
+                  default: 1
+                  minimum: 0
+                  maximum: 1000
+                io_combine_limit:
+                  type: integer
+                  description: 'Limit on the size of data reads and writes. (Unit:
+                    8kB)'
+                  default: 16
+                  minimum: 1
+                  maximum: 32
+                maintenance_io_concurrency:
+                  type: integer
+                  description: A variant of "effective_io_concurrency" that is used
+                    for maintenance work.
+                  default: 10
+                  minimum: 0
+                  maximum: 1000
+                max_files_per_process:
+                  type: integer
+                  description: Sets the maximum number of simultaneously open files
+                    for each server process.
+                  default: 1000
+                  minimum: 64
+                  maximum: 2147483647
+                max_logical_replication_workers:
+                  type: integer
+                  description: Maximum number of logical replication worker processes.
+                  default: 4
+                  minimum: 0
+                  maximum: 262143
+                max_parallel_maintenance_workers:
+                  type: integer
+                  description: Sets the maximum number of parallel processes per maintenance
+                    operation.
+                  default: 2
+                  minimum: 0
+                  maximum: 1024
+                max_parallel_workers:
+                  type: integer
+                  description: Sets the maximum number of parallel workers that can
+                    be active at one time.
+                  default: 8
+                  minimum: 0
+                  maximum: 1024
+                max_parallel_workers_per_gather:
+                  type: integer
+                  description: Sets the maximum number of parallel processes per executor
+                    node.
+                  default: 2
+                  minimum: 0
+                  maximum: 1024
+                max_worker_processes:
+                  type: integer
+                  description: Maximum number of concurrent worker processes.
+                  default: 8
+                  minimum: 0
+                  maximum: 262143
+                parallel_leader_participation:
+                  type: boolean
+                  description: Controls whether Gather and Gather Merge also run subplans.
+                  default: true
+                temp_file_limit:
+                  type: integer
+                  description: 'Limits the total size of all temporary files used
+                    by each process. (Unit: kB)'
+                  default: -1
+                  minimum: -1
+                  maximum: 2147483647
+            wal:
+              type: object
+              description: Settings for the wal category.
+              properties:
+                archive_cleanup_command:
+                  type: string
+                  description: Sets the shell command that will be executed at every
+                    restart point.
+                  default: ''
+                archive_command:
+                  type: string
+                  description: Sets the shell command that will be called to archive
+                    a WAL file.
+                  default: ''
+                archive_mode:
+                  type: string
+                  description: Allows archiving of WAL files using "archive_command".
+                  default: 'off'
+                  enum:
+                  - always
+                  - 'on'
+                  - 'off'
+                archive_timeout:
+                  type: integer
+                  description: 'Sets the amount of time to wait before forcing a switch
+                    to the next WAL file. (Unit: s)'
+                  default: 0
+                  minimum: 0
+                  maximum: 1073741823
+                commit_delay:
+                  type: integer
+                  description: Sets the delay in microseconds between transaction
+                    commit and flushing WAL to disk.
+                  default: 0
+                  minimum: 0
+                  maximum: 100000
+                commit_siblings:
+                  type: integer
+                  description: Sets the minimum number of concurrent open transactions
+                    required before performing "commit_delay".
+                  default: 5
+                  minimum: 0
+                  maximum: 1000
+                commit_timestamp_buffers:
+                  type: integer
+                  description: 'Sets the size of the dedicated buffer pool used for
+                    the commit timestamp cache. (Unit: 8kB)'
+                  default: 32
+                  minimum: 0
+                  maximum: 131072
+                full_page_writes:
+                  type: boolean
+                  description: Writes full pages to WAL when first modified after
+                    a checkpoint.
+                  default: true
+                max_wal_size:
+                  type: integer
+                  description: 'Sets the WAL size that triggers a checkpoint. (Unit:
+                    MB)'
+                  default: 1024
+                  minimum: 2
+                  maximum: 2147483647
+                min_wal_size:
+                  type: integer
+                  description: 'Sets the minimum size to shrink the WAL to. (Unit:
+                    MB)'
+                  default: 80
+                  minimum: 2
+                  maximum: 2147483647
+                recovery_end_command:
+                  type: string
+                  description: Sets the shell command that will be executed once at
+                    the end of recovery.
+                  default: ''
+                restore_command:
+                  type: string
+                  description: Sets the shell command that will be called to retrieve
+                    an archived WAL file.
+                  default: ''
+                summarize_wal:
+                  type: boolean
+                  description: Starts the WAL summarizer process to enable incremental
+                    backup.
+                  default: false
+                wal_buffers:
+                  type: integer
+                  description: 'Sets the number of disk-page buffers in shared memory
+                    for WAL. (Unit: 8kB)'
+                  default: 512
+                  minimum: -1
+                  maximum: 262143
+                wal_compression:
+                  type: string
+                  description: Compresses full-page writes written in WAL file with
+                    specified method.
+                  default: 'off'
+                  enum:
+                  - pglz
+                  - lz4
+                  - zstd
+                  - 'on'
+                  - 'off'
+                wal_init_zero:
+                  type: boolean
+                  description: Writes zeroes to new WAL files before first use.
+                  default: true
+                wal_level:
+                  type: string
+                  description: Sets the level of information written to the WAL.
+                  default: replica
+                  enum:
+                  - minimal
+                  - replica
+                  - logical
+                wal_log_hints:
+                  type: boolean
+                  description: Writes full pages to WAL when first modified after
+                    a checkpoint, even for a non-critical modification.
+                  default: false
+                wal_recycle:
+                  type: boolean
+                  description: Recycles WAL files by renaming them.
+                  default: true
+                wal_skip_threshold:
+                  type: integer
+                  description: 'Minimum size of new file to fsync instead of writing
+                    WAL. (Unit: kB)'
+                  default: 2048
+                  minimum: 0
+                  maximum: 2147483647
+                wal_summary_keep_time:
+                  type: integer
+                  description: 'Time for which WAL summary files should be kept. (Unit:
+                    min)'
+                  default: 14400
+                  minimum: 0
+                  maximum: 35791394
+                wal_sync_method:
+                  type: string
+                  description: Selects the method used for forcing WAL updates to
+                    disk.
+                  default: fdatasync
+                  enum:
+                  - fsync
+                  - fdatasync
+                  - open_sync
+                  - open_datasync
+                wal_writer_delay:
+                  type: integer
+                  description: 'Time between WAL flushes performed in the WAL writer.
+                    (Unit: ms)'
+                  default: 200
+                  minimum: 1
+                  maximum: 10000
+                wal_writer_flush_after:
+                  type: integer
+                  description: 'Amount of WAL written out by WAL writer that triggers
+                    a flush. (Unit: 8kB)'
+                  default: 128
+                  minimum: 0
+                  maximum: 2147483647
+            replication:
+              type: object
+              description: Settings for the replication category.
+              properties:
+                hot_standby:
+                  type: boolean
+                  description: Allows connections and queries during recovery.
+                  default: true
+                hot_standby_feedback:
+                  type: boolean
+                  description: Allows feedback from a hot standby to the primary that
+                    will avoid query conflicts.
+                  default: false
+                max_replication_slots:
+                  type: integer
+                  description: Sets the maximum number of simultaneously defined replication
+                    slots.
+                  default: 10
+                  minimum: 0
+                  maximum: 262143
+                max_slot_wal_keep_size:
+                  type: integer
+                  description: 'Sets the maximum WAL size that can be reserved by
+                    replication slots. (Unit: MB)'
+                  default: -1
+                  minimum: -1
+                  maximum: 2147483647
+                max_standby_archive_delay:
+                  type: integer
+                  description: 'Sets the maximum delay before canceling queries when
+                    a hot standby server is processing archived WAL data. (Unit: ms)'
+                  default: 30000
+                  minimum: -1
+                  maximum: 2147483647
+                max_standby_streaming_delay:
+                  type: integer
+                  description: 'Sets the maximum delay before canceling queries when
+                    a hot standby server is processing streamed WAL data. (Unit: ms)'
+                  default: 30000
+                  minimum: -1
+                  maximum: 2147483647
+                max_sync_workers_per_subscription:
+                  type: integer
+                  description: Maximum number of table synchronization workers per
+                    subscription.
+                  default: 2
+                  minimum: 0
+                  maximum: 262143
+                max_wal_senders:
+                  type: integer
+                  description: Sets the maximum number of simultaneously running WAL
+                    sender processes.
+                  default: 10
+                  minimum: 0
+                  maximum: 262143
+                primary_conninfo:
+                  type: string
+                  description: Sets the connection string to be used to connect to
+                    the sending server.
+                  default: ''
+                primary_slot_name:
+                  type: string
+                  description: Sets the name of the replication slot to use on the
+                    sending server.
+                  default: ''
+                recovery_min_apply_delay:
+                  type: integer
+                  description: 'Sets the minimum delay for applying changes during
+                    recovery. (Unit: ms)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                recovery_target:
+                  type: string
+                  description: Set to "immediate" to end recovery as soon as a consistent
+                    state is reached.
+                  default: ''
+                sync_replication_slots:
+                  type: boolean
+                  description: Enables a physical standby to synchronize logical failover
+                    replication slots from the primary server.
+                  default: false
+                synchronized_standby_slots:
+                  type: string
+                  description: Lists streaming replication standby server replication
+                    slot names that logical WAL sender processes will wait for.
+                  default: ''
+                synchronous_commit:
+                  type: string
+                  description: Sets the current transaction's synchronization level.
+                  default: 'on'
+                  enum:
+                  - local
+                  - remote_write
+                  - remote_apply
+                  - 'on'
+                  - 'off'
+                synchronous_standby_names:
+                  type: string
+                  description: Number of synchronous standbys and list of names of
+                    potential synchronous ones.
+                  default: ''
+                track_commit_timestamp:
+                  type: boolean
+                  description: Collects transaction commit time.
+                  default: false
+                wal_keep_size:
+                  type: integer
+                  description: 'Sets the size of WAL files held for standby servers.
+                    (Unit: MB)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                wal_receiver_create_temp_slot:
+                  type: boolean
+                  description: Sets whether a WAL receiver should create a temporary
+                    replication slot if no permanent slot is configured.
+                  default: false
+                wal_receiver_status_interval:
+                  type: integer
+                  description: 'Sets the maximum interval between WAL receiver status
+                    reports to the sending server. (Unit: s)'
+                  default: 10
+                  minimum: 0
+                  maximum: 2147483
+                wal_receiver_timeout:
+                  type: integer
+                  description: 'Sets the maximum wait time to receive data from the
+                    sending server. (Unit: ms)'
+                  default: 60000
+                  minimum: 0
+                  maximum: 2147483647
+                wal_retrieve_retry_interval:
+                  type: integer
+                  description: 'Sets the time to wait before retrying to retrieve
+                    WAL after a failed attempt. (Unit: ms)'
+                  default: 5000
+                  minimum: 1
+                  maximum: 2147483647
+                wal_sender_timeout:
+                  type: integer
+                  description: 'Sets the maximum time to wait for WAL replication.
+                    (Unit: ms)'
+                  default: 60000
+                  minimum: 0
+                  maximum: 2147483647
+            checkpoint:
+              type: object
+              description: Settings for the checkpoint category.
+              properties:
+                checkpoint_completion_target:
+                  type: number
+                  description: Time spent flushing dirty buffers during checkpoint,
+                    as fraction of checkpoint interval.
+                  default: 0.9
+                  minimum: 0.0
+                  maximum: 1.0
+                checkpoint_flush_after:
+                  type: integer
+                  description: 'Number of pages after which previously performed writes
+                    are flushed to disk. (Unit: 8kB)'
+                  default: 32
+                  minimum: 0
+                  maximum: 256
+                checkpoint_timeout:
+                  type: integer
+                  description: 'Sets the maximum time between automatic WAL checkpoints.
+                    (Unit: s)'
+                  default: 300
+                  minimum: 30
+                  maximum: 86400
+                checkpoint_warning:
+                  type: integer
+                  description: 'Sets the maximum time before warning if checkpoints
+                    triggered by WAL volume happen too frequently. (Unit: s)'
+                  default: 30
+                  minimum: 0
+                  maximum: 2147483647
+            autovacuum:
+              type: object
+              description: Settings for the autovacuum category.
+              properties:
+                autovacuum:
+                  type: boolean
+                  description: Starts the autovacuum subprocess.
+                  default: true
+                autovacuum_analyze_scale_factor:
+                  type: number
+                  description: Number of tuple inserts, updates, or deletes prior
+                    to analyze as a fraction of reltuples.
+                  default: 0.1
+                  minimum: 0.0
+                  maximum: 100.0
+                autovacuum_analyze_threshold:
+                  type: integer
+                  description: Minimum number of tuple inserts, updates, or deletes
+                    prior to analyze.
+                  default: 50
+                  minimum: 0
+                  maximum: 2147483647
+                autovacuum_freeze_max_age:
+                  type: integer
+                  description: Age at which to autovacuum a table to prevent transaction
+                    ID wraparound.
+                  default: 200000000
+                  minimum: 100000
+                  maximum: 2000000000
+                autovacuum_max_workers:
+                  type: integer
+                  description: Sets the maximum number of simultaneously running autovacuum
+                    worker processes.
+                  default: 3
+                  minimum: 1
+                  maximum: 262143
+                autovacuum_multixact_freeze_max_age:
+                  type: integer
+                  description: Multixact age at which to autovacuum a table to prevent
+                    multixact wraparound.
+                  default: 400000000
+                  minimum: 10000
+                  maximum: 2000000000
+                autovacuum_naptime:
+                  type: integer
+                  description: 'Time to sleep between autovacuum runs. (Unit: s)'
+                  default: 60
+                  minimum: 1
+                  maximum: 2147483
+                autovacuum_vacuum_cost_delay:
+                  type: number
+                  description: 'Vacuum cost delay in milliseconds, for autovacuum.
+                    (Unit: ms)'
+                  default: 2.0
+                  minimum: -1.0
+                  maximum: 100.0
+                autovacuum_vacuum_cost_limit:
+                  type: integer
+                  description: Vacuum cost amount available before napping, for autovacuum.
+                  default: -1
+                  minimum: -1
+                  maximum: 10000
+                autovacuum_vacuum_insert_scale_factor:
+                  type: number
+                  description: Number of tuple inserts prior to vacuum as a fraction
+                    of reltuples.
+                  default: 0.2
+                  minimum: 0.0
+                  maximum: 100.0
+                autovacuum_vacuum_insert_threshold:
+                  type: integer
+                  description: Minimum number of tuple inserts prior to vacuum, or
+                    -1 to disable insert vacuums.
+                  default: 1000
+                  minimum: -1
+                  maximum: 2147483647
+                autovacuum_vacuum_scale_factor:
+                  type: number
+                  description: Number of tuple updates or deletes prior to vacuum
+                    as a fraction of reltuples.
+                  default: 0.2
+                  minimum: 0.0
+                  maximum: 100.0
+                autovacuum_vacuum_threshold:
+                  type: integer
+                  description: Minimum number of tuple updates or deletes prior to
+                    vacuum.
+                  default: 50
+                  minimum: 0
+                  maximum: 2147483647
+            logging:
+              type: object
+              description: Settings for the logging category.
+              properties:
+                debug_pretty_print:
+                  type: boolean
+                  description: Indents parse and plan tree displays.
+                  default: true
+                debug_print_parse:
+                  type: boolean
+                  description: Logs each query's parse tree.
+                  default: false
+                debug_print_plan:
+                  type: boolean
+                  description: Logs each query's execution plan.
+                  default: false
+                debug_print_rewritten:
+                  type: boolean
+                  description: Logs each query's rewritten parse tree.
+                  default: false
+                event_source:
+                  type: string
+                  description: Sets the application name used to identify PostgreSQL
+                    messages in the event log.
+                  default: PostgreSQL
+                log_autovacuum_min_duration:
+                  type: integer
+                  description: 'Sets the minimum execution time above which autovacuum
+                    actions will be logged. (Unit: ms)'
+                  default: 600000
+                  minimum: -1
+                  maximum: 2147483647
+                log_checkpoints:
+                  type: boolean
+                  description: Logs each checkpoint.
+                  default: true
+                log_connections:
+                  type: boolean
+                  description: Logs each successful connection.
+                  default: false
+                log_destination:
+                  type: string
+                  description: Sets the destination for server log output.
+                  default: stderr
+                log_directory:
+                  type: string
+                  description: Sets the destination directory for log files.
+                  default: log
+                log_disconnections:
+                  type: boolean
+                  description: Logs end of a session, including duration.
+                  default: false
+                log_duration:
+                  type: boolean
+                  description: Logs the duration of each completed SQL statement.
+                  default: false
+                log_error_verbosity:
+                  type: string
+                  description: Sets the verbosity of logged messages.
+                  default: default
+                  enum:
+                  - terse
+                  - default
+                  - verbose
+                log_file_mode:
+                  type: integer
+                  description: Sets the file permissions for log files.
+                  default: 384
+                  minimum: 0
+                  maximum: 511
+                log_filename:
+                  type: string
+                  description: Sets the file name pattern for log files.
+                  default: postgresql-%Y-%m-%d_%H%M%S.log
+                log_hostname:
+                  type: boolean
+                  description: Logs the host name in the connection logs.
+                  default: false
+                log_line_prefix:
+                  type: string
+                  description: Controls information prefixed to each log line.
+                  default: '%m [%p] '
+                log_lock_waits:
+                  type: boolean
+                  description: Logs long lock waits.
+                  default: false
+                log_min_duration_sample:
+                  type: integer
+                  description: 'Sets the minimum execution time above which a sample
+                    of statements will be logged. Sampling is determined by log_statement_sample_rate.
+                    (Unit: ms)'
+                  default: -1
+                  minimum: -1
+                  maximum: 2147483647
+                log_min_duration_statement:
+                  type: integer
+                  description: 'Sets the minimum execution time above which all statements
+                    will be logged. (Unit: ms)'
+                  default: -1
+                  minimum: -1
+                  maximum: 2147483647
+                log_min_error_statement:
+                  type: string
+                  description: Causes all statements generating error at or above
+                    this level to be logged.
+                  default: error
+                  enum:
+                  - debug5
+                  - debug4
+                  - debug3
+                  - debug2
+                  - debug1
+                  - info
+                  - notice
+                  - warning
+                  - error
+                  - log
+                  - fatal
+                  - panic
+                log_min_messages:
+                  type: string
+                  description: Sets the message levels that are logged.
+                  default: warning
+                  enum:
+                  - debug5
+                  - debug4
+                  - debug3
+                  - debug2
+                  - debug1
+                  - info
+                  - notice
+                  - warning
+                  - error
+                  - log
+                  - fatal
+                  - panic
+                log_parameter_max_length:
+                  type: integer
+                  description: 'Sets the maximum length in bytes of data logged for
+                    bind parameter values when logging statements. (Unit: B)'
+                  default: -1
+                  minimum: -1
+                  maximum: 1073741823
+                log_parameter_max_length_on_error:
+                  type: integer
+                  description: 'Sets the maximum length in bytes of data logged for
+                    bind parameter values when logging statements, on error. (Unit:
+                    B)'
+                  default: 0
+                  minimum: -1
+                  maximum: 1073741823
+                log_recovery_conflict_waits:
+                  type: boolean
+                  description: Logs standby recovery conflict waits.
+                  default: false
+                log_replication_commands:
+                  type: boolean
+                  description: Logs each replication command.
+                  default: false
+                log_rotation_age:
+                  type: integer
+                  description: 'Sets the amount of time to wait before forcing log
+                    file rotation. (Unit: min)'
+                  default: 1440
+                  minimum: 0
+                  maximum: 35791394
+                log_rotation_size:
+                  type: integer
+                  description: 'Sets the maximum size a log file can reach before
+                    being rotated. (Unit: kB)'
+                  default: 10240
+                  minimum: 0
+                  maximum: 2097151
+                log_statement:
+                  type: string
+                  description: Sets the type of statements logged.
+                  default: none
+                  enum:
+                  - none
+                  - ddl
+                  - mod
+                  - all
+                log_statement_sample_rate:
+                  type: number
+                  description: Fraction of statements exceeding "log_min_duration_sample"
+                    to be logged.
+                  default: 1.0
+                  minimum: 0.0
+                  maximum: 1.0
+                log_temp_files:
+                  type: integer
+                  description: 'Log the use of temporary files larger than this number
+                    of kilobytes. (Unit: kB)'
+                  default: -1
+                  minimum: -1
+                  maximum: 2147483647
+                log_timezone:
+                  type: string
+                  description: Sets the time zone to use in log messages.
+                  default: UTC
+                log_transaction_sample_rate:
+                  type: number
+                  description: Sets the fraction of transactions from which to log
+                    all statements.
+                  default: 0.0
+                  minimum: 0.0
+                  maximum: 1.0
+                log_truncate_on_rotation:
+                  type: boolean
+                  description: Truncate existing log files of same name during log
+                    rotation.
+                  default: false
+                logging_collector:
+                  type: boolean
+                  description: Start a subprocess to capture stderr, csvlog and/or
+                    jsonlog into log files.
+                  default: false
+                syslog_facility:
+                  type: string
+                  description: Sets the syslog "facility" to be used when syslog enabled.
+                  default: local0
+                  enum:
+                  - local0
+                  - local1
+                  - local2
+                  - local3
+                  - local4
+                  - local5
+                  - local6
+                  - local7
+                syslog_ident:
+                  type: string
+                  description: Sets the program name used to identify PostgreSQL messages
+                    in syslog.
+                  default: postgres
+                syslog_sequence_numbers:
+                  type: boolean
+                  description: Add sequence number to syslog messages to avoid duplicate
+                    suppression.
+                  default: true
+                syslog_split_messages:
+                  type: boolean
+                  description: Split messages sent to syslog by lines and to fit into
+                    1024 bytes.
+                  default: true
+                trace_connection_negotiation:
+                  type: boolean
+                  description: Logs details of pre-authentication connection handshake.
+                  default: false
+            stats:
+              type: object
+              description: Settings for the stats category.
+              properties:
+                compute_query_id:
+                  type: string
+                  description: Enables in-core computation of query identifiers.
+                  default: auto
+                  enum:
+                  - auto
+                  - regress
+                  - 'on'
+                  - 'off'
+                log_executor_stats:
+                  type: boolean
+                  description: Writes executor performance statistics to the server
+                    log.
+                  default: false
+                log_parser_stats:
+                  type: boolean
+                  description: Writes parser performance statistics to the server
+                    log.
+                  default: false
+                log_planner_stats:
+                  type: boolean
+                  description: Writes planner performance statistics to the server
+                    log.
+                  default: false
+                log_statement_stats:
+                  type: boolean
+                  description: Writes cumulative performance statistics to the server
+                    log.
+                  default: false
+                track_activities:
+                  type: boolean
+                  description: Collects information about executing commands.
+                  default: true
+                track_activity_query_size:
+                  type: integer
+                  description: 'Sets the size reserved for pg_stat_activity.query,
+                    in bytes. (Unit: B)'
+                  default: 1024
+                  minimum: 100
+                  maximum: 1048576
+                track_counts:
+                  type: boolean
+                  description: Collects statistics on database activity.
+                  default: true
+                track_functions:
+                  type: string
+                  description: Collects function-level statistics on database activity.
+                  default: none
+                  enum:
+                  - none
+                  - pl
+                  - all
+                track_io_timing:
+                  type: boolean
+                  description: Collects timing statistics for database I/O activity.
+                  default: false
+                update_process_title:
+                  type: boolean
+                  description: Updates the process title to show the active SQL command.
+                  default: true
+            planner:
+              type: object
+              description: Settings for the planner category.
+              properties:
+                constraint_exclusion:
+                  type: string
+                  description: Enables the planner to use constraints to optimize
+                    queries.
+                  default: partition
+                  enum:
+                  - partition
+                  - 'on'
+                  - 'off'
+                cpu_index_tuple_cost:
+                  type: number
+                  description: Sets the planner's estimate of the cost of processing
+                    each index entry during an index scan.
+                  default: 0.005
+                  minimum: 0.0
+                  maximum: 1.79769e+308
+                cpu_operator_cost:
+                  type: number
+                  description: Sets the planner's estimate of the cost of processing
+                    each operator or function call.
+                  default: 0.0025
+                  minimum: 0.0
+                  maximum: 1.79769e+308
+                cpu_tuple_cost:
+                  type: number
+                  description: Sets the planner's estimate of the cost of processing
+                    each tuple (row).
+                  default: 0.01
+                  minimum: 0.0
+                  maximum: 1.79769e+308
+                cursor_tuple_fraction:
+                  type: number
+                  description: Sets the planner's estimate of the fraction of a cursor's
+                    rows that will be retrieved.
+                  default: 0.1
+                  minimum: 0.0
+                  maximum: 1.0
+                default_statistics_target:
+                  type: integer
+                  description: Sets the default statistics target.
+                  default: 100
+                  minimum: 1
+                  maximum: 10000
+                effective_io_concurrency:
+                  type: integer
+                  description: Number of simultaneous requests that can be handled
+                    efficiently by the disk subsystem.
+                  default: 1
+                  minimum: 0
+                  maximum: 1000
+                enable_async_append:
+                  type: boolean
+                  description: Enables the planner's use of async append plans.
+                  default: true
+                enable_bitmapscan:
+                  type: boolean
+                  description: Enables the planner's use of bitmap-scan plans.
+                  default: true
+                enable_gathermerge:
+                  type: boolean
+                  description: Enables the planner's use of gather merge plans.
+                  default: true
+                enable_group_by_reordering:
+                  type: boolean
+                  description: Enables reordering of GROUP BY keys.
+                  default: true
+                enable_hashagg:
+                  type: boolean
+                  description: Enables the planner's use of hashed aggregation plans.
+                  default: true
+                enable_hashjoin:
+                  type: boolean
+                  description: Enables the planner's use of hash join plans.
+                  default: true
+                enable_incremental_sort:
+                  type: boolean
+                  description: Enables the planner's use of incremental sort steps.
+                  default: true
+                enable_indexonlyscan:
+                  type: boolean
+                  description: Enables the planner's use of index-only-scan plans.
+                  default: true
+                enable_indexscan:
+                  type: boolean
+                  description: Enables the planner's use of index-scan plans.
+                  default: true
+                enable_material:
+                  type: boolean
+                  description: Enables the planner's use of materialization.
+                  default: true
+                enable_memoize:
+                  type: boolean
+                  description: Enables the planner's use of memoization.
+                  default: true
+                enable_mergejoin:
+                  type: boolean
+                  description: Enables the planner's use of merge join plans.
+                  default: true
+                enable_nestloop:
+                  type: boolean
+                  description: Enables the planner's use of nested-loop join plans.
+                  default: true
+                enable_parallel_append:
+                  type: boolean
+                  description: Enables the planner's use of parallel append plans.
+                  default: true
+                enable_parallel_hash:
+                  type: boolean
+                  description: Enables the planner's use of parallel hash plans.
+                  default: true
+                enable_partition_pruning:
+                  type: boolean
+                  description: Enables plan-time and execution-time partition pruning.
+                  default: true
+                enable_partitionwise_aggregate:
+                  type: boolean
+                  description: Enables partitionwise aggregation and grouping.
+                  default: false
+                enable_partitionwise_join:
+                  type: boolean
+                  description: Enables partitionwise join.
+                  default: false
+                enable_seqscan:
+                  type: boolean
+                  description: Enables the planner's use of sequential-scan plans.
+                  default: true
+                enable_sort:
+                  type: boolean
+                  description: Enables the planner's use of explicit sort steps.
+                  default: true
+                enable_tidscan:
+                  type: boolean
+                  description: Enables the planner's use of TID scan plans.
+                  default: true
+                from_collapse_limit:
+                  type: integer
+                  description: Sets the FROM-list size beyond which subqueries are
+                    not collapsed.
+                  default: 8
+                  minimum: 1
+                  maximum: 2147483647
+                geqo:
+                  type: boolean
+                  description: Enables genetic query optimization.
+                  default: true
+                geqo_effort:
+                  type: integer
+                  description: 'GEQO: effort is used to set the default for other
+                    GEQO parameters.'
+                  default: 5
+                  minimum: 1
+                  maximum: 10
+                geqo_generations:
+                  type: integer
+                  description: 'GEQO: number of iterations of the algorithm.'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                geqo_pool_size:
+                  type: integer
+                  description: 'GEQO: number of individuals in the population.'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                geqo_seed:
+                  type: number
+                  description: 'GEQO: seed for random path selection.'
+                  default: 0.0
+                  minimum: 0.0
+                  maximum: 1.0
+                geqo_selection_bias:
+                  type: number
+                  description: 'GEQO: selective pressure within the population.'
+                  default: 2.0
+                  minimum: 1.5
+                  maximum: 2.0
+                geqo_threshold:
+                  type: integer
+                  description: Sets the threshold of FROM items beyond which GEQO
+                    is used.
+                  default: 12
+                  minimum: 2
+                  maximum: 2147483647
+                jit:
+                  type: boolean
+                  description: Allow JIT compilation.
+                  default: true
+                jit_above_cost:
+                  type: number
+                  description: Perform JIT compilation if query is more expensive.
+                  default: 100000.0
+                  minimum: -1.0
+                  maximum: 1.79769e+308
+                jit_inline_above_cost:
+                  type: number
+                  description: Perform JIT inlining if query is more expensive.
+                  default: 500000.0
+                  minimum: -1.0
+                  maximum: 1.79769e+308
+                jit_optimize_above_cost:
+                  type: number
+                  description: Optimize JIT-compiled functions if query is more expensive.
+                  default: 500000.0
+                  minimum: -1.0
+                  maximum: 1.79769e+308
+                join_collapse_limit:
+                  type: integer
+                  description: Sets the FROM-list size beyond which JOIN constructs
+                    are not flattened.
+                  default: 8
+                  minimum: 1
+                  maximum: 2147483647
+                min_parallel_index_scan_size:
+                  type: integer
+                  description: 'Sets the minimum amount of index data for a parallel
+                    scan. (Unit: 8kB)'
+                  default: 64
+                  minimum: 0
+                  maximum: 715827882
+                min_parallel_table_scan_size:
+                  type: integer
+                  description: 'Sets the minimum amount of table data for a parallel
+                    scan. (Unit: 8kB)'
+                  default: 1024
+                  minimum: 0
+                  maximum: 715827882
+                parallel_setup_cost:
+                  type: number
+                  description: Sets the planner's estimate of the cost of starting
+                    up worker processes for parallel query.
+                  default: 1000.0
+                  minimum: 0.0
+                  maximum: 1.79769e+308
+                parallel_tuple_cost:
+                  type: number
+                  description: Sets the planner's estimate of the cost of passing
+                    each tuple (row) from worker to leader backend.
+                  default: 0.1
+                  minimum: 0.0
+                  maximum: 1.79769e+308
+                plan_cache_mode:
+                  type: string
+                  description: Controls the planner's selection of custom or generic
+                    plan.
+                  default: auto
+                  enum:
+                  - auto
+                  - force_generic_plan
+                  - force_custom_plan
+                random_page_cost:
+                  type: number
+                  description: Sets the planner's estimate of the cost of a nonsequentially
+                    fetched disk page.
+                  default: 4.0
+                  minimum: 0.0
+                  maximum: 1.79769e+308
+                seq_page_cost:
+                  type: number
+                  description: Sets the planner's estimate of the cost of a sequentially
+                    fetched disk page.
+                  default: 1.0
+                  minimum: 0.0
+                  maximum: 1.79769e+308
+            locale:
+              type: object
+              description: Settings for the locale category.
+              properties:
+                DateStyle:
+                  type: string
+                  description: Sets the display format for date and time values.
+                  default: ISO, MDY
+                IntervalStyle:
+                  type: string
+                  description: Sets the display format for interval values.
+                  default: postgres
+                  enum:
+                  - postgres
+                  - postgres_verbose
+                  - sql_standard
+                  - iso_8601
+                TimeZone:
+                  type: string
+                  description: Sets the time zone for displaying and interpreting
+                    time stamps.
+                  default: UTC
+                default_text_search_config:
+                  type: string
+                  description: Sets default text search configuration.
+                  default: pg_catalog.english
+                extra_float_digits:
+                  type: integer
+                  description: Sets the number of digits displayed for floating-point
+                    values.
+                  default: 1
+                  minimum: -15
+                  maximum: 3
+                lc_messages:
+                  type: string
+                  description: Sets the language in which messages are displayed.
+                  default: en_US.utf8
+                lc_monetary:
+                  type: string
+                  description: Sets the locale for formatting monetary amounts.
+                  default: en_US.utf8
+                lc_numeric:
+                  type: string
+                  description: Sets the locale for formatting numbers.
+                  default: en_US.utf8
+                lc_time:
+                  type: string
+                  description: Sets the locale for formatting date and time values.
+                  default: en_US.utf8
+                timezone_abbreviations:
+                  type: string
+                  description: Selects a file of time zone abbreviations.
+                  default: Default
+            client:
+              type: object
+              description: Settings for the client category.
+              properties:
+                application_name:
+                  type: string
+                  description: Sets the application name to be reported in statistics
+                    and logs.
+                  default: ''
+                bytea_output:
+                  type: string
+                  description: Sets the output format for bytea.
+                  default: hex
+                  enum:
+                  - escape
+                  - hex
+                check_function_bodies:
+                  type: boolean
+                  description: Check routine bodies during CREATE FUNCTION and CREATE
+                    PROCEDURE.
+                  default: true
+                client_encoding:
+                  type: string
+                  description: Sets the client's character set encoding.
+                  default: UTF8
+                client_min_messages:
+                  type: string
+                  description: Sets the message levels that are sent to the client.
+                  default: notice
+                  enum:
+                  - debug5
+                  - debug4
+                  - debug3
+                  - debug2
+                  - debug1
+                  - log
+                  - notice
+                  - warning
+                  - error
+                default_table_access_method:
+                  type: string
+                  description: Sets the default table access method for new tables.
+                  default: heap
+                default_tablespace:
+                  type: string
+                  description: Sets the default tablespace to create tables and indexes
+                    in.
+                  default: ''
+                default_toast_compression:
+                  type: string
+                  description: Sets the default compression method for compressible
+                    values.
+                  default: pglz
+                  enum:
+                  - pglz
+                  - lz4
+                default_transaction_deferrable:
+                  type: boolean
+                  description: Sets the default deferrable status of new transactions.
+                  default: false
+                default_transaction_isolation:
+                  type: string
+                  description: Sets the transaction isolation level of each new transaction.
+                  default: read committed
+                  enum:
+                  - serializable
+                  - repeatable read
+                  - read committed
+                  - read uncommitted
+                default_transaction_read_only:
+                  type: boolean
+                  description: Sets the default read-only status of new transactions.
+                  default: false
+                dynamic_library_path:
+                  type: string
+                  description: Sets the path for dynamically loadable modules.
+                  default: $libdir
+                gin_fuzzy_search_limit:
+                  type: integer
+                  description: Sets the maximum allowed result for exact search by
+                    GIN.
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                gin_pending_list_limit:
+                  type: integer
+                  description: 'Sets the maximum size of the pending list for GIN
+                    index. (Unit: kB)'
+                  default: 4096
+                  minimum: 64
+                  maximum: 2147483647
+                idle_in_transaction_session_timeout:
+                  type: integer
+                  description: 'Sets the maximum allowed idle time between queries,
+                    when in a transaction. (Unit: ms)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                idle_session_timeout:
+                  type: integer
+                  description: 'Sets the maximum allowed idle time between queries,
+                    when not in a transaction. (Unit: ms)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                local_preload_libraries:
+                  type: string
+                  description: Lists unprivileged shared libraries to preload into
+                    each backend.
+                  default: ''
+                lock_timeout:
+                  type: integer
+                  description: 'Sets the maximum allowed duration of any wait for
+                    a lock. (Unit: ms)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                restrict_nonsystem_relation_kind:
+                  type: string
+                  description: Prohibits access to non-system relations of specified
+                    kinds.
+                  default: ''
+                row_security:
+                  type: boolean
+                  description: Enable row security.
+                  default: true
+                search_path:
+                  type: string
+                  description: Sets the schema search order for names that are not
+                    schema-qualified.
+                  default: '"$user", public'
+                session_preload_libraries:
+                  type: string
+                  description: Lists shared libraries to preload into each backend.
+                  default: ''
+                session_replication_role:
+                  type: string
+                  description: Sets the session's behavior for triggers and rewrite
+                    rules.
+                  default: origin
+                  enum:
+                  - origin
+                  - replica
+                  - local
+                shared_preload_libraries:
+                  type: string
+                  description: Lists shared libraries to preload into server.
+                  default: ''
+                statement_timeout:
+                  type: integer
+                  description: 'Sets the maximum allowed duration of any statement.
+                    (Unit: ms)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                temp_tablespaces:
+                  type: string
+                  description: Sets the tablespace(s) to use for temporary tables
+                    and sort files.
+                  default: ''
+                transaction_timeout:
+                  type: integer
+                  description: 'Sets the maximum allowed duration of any transaction
+                    within a session (not a prepared transaction). (Unit: ms)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147483647
+                vacuum_failsafe_age:
+                  type: integer
+                  description: Age at which VACUUM should trigger failsafe to avoid
+                    a wraparound outage.
+                  default: 1600000000
+                  minimum: 0
+                  maximum: 2100000000
+                vacuum_freeze_min_age:
+                  type: integer
+                  description: Minimum age at which VACUUM should freeze a table row.
+                  default: 50000000
+                  minimum: 0
+                  maximum: 1000000000
+                vacuum_freeze_table_age:
+                  type: integer
+                  description: Age at which VACUUM should scan whole table to freeze
+                    tuples.
+                  default: 150000000
+                  minimum: 0
+                  maximum: 2000000000
+                vacuum_multixact_failsafe_age:
+                  type: integer
+                  description: Multixact age at which VACUUM should trigger failsafe
+                    to avoid a wraparound outage.
+                  default: 1600000000
+                  minimum: 0
+                  maximum: 2100000000
+                vacuum_multixact_freeze_min_age:
+                  type: integer
+                  description: Minimum age at which VACUUM should freeze a MultiXactId
+                    in a table row.
+                  default: 5000000
+                  minimum: 0
+                  maximum: 1000000000
+                vacuum_multixact_freeze_table_age:
+                  type: integer
+                  description: Multixact age at which VACUUM should scan whole table
+                    to freeze tuples.
+                  default: 150000000
+                  minimum: 0
+                  maximum: 2000000000
+                xmlbinary:
+                  type: string
+                  description: Sets how binary values are to be encoded in XML.
+                  default: base64
+                  enum:
+                  - base64
+                  - hex
+                xmloption:
+                  type: string
+                  description: Sets whether XML data in implicit parsing and serialization
+                    operations is to be considered as documents or content fragments.
+                  default: content
+                  enum:
+                  - content
+                  - document
+            lock:
+              type: object
+              description: Settings for the lock category.
+              properties:
+                deadlock_timeout:
+                  type: integer
+                  description: 'Sets the time to wait on a lock before checking for
+                    deadlock. (Unit: ms)'
+                  default: 1000
+                  minimum: 1
+                  maximum: 2147483647
+                max_locks_per_transaction:
+                  type: integer
+                  description: Sets the maximum number of locks per transaction.
+                  default: 64
+                  minimum: 10
+                  maximum: 2147483647
+                max_pred_locks_per_page:
+                  type: integer
+                  description: Sets the maximum number of predicate-locked tuples
+                    per page.
+                  default: 2
+                  minimum: 0
+                  maximum: 2147483647
+                max_pred_locks_per_relation:
+                  type: integer
+                  description: Sets the maximum number of predicate-locked pages and
+                    tuples per relation.
+                  default: -2
+                  minimum: -2147483648
+                  maximum: 2147483647
+                max_pred_locks_per_transaction:
+                  type: integer
+                  description: Sets the maximum number of predicate locks per transaction.
+                  default: 64
+                  minimum: 10
+                  maximum: 2147483647
+            backgroundwriter:
+              type: object
+              description: Settings for the backgroundwriter category.
+              properties:
+                bgwriter_delay:
+                  type: integer
+                  description: 'Background writer sleep time between rounds. (Unit:
+                    ms)'
+                  default: 200
+                  minimum: 10
+                  maximum: 10000
+                bgwriter_flush_after:
+                  type: integer
+                  description: 'Number of pages after which previously performed writes
+                    are flushed to disk. (Unit: 8kB)'
+                  default: 64
+                  minimum: 0
+                  maximum: 256
+                bgwriter_lru_maxpages:
+                  type: integer
+                  description: Background writer maximum number of LRU pages to flush
+                    per round.
+                  default: 100
+                  minimum: 0
+                  maximum: 1073741823
+                bgwriter_lru_multiplier:
+                  type: number
+                  description: Multiple of the average buffer usage to free per round.
+                  default: 2.0
+                  minimum: 0.0
+                  maximum: 10.0
+            vacuum:
+              type: object
+              description: Settings for the vacuum category.
+              properties:
+                vacuum_cost_delay:
+                  type: number
+                  description: 'Vacuum cost delay in milliseconds. (Unit: ms)'
+                  default: 0.0
+                  minimum: 0.0
+                  maximum: 100.0
+                vacuum_cost_limit:
+                  type: integer
+                  description: Vacuum cost amount available before napping.
+                  default: 200
+                  minimum: 1
+                  maximum: 10000
+                vacuum_cost_page_dirty:
+                  type: integer
+                  description: Vacuum cost for a page dirtied by vacuum.
+                  default: 20
+                  minimum: 0
+                  maximum: 10000
+                vacuum_cost_page_hit:
+                  type: integer
+                  description: Vacuum cost for a page found in the buffer cache.
+                  default: 1
+                  minimum: 0
+                  maximum: 10000
+                vacuum_cost_page_miss:
+                  type: integer
+                  description: Vacuum cost for a page not found in the buffer cache.
+                  default: 2
+                  minimum: 0
+                  maximum: 10000
+                vacuum_failsafe_age:
+                  type: integer
+                  description: Age at which VACUUM should trigger failsafe to avoid
+                    a wraparound outage.
+                  default: 1600000000
+                  minimum: 0
+                  maximum: 2100000000
+                vacuum_multixact_failsafe_age:
+                  type: integer
+                  description: Multixact age at which VACUUM should trigger failsafe
+                    to avoid a wraparound outage.
+                  default: 1600000000
+                  minimum: 0
+                  maximum: 2100000000
+            misc:
+              type: object
+              description: Settings for the misc category.
+              properties:
+                allow_alter_system:
+                  type: boolean
+                  description: Allows running the ALTER SYSTEM command.
+                  default: true
+                allow_in_place_tablespaces:
+                  type: boolean
+                  description: Allows tablespaces directly inside pg_tblspc, for testing.
+                  default: false
+                allow_system_table_mods:
+                  type: boolean
+                  description: Allows modifications of the structure of system tables.
+                  default: false
+                archive_library:
+                  type: string
+                  description: Sets the library that will be called to archive a WAL
+                    file.
+                  default: ''
+                array_nulls:
+                  type: boolean
+                  description: Enable input of NULL elements in arrays.
+                  default: true
+                backslash_quote:
+                  type: string
+                  description: Sets whether "\'" is allowed in string literals.
+                  default: safe_encoding
+                  enum:
+                  - safe_encoding
+                  - 'on'
+                  - 'off'
+                backtrace_functions:
+                  type: string
+                  description: Log backtrace for errors in these functions.
+                  default: ''
+                cluster_name:
+                  type: string
+                  description: Sets the name of the cluster, which is included in
+                    the process title.
+                  default: ''
+                config_file:
+                  type: string
+                  description: Sets the server's main configuration file.
+                  default: /var/lib/postgresql/data/postgresql.conf
+                createrole_self_grant:
+                  type: string
+                  description: Sets whether a CREATEROLE user automatically grants
+                    the role to themselves, and with which options.
+                  default: ''
+                data_directory:
+                  type: string
+                  description: Sets the server's data directory.
+                  default: /var/lib/postgresql/data
+                data_sync_retry:
+                  type: boolean
+                  description: Whether to continue running after a failure to sync
+                    data files.
+                  default: false
+                debug_discard_caches:
+                  type: integer
+                  description: Aggressively flush system caches for debugging purposes.
+                  default: 0
+                  minimum: 0
+                  maximum: 0
+                debug_io_direct:
+                  type: string
+                  description: Use direct I/O for file access.
+                  default: ''
+                debug_logical_replication_streaming:
+                  type: string
+                  description: Forces immediate streaming or serialization of changes
+                    in large transactions.
+                  default: buffered
+                  enum:
+                  - buffered
+                  - immediate
+                debug_parallel_query:
+                  type: string
+                  description: Forces the planner's use parallel query nodes.
+                  default: 'off'
+                  enum:
+                  - 'off'
+                  - 'on'
+                  - regress
+                enable_presorted_aggregate:
+                  type: boolean
+                  description: Enables the planner's ability to produce plans that
+                    provide presorted input for ORDER BY / DISTINCT aggregate functions.
+                  default: true
+                escape_string_warning:
+                  type: boolean
+                  description: Warn about backslash escapes in ordinary string literals.
+                  default: true
+                event_triggers:
+                  type: boolean
+                  description: Enables event triggers.
+                  default: true
+                exit_on_error:
+                  type: boolean
+                  description: Terminate session on any error.
+                  default: false
+                external_pid_file:
+                  type: string
+                  description: Writes the postmaster PID to the specified file.
+                fsync:
+                  type: boolean
+                  description: Forces synchronization of updates to disk.
+                  default: true
+                gss_accept_delegation:
+                  type: boolean
+                  description: Sets whether GSSAPI delegation should be accepted from
+                    the client.
+                  default: false
+                hba_file:
+                  type: string
+                  description: Sets the server's "hba" configuration file.
+                  default: /var/lib/postgresql/data/pg_hba.conf
+                icu_validation_level:
+                  type: string
+                  description: Log level for reporting invalid ICU locale strings.
+                  default: warning
+                  enum:
+                  - disabled
+                  - debug5
+                  - debug4
+                  - debug3
+                  - debug2
+                  - debug1
+                  - log
+                  - notice
+                  - warning
+                  - error
+                ident_file:
+                  type: string
+                  description: Sets the server's "ident" configuration file.
+                  default: /var/lib/postgresql/data/pg_ident.conf
+                ignore_checksum_failure:
+                  type: boolean
+                  description: Continues processing after a checksum failure.
+                  default: false
+                ignore_invalid_pages:
+                  type: boolean
+                  description: Continues recovery after an invalid pages failure.
+                  default: false
+                ignore_system_indexes:
+                  type: boolean
+                  description: Disables reading from system indexes.
+                  default: false
+                jit_debugging_support:
+                  type: boolean
+                  description: Register JIT-compiled functions with debugger.
+                  default: false
+                jit_dump_bitcode:
+                  type: boolean
+                  description: Write out LLVM bitcode to facilitate JIT debugging.
+                  default: false
+                jit_expressions:
+                  type: boolean
+                  description: Allow JIT compilation of expressions.
+                  default: true
+                jit_profiling_support:
+                  type: boolean
+                  description: Register JIT-compiled functions with perf profiler.
+                  default: false
+                jit_provider:
+                  type: string
+                  description: JIT provider to use.
+                  default: llvmjit
+                jit_tuple_deforming:
+                  type: boolean
+                  description: Allow JIT compilation of tuple deforming.
+                  default: true
+                lo_compat_privileges:
+                  type: boolean
+                  description: Enables backward compatibility mode for privilege checks
+                    on large objects.
+                  default: false
+                log_startup_progress_interval:
+                  type: integer
+                  description: 'Time between progress updates for long-running startup
+                    operations. (Unit: ms)'
+                  default: 10000
+                  minimum: 0
+                  maximum: 2147483647
+                max_notify_queue_pages:
+                  type: integer
+                  description: Sets the maximum number of allocated pages for NOTIFY
+                    / LISTEN queue.
+                  default: 1048576
+                  minimum: 64
+                  maximum: 2147483647
+                max_parallel_apply_workers_per_subscription:
+                  type: integer
+                  description: Maximum number of parallel apply workers per subscription.
+                  default: 2
+                  minimum: 0
+                  maximum: 1024
+                post_auth_delay:
+                  type: integer
+                  description: 'Sets the amount of time to wait after authentication
+                    on connection startup. (Unit: s)'
+                  default: 0
+                  minimum: 0
+                  maximum: 2147
+                pre_auth_delay:
+                  type: integer
+                  description: 'Sets the amount of time to wait before authentication
+                    on connection startup. (Unit: s)'
+                  default: 0
+                  minimum: 0
+                  maximum: 60
+                quote_all_identifiers:
+                  type: boolean
+                  description: When generating SQL fragments, quote all identifiers.
+                  default: false
+                recovery_init_sync_method:
+                  type: string
+                  description: Sets the method for synchronizing the data directory
+                    before crash recovery.
+                  default: fsync
+                  enum:
+                  - fsync
+                  - syncfs
+                recovery_prefetch:
+                  type: string
+                  description: Prefetch referenced blocks during recovery.
+                  default: try
+                  enum:
+                  - 'off'
+                  - 'on'
+                  - try
+                recovery_target_action:
+                  type: string
+                  description: Sets the action to perform upon reaching the recovery
+                    target.
+                  default: pause
+                  enum:
+                  - pause
+                  - promote
+                  - shutdown
+                recovery_target_inclusive:
+                  type: boolean
+                  description: Sets whether to include or exclude transaction with
+                    recovery target.
+                  default: true
+                recovery_target_lsn:
+                  type: string
+                  description: Sets the LSN of the write-ahead log location up to
+                    which recovery will proceed.
+                  default: ''
+                recovery_target_name:
+                  type: string
+                  description: Sets the named restore point up to which recovery will
+                    proceed.
+                  default: ''
+                recovery_target_time:
+                  type: string
+                  description: Sets the time stamp up to which recovery will proceed.
+                  default: ''
+                recovery_target_timeline:
+                  type: string
+                  description: Specifies the timeline to recover into.
+                  default: latest
+                recovery_target_xid:
+                  type: string
+                  description: Sets the transaction ID up to which recovery will proceed.
+                  default: ''
+                recursive_worktable_factor:
+                  type: number
+                  description: Sets the planner's estimate of the average size of
+                    a recursive query's working table.
+                  default: 10.0
+                  minimum: 0.001
+                  maximum: 1000000.0
+                remove_temp_files_after_crash:
+                  type: boolean
+                  description: Remove temporary files after backend crash.
+                  default: true
+                reserved_connections:
+                  type: integer
+                  description: Sets the number of connection slots reserved for roles
+                    with privileges of pg_use_reserved_connections.
+                  default: 0
+                  minimum: 0
+                  maximum: 262143
+                restart_after_crash:
+                  type: boolean
+                  description: Reinitialize server after backend crash.
+                  default: true
+                scram_iterations:
+                  type: integer
+                  description: Sets the iteration count for SCRAM secret generation.
+                  default: 4096
+                  minimum: 1
+                  maximum: 2147483647
+                send_abort_for_crash:
+                  type: boolean
+                  description: Send SIGABRT not SIGQUIT to child processes after backend
+                    crash.
+                  default: false
+                send_abort_for_kill:
+                  type: boolean
+                  description: Send SIGABRT not SIGKILL to stuck child processes.
+                  default: false
+                standard_conforming_strings:
+                  type: boolean
+                  description: Causes '...' strings to treat backslashes literally.
+                  default: true
+                stats_fetch_consistency:
+                  type: string
+                  description: Sets the consistency of accesses to statistics data.
+                  default: cache
+                  enum:
+                  - none
+                  - cache
+                  - snapshot
+                synchronize_seqscans:
+                  type: boolean
+                  description: Enable synchronized sequential scans.
+                  default: true
+                trace_notify:
+                  type: boolean
+                  description: Generates debugging output for LISTEN and NOTIFY.
+                  default: false
+                trace_sort:
+                  type: boolean
+                  description: Emit information about resource usage in sorting.
+                  default: false
+                track_wal_io_timing:
+                  type: boolean
+                  description: Collects timing statistics for WAL I/O activity.
+                  default: false
+                transaction_deferrable:
+                  type: boolean
+                  description: Whether to defer a read-only serializable transaction
+                    until it can be executed with no possible serialization failures.
+                  default: false
+                transaction_isolation:
+                  type: string
+                  description: Sets the current transaction's isolation level.
+                  default: read committed
+                  enum:
+                  - serializable
+                  - repeatable read
+                  - read committed
+                  - read uncommitted
+                transaction_read_only:
+                  type: boolean
+                  description: Sets the current transaction's read-only status.
+                  default: false
+                transform_null_equals:
+                  type: boolean
+                  description: Treats "expr=NULL" as "expr IS NULL".
+                  default: false
+                unix_socket_group:
+                  type: string
+                  description: Sets the owning group of the Unix-domain socket.
+                  default: ''
+                vacuum_buffer_usage_limit:
+                  type: integer
+                  description: 'Sets the buffer pool size for VACUUM, ANALYZE, and
+                    autovacuum. (Unit: kB)'
+                  default: 2048
+                  minimum: 0
+                  maximum: 16777216
+                wal_consistency_checking:
+                  type: string
+                  description: Sets the WAL resource managers for which WAL consistency
+                    checks are done.
+                  default: ''
+                wal_decode_buffer_size:
+                  type: integer
+                  description: 'Buffer size for reading ahead in the WAL during recovery.
+                    (Unit: B)'
+                  default: 524288
+                  minimum: 65536
+                  maximum: 1073741823
+                zero_damaged_pages:
+                  type: boolean
+                  description: Continues processing past damaged page headers.
+                  default: false
+        pg_hba_conf:
+          type: array
+          description: 'A list of host-based authentication rules. Each rule specifies
+            a connection
+
+            type, a client address, a database name, a user name, and the authentication
+
+            method to be used for connections matching these parameters.
+
+            '
+          items:
+            type: object
+            required:
+            - type
+            - database
+            - user
+            - address
+            - method
+            properties:
+              type:
+                type: string
+                description: Specifies the connection type.
+                enum:
+                - local
+                - host
+                - hostssl
+                - hostnossl
+              database:
+                type: string
+                description: 'Specifies which database(s) the record matches. Can
+                  be "all",
+
+                  "sameuser", "samerole", "replication", or a specific database name.
+
+                  Multiple names can be comma-separated.
+
+                  '
+              user:
+                type: string
+                description: 'Specifies which database user(s) the record matches.
+                  Can be "all",
+
+                  a specific user name, or a group name prefixed with ''+''.
+
+                  Multiple names can be comma-separated.
+
+                  '
+              address:
+                type: string
+                description: 'Specifies the client machine address(es) that this record
+                  matches.
+
+                  Can be a hostname, IP address range (e.g., 192.168.0.0/24), or special
+
+                  keywords like "all". This field is only relevant for ''host'', ''hostssl'',
+
+                  and ''hostnossl'' records.
+
+                  '
+              method:
+                type: string
+                description: Specifies the authentication method to use.
+                enum:
+                - trust
+                - reject
+                - scram-sha-256
+                - md5
+                - password
+                - ident
+                - peer
+                - ldap
+                - gss
+                - sspi
+                - pam
+                - bsd
+                - cert
+              options:
+                type: object
+                description: 'Optional authentication method options (e.g., for LDAP
+                  or PAM).
+
+                  This is represented as a key-value map.
+
+                  '
+                additionalProperties:
+                  type: string
+            example:
+              type: host
+              database: all
+              user: all
+              address: 127.0.0.1/32
+              method: scram-sha-256
+        pg_ident_conf:
+          type: array
+          description: 'A list of user name mappings. Each mapping specifies a map
+            name,
+
+            the operating system user name, and the corresponding database user name.
+
+            '
+          items:
+            type: object
+            required:
+            - map_name
+            - system_user
+            - pg_user
+            properties:
+              map_name:
+                type: string
+                description: 'An arbitrary name for the mapping. This is used to refer
+                  to the
+
+                  mapping in pg_hba.conf.
+
+                  '
+              system_user:
+                type: string
+                description: 'The name of the operating system user. Can be a specific
+                  user name
+
+                  or a regular expression if starting with a slash (/).
+
+                  '
+              pg_user:
+                type: string
+                description: 'The name of the database user that the system user is
+                  allowed to
+
+                  be mapped to.
+
+                  '
+            example:
+              map_name: my_map
+              system_user: nginx
+              pg_user: web_reporter
+        postgresql_auto_conf:
+          type: object
+          description: 'WARNING: This file is managed automatically by PostgreSQL
+            via the
+
+            ''ALTER SYSTEM'' command. It should NOT be edited manually.
+
+            Any manual changes will be overwritten.
+
+
+            This schema describes the structure of postgresql.auto.conf, which contains
+
+            key-value pairs of configuration parameters that override the settings
+            in
+
+            postgresql.conf.
+
+            '
+          additionalProperties:
+            type: string
+            description: 'The value of a PostgreSQL configuration parameter. The value
+              is always
+
+              stored as a string and interpreted by the server upon reading.
+
+              '
+          example:
+            work_mem: 128MB
+            max_connections: '150'
+  additionalProperties: false
