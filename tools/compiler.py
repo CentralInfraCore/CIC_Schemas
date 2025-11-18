@@ -34,32 +34,20 @@ def load_and_resolve_schema(path):
     The base URI is the directory of the file, allowing for relative references.
     """
     try:
-        # Custom loader to handle YAML files for $ref resolution.
         def yaml_loader(uri):
             from urllib.parse import urlparse
             from urllib.request import url2pathname
             local_path = url2pathname(urlparse(uri).path)
-
-            # --- DEBUG ---
-            print(f"--> [DEBUG] yaml_loader invoked for URI: {uri}")
-            print(f"--> [DEBUG] Resolved file path: {local_path}")
-            # --- END DEBUG ---
-
             with open(local_path, 'r') as f_loader:
                 content = f_loader.read()
                 if not content.strip():
-                    # --- DEBUG ---
-                    print(f"--> [DEBUG] WARNING: File {local_path} is empty or contains only whitespace.")
-                    # --- END DEBUG ---
-                    return {} # Return an empty dict for empty files
-
+                    return {}
                 return yaml.safe_load(content)
 
         with open(path, "r") as f:
             base_uri = f"file://{os.path.dirname(os.path.abspath(path))}/"
             unresolved_data = yaml.safe_load(f)
 
-            # Directly pass the custom loader to replace_refs. This is the simplest approach.
             resolved_data = JsonRef.replace_refs(
                 unresolved_data, base_uri=base_uri, loader=yaml_loader
             )
@@ -152,15 +140,17 @@ def _get_validator_schema(source_data):
     if not validator_name or not validator_version:
         raise ValueError("'validatedBy' block must contain 'name' and 'version'.")
 
-    # Bootstrap case: the meta-schema validates itself against the base rules.
-    if validator_name == "template-schema":
-        print("[INFO] Bootstrapping: using meta-meta-schema for validation.")
-        return load_and_resolve_schema(META_META_SCHEMA_FILE)
+    # --- CORRECTED LOGIC ---
+    # Bootstrap case: A schema validates itself. This is for the meta-schema.
+    schema_name = source_data.get("metadata", {}).get("name")
+    if validator_name == schema_name:
+        print(f"[INFO] Self-validation (bootstrap) detected for '{schema_name}'. Using file itself as validator.")
+        return source_data
 
     # Standard case: find the validator in the dependencies directory.
     validator_filename = f"{validator_name}-{validator_version}.yaml"
     validator_path = os.path.join(DEPENDENCIES_DIR, validator_filename)
-    print(f"[INFO] Loading and resolving validator: {validator_path}")
+    print(f"[INFO] Loading external validator: {validator_path}")
 
     validator_schema = load_and_resolve_schema(validator_path)
 
