@@ -1,0 +1,262 @@
+metadata:
+  name: template-schema
+  version: v0.9.4
+  description: This is a template for creating new schemas. The actual schema definition
+    is in the 'spec' block.
+  owner: Gabor Zoltan Sinko
+  tags:
+  - template
+  - meta-schema
+  validatedBy:
+    name: template-schema
+    version: v0.1.dev
+    checksum: d82ca3ffa3d5d49cadfea37a50f1c09de9052d9847aea70e2cb427f87daafc3e
+  validity:
+    from: '2025-11-12T00:00:00Z'
+    until: '2026-11-12T00:00:00Z'
+  checksum: d82ca3ffa3d5d49cadfea37a50f1c09de9052d9847aea70e2cb427f87daafc3e
+  sign: vault:v1:MEYCIQDBgZU7HGSlS0px08PU9zjPVi13HVzVm74SXOX0yb4xTQIhAK8p8m8PgLj/z47PBXDB41a2ZAS0fWUGo5nrEwnPgKTY
+  build_timestamp: '2025-11-18T10:56:58.711607+00:00'
+  createdBy:
+    name: Gabor Zoltan Sinko
+    email: sgz@centralinfracore.hu
+    certificate: "Certificate:\n    Data:\n        Version: 3 (0x2)\n        Serial\
+      \ Number: 4097 (0x1001)\n        Signature Algorithm: ecdsa-with-SHA256\n  \
+      \      Issuer: C=HU, O=CentralInfraCore, CN=CIC Root CA\n        Validity\n\
+      \            Not Before: Oct 10 20:23:22 2025 GMT\n            Not After : Oct\
+      \  5 20:23:22 2026 GMT\n        Subject: C=HU, O=CentralInfraCore, CN=Gabor\
+      \ Zoltan Sinko\n        Subject Public Key Info:\n            Public Key Algorithm:\
+      \ id-ecPublicKey\n                Public-Key: (256 bit)\n                pub:\n\
+      \                    04:e8:75:85:c9:5e:cd:2e:fe:b2:b3:dd:4d:2e:b5:\n       \
+      \             7a:d6:c0:de:5b:77:68:ea:ad:6f:f9:c6:12:b1:e5:\n              \
+      \      5b:a2:07:08:54:e0:77:24:33:5f:c6:4a:8a:8d:c4:\n                    99:8c:cd:68:14:23:00:80:26:43:d5:ff:f6:96:b3:\n\
+      \                    8d:de:b9:6a:56\n                ASN1 OID: prime256v1\n\
+      \                NIST CURVE: P-256\n        X509v3 extensions:\n           \
+      \ X509v3 Basic Constraints: \n                CA:FALSE\n            X509v3 Subject\
+      \ Key Identifier: \n                18:2B:65:8D:21:54:18:D0:14:DD:15:8D:DB:A7:D3:6A:A4:B3:61:0C\n\
+      \            X509v3 Authority Key Identifier: \n                04:AF:7A:55:90:FB:06:56:DD:89:34:F4:1B:B9:37:0A:2C:47:41:09\n\
+      \            X509v3 Subject Alternative Name: \n                email:sgz@centralinfracore.hu\n\
+      \            X509v3 Key Usage: \n                Digital Signature, Key Encipherment\n\
+      \            X509v3 Extended Key Usage: \n                TLS Web Client Authentication\n\
+      \    Signature Algorithm: ecdsa-with-SHA256\n    Signature Value:\n        30:44:02:20:50:3a:73:e6:dc:89:a5:63:c4:82:00:ff:18:8c:\n\
+      \        6e:dd:1f:9d:2b:ac:36:24:db:9d:e9:4b:67:53:12:d7:f8:90:\n        02:20:21:18:37:fe:3e:6c:54:c2:28:6b:f1:1b:44:6e:93:b8:\n\
+      \        a0:b4:f7:8b:42:4d:d5:48:22:af:83:da:5f:0b:2b:16\n-----BEGIN CERTIFICATE-----\n\
+      MIICBzCCAa6gAwIBAgICEAEwCgYIKoZIzj0EAwIwPjELMAkGA1UEBhMCSFUxGTAX\nBgNVBAoMEENlbnRyYWxJbmZyYUNvcmUxFDASBgNVBAMMC0NJQyBSb290IENBMB4X\n\
+      DTI1MTAxMDIwMjMyMloXDTI2MTAwNTIwMjMyMlowRTELMAkGA1UEBhMCSFUxGTAX\nBgNVBAoMEENlbnRyYWxJbmZyYUNvcmUxGzAZBgNVBAMMEkdhYm9yIFpvbHRhbiBT\n\
+      aW5rbzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABOh1hclezS7+srPdTS61etbA\n3lt3aOqtb/nGErHlW6IHCFTgdyQzX8ZKio3EmYzNaBQjAIAmQ9X/9pazjd65alaj\n\
+      gZQwgZEwCQYDVR0TBAIwADAdBgNVHQ4EFgQUGCtljSFUGNAU3RWN26fTaqSzYQww\nHwYDVR0jBBgwFoAUBK96VZD7BlbdiTT0G7k3CixHQQkwIgYDVR0RBBswGYEXc2d6\n\
+      QGNlbnRyYWxpbmZyYWNvcmUuaHUwCwYDVR0PBAQDAgWgMBMGA1UdJQQMMAoGCCsG\nAQUFBwMCMAoGCCqGSM49BAMCA0cAMEQCIFA6c+bciaVjxIIA/xiMbt0fnSusNiTb\n\
+      nelLZ1MS1/iQAiAhGDf+PmxUwihr8RtEbpO4oLT3i0JN1Ugir4PaXwsrFg==\n-----END CERTIFICATE-----\n"
+    issuer_certificate: '-----BEGIN CERTIFICATE-----
+
+      MIICPDCCAeOgAwIBAgIUCuXu5zvoytWl7tbouWpFcu47FVUwCgYIKoZIzj0EAwIw
+
+      PjELMAkGA1UEBhMCSFUxGTAXBgNVBAoMEENlbnRyYWxJbmZyYUNvcmUxFDASBgNV
+
+      BAMMC0NJQyBSb290IENBMB4XDTI1MDgwNjA2MDUwMloXDTI2MDgwNjA2MDUwMlow
+
+      PjELMAkGA1UEBhMCSFUxGTAXBgNVBAoMEENlbnRyYWxJbmZyYUNvcmUxFDASBgNV
+
+      BAMMC0NJQyBSb290IENBMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEFHIGqGtI
+
+      3yPXQtoGpWXpO3xDcKvSvgORxxO9N0bD6okADsTk2/3Wl1PeUEcy7uRRSBAwBHoA
+
+      i1gt2iHCt57W3KOBvjCBuzAdBgNVHQ4EFgQUBK96VZD7BlbdiTT0G7k3CixHQQkw
+
+      eQYDVR0jBHIwcIAUBK96VZD7BlbdiTT0G7k3CixHQQmhQqRAMD4xCzAJBgNVBAYT
+
+      AkhVMRkwFwYDVQQKDBBDZW50cmFsSW5mcmFDb3JlMRQwEgYDVQQDDAtDSUMgUm9v
+
+      dCBDQYIUCuXu5zvoytWl7tbouWpFcu47FVUwDwYDVR0TAQH/BAUwAwEB/zAOBgNV
+
+      HQ8BAf8EBAMCAYYwCgYIKoZIzj0EAwIDRwAwRAIgJ7gfxb3oddHx1u8CBA/t5QQM
+
+      av7F6hkOBwVfKA/ErA4CIAZIx2CSJde1c4guvORJCj8qXiJJFNeMBS7Gvq1+r0hG
+
+      -----END CERTIFICATE-----
+
+      '
+spec:
+  type: object
+  required:
+  - metadata
+  - spec
+  properties:
+    metadata:
+      type: object
+      description: 'Common metadata block for all versioned components.
+
+        '
+      properties:
+        name:
+          type: string
+          description: The name of the schema component.
+        version:
+          type: string
+          description: 'The version of the schema component (e.g., v1.0.0 or v1.0.dev).
+
+            '
+          pattern: ^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*|dev)$
+        description:
+          type: string
+          description: A brief description of the schema's purpose.
+        owner:
+          type: string
+          description: The team or entity responsible for maintaining this schema
+            (e.g., platform-engineering).
+        tags:
+          type: array
+          description: A list of tags for categorization and discovery.
+          items:
+            type: string
+        validatedBy:
+          type: object
+          description: 'A mandatory receipt proving which meta-schema was used for
+            validation.
+
+            The ''checksum'' field is auto-generated and required for released (non-dev)
+            versions.
+
+            '
+          properties:
+            name:
+              type: string
+              description: The name of the validating meta-schema.
+            version:
+              type: string
+              description: The version of the validating meta-schema.
+            checksum:
+              type: string
+              description: The checksum (SHA256) of the validating meta-schema's 'spec'
+                block.
+          required:
+          - name
+          - version
+          additionalProperties: false
+        createdBy:
+          type: object
+          description: 'Identifies the entity responsible for the schema and provides
+
+            the cryptographic proof of identity. This block is auto-generated
+
+            during the release process and should not be present in .dev versions.
+
+            '
+          required:
+          - name
+          - email
+          - certificate
+          - issuer_certificate
+          properties:
+            name:
+              type: string
+              description: 'Human-readable name of the author (e.g., from the certificate''s
+
+                Common Name).
+
+                '
+            email:
+              type: string
+              format: email
+              description: 'Contact email of the author (e.g., from the certificate''s
+                Subject
+
+                Alternative Name).
+
+                '
+            certificate:
+              type: string
+              description: 'A data block containing a PEM-encoded entity (e.g., certificate,
+                CRL).
+
+                The full output of ''openssl x509 -text'' is acceptable.
+
+                '
+              pattern: '-----BEGIN [A-Z0-9 ]+-----(.|\n|\r)+-----END [A-Z0-9 ]+-----.?'
+            issuer_certificate:
+              type: string
+              description: 'A data block containing the PEM-encoded Issuing Authority
+                (CA)
+
+                that signed the entity in the ''certificate'' field.
+
+                '
+              pattern: '-----BEGIN [A-Z0-9 ]+-----(.|\n|\r)+-----END [A-Z0-9 ]+-----.?'
+          additionalProperties: false
+        build_timestamp:
+          type: string
+          format: date-time
+          description: 'The exact timestamp when this version of the schema was
+
+            built and signed.
+
+            '
+        validity:
+          type: object
+          description: Defines the support lifecycle for this schema version.
+          required:
+          - from
+          - until
+          properties:
+            from:
+              type: string
+              format: date-time
+              description: 'The date from which this schema version is considered
+                valid.
+
+                '
+            until:
+              type: string
+              format: date-time
+              description: 'The date until which this schema version is supported.
+
+                After this date, it should be considered deprecated.
+
+                '
+          additionalProperties: false
+        checksum:
+          type: string
+          description: 'A checksum (e.g., SHA256) of the ''spec'' block content for
+
+            integrity checks.
+
+            '
+        sign:
+          type: string
+          description: 'A cryptographic signature of the metadata block  \
+
+            (excluding ''checksum'' and ''sign'' fields).
+
+            '
+      additionalProperties: false
+      required:
+      - name
+      - version
+      - description
+      - owner
+      - validatedBy
+      allOf:
+      - if:
+          properties:
+            version:
+              not:
+                pattern: \.dev$
+        then:
+          required:
+          - createdBy
+          - build_timestamp
+          - validity
+          - checksum
+          - sign
+          properties:
+            validatedBy:
+              required:
+              - checksum
+    spec:
+      type: object
+      description: 'The core schema definition itself, which should follow \
+
+        the JSON Schema specification.
+
+        '
+  additionalProperties: false
