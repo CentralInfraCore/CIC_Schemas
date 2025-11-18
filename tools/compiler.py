@@ -34,19 +34,45 @@ def load_and_resolve_schema(path):
     The base URI is the directory of the file, allowing for relative references.
     """
     try:
+        # Custom loader to handle YAML files for $ref resolution.
+        def yaml_loader(uri):
+            from urllib.parse import urlparse
+            from urllib.request import url2pathname
+            local_path = url2pathname(urlparse(uri).path)
+
+            # --- DEBUG ---
+            print(f"--> [DEBUG] yaml_loader invoked for URI: {uri}")
+            print(f"--> [DEBUG] Resolved file path: {local_path}")
+            # --- END DEBUG ---
+
+            with open(local_path, 'r') as f_loader:
+                content = f_loader.read()
+                if not content.strip():
+                    # --- DEBUG ---
+                    print(f"--> [DEBUG] WARNING: File {local_path} is empty or contains only whitespace.")
+                    # --- END DEBUG ---
+                    return {} # Return an empty dict for empty files
+
+                return yaml.safe_load(content)
+
         with open(path, "r") as f:
-            # The base_uri is crucial for resolving relative file paths
             base_uri = f"file://{os.path.dirname(os.path.abspath(path))}/"
             unresolved_data = yaml.safe_load(f)
 
-            # JsonRef.replace_refs will recursively resolve all $ref fields
-            resolved_data = JsonRef.replace_refs(unresolved_data, base_uri=base_uri)
+            # Directly pass the custom loader to replace_refs. This is the simplest approach.
+            resolved_data = JsonRef.replace_refs(
+                unresolved_data, base_uri=base_uri, loader=yaml_loader
+            )
             return resolved_data
+
     except FileNotFoundError:
         print(f"[FATAL] File not found: {path}")
         sys.exit(1)
     except yaml.YAMLError as e:
         print(f"[FATAL] YAML parsing error in {path}: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"[FATAL] An unexpected error occurred during schema resolution: {e}")
         sys.exit(1)
 
 
