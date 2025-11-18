@@ -15,7 +15,8 @@ PYTHON_CMD = python3 tools/compiler.py
 
 up:
 	@echo "--- Starting development environment in the background ---"
-	@docker compose up -d builder
+	@export POSTGRES_VERSION=$(shell yq '.dependencies.postgres' dependency.yaml) && \
+	docker compose up -d
 
 down:
 	@echo "--- Stopping development environment ---"

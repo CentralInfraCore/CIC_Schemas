@@ -1,0 +1,179 @@
+categories:
+
+  connection:
+    - listen_addresses
+    - port
+    - max_connections
+    - superuser_reserved_connections
+    - tcp_keepalives_count
+    - tcp_keepalives_idle
+    - tcp_keepalives_interval
+    - unix_socket_directories
+    - unix_socket_permissions
+    - client_connection_check_interval
+
+  authentication:
+    - password_encryption
+    - authentication_timeout
+    - ssl
+    - ssl_ciphers
+    - ssl_prefer_server_ciphers
+    - ssl_min_protocol_version
+    - ssl_max_protocol_version
+    - ssl_ca_file
+    - ssl_cert_file
+    - ssl_key_file
+    - ssl_crl_file
+    - ssl_passphrase_command
+    - ssl_passphrase_command_supports_reload
+
+  memory:
+    - shared_buffers
+    - work_mem
+    - maintenance_work_mem
+    - effective_cache_size
+    - temp_buffers
+    - huge_pages
+    - huge_page_size
+    - shared_memory_type
+
+  resource:
+    - max_files_per_process
+    - dynamic_shared_memory_type
+    - max_worker_processes
+    - max_parallel_workers
+    - max_parallel_workers_per_gather
+
+  wal:
+    - wal_level
+    - wal_sync_method
+    - wal_compression
+    - wal_buffers
+    - wal_writer_delay
+    - wal_writer_flush_after
+    - max_wal_size
+    - min_wal_size
+    - wal_recycle
+
+  replication:
+    - max_wal_senders
+    - max_replication_slots
+    - wal_sender_timeout
+    - wal_receiver_timeout
+    - primary_conninfo
+    - recovery_target
+    - hot_standby
+    - synchronous_commit
+    - synchronous_standby_names
+    - wal_keep_size
+    - max_slot_wal_keep_size
+    - vacuum_defer_cleanup_age
+
+  checkpoint:
+    - checkpoint_timeout
+    - checkpoint_completion_target
+    - checkpoint_flush_after
+    - checkpoint_warning
+
+  autovacuum:
+    - autovacuum
+    - autovacuum_naptime
+    - autovacuum_vacuum_scale_factor
+    - autovacuum_analyze_scale_factor
+    - autovacuum_max_workers
+    - autovacuum_vacuum_cost_limit
+    - autovacuum_vacuum_cost_delay
+    - autovacuum_freeze_max_age
+
+  logging:
+    - log_destination
+    - logging_collector
+    - log_directory
+    - log_filename
+    - log_rotation_age
+    - log_rotation_size
+    - log_min_duration_statement
+    - log_min_error_statement
+    - log_statement
+    - log_connections
+    - log_disconnections
+    - log_error_verbosity
+    - log_line_prefix
+    - log_timezone
+
+  stats:
+    - track_activities
+    - track_counts
+    - track_io_timing
+    - stats_fetch_consistency
+    - update_process_title
+    - compute_query_id
+
+  planner:
+    - geqo
+    - geqo_threshold
+    - geqo_seed
+    - cpu_tuple_cost
+    - cpu_index_tuple_cost
+    - cpu_operator_cost
+    - random_page_cost
+    - effective_io_concurrency
+    - enable_bitmapscan
+    - enable_indexscan
+    - enable_indexonlyscan
+    - enable_seqscan
+    - enable_sort
+    - enable_hashjoin
+    - enable_mergejoin
+    - jit
+    - jit_above_cost
+    - jit_inline_above_cost
+    - jit_optimize_above_cost
+
+  locale:
+    - lc_messages
+    - lc_monetary
+    - lc_numeric
+    - lc_time
+    - timezone
+    - datestyle
+
+  client:
+    - application_name
+    - search_path
+    - default_tablespace
+    - default_transaction_isolation
+    - statement_timeout
+    - lock_timeout
+    - idle_in_transaction_session_timeout
+
+  lock:
+    - deadlock_timeout
+    - max_locks_per_transaction
+    - max_pred_locks_per_transaction
+    - max_pred_locks_per_relation
+    - max_pred_locks_per_page
+
+  backgroundwriter:
+    - bgwriter_lru_maxpages
+    - bgwriter_delay
+    - bgwriter_flush_after
+
+  vacuum:
+    - vacuum_cost_delay
+    - vacuum_cost_limit
+    - vacuum_cost_page_dirty
+    - vacuum_cost_page_hit
+    - vacuum_cost_page_miss
+    - vacuum_failsafe_age
+    - vacuum_multixact_failsafe_age
+
+  # ide kerül minden paraméter, amit a script nem tud egyértelműen párosítani
+  misc:
+    - allow_system_table_mods
+    - track_wal_io_timing
+    - exit_on_error
+    - ignore_checksum_failure
+    - zero_damaged_pages
+    - cluster_name
+    - debug_assertions
