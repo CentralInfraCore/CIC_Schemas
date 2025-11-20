@@ -191,6 +191,7 @@ def main():
                     sort_keys=False,
                     default_flow_style=False,
                     indent=2,
+                    explicit_start=True,
                 )
             print(f"✓ Successfully generated {args.output_schema_file}.")
         except IOError as e:

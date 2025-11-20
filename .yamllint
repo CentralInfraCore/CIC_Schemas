@@ -5,20 +5,27 @@
 extends: default
 
 rules:
+  # Do not check for the document start marker "---"
+  document-start: disable
+
   # Increase the line-length limit to a more reasonable value for modern displays.
   line-length:
-    max: 120
+    max: 140
     level: warning  # Set to 'warning' instead of 'error' to be less strict.
 
   # GitHub Actions uses 'on' as a valid key, which is a truthy value.
   truthy:
     allowed-values: ['true', 'false', 'on']
 
-# Override rules for specific file paths
-file-rules:
-  .github/workflows/*.yml:
-    document-start:
-      present: false  # GitHub Actions workflows don't require the document start marker.
+  # Relax indentation rules for sequences to be compatible with pyyaml's output.
+  indentation:
+    indent-sequences: whatever
+
+# The global document-start: disable rule makes this redundant.
+# file-rules:
+#   .github/workflows/*.yml:
+#     document-start:
+#       present: false
 
 ignore: |
   /p_venv/

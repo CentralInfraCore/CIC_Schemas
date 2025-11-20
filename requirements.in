@@ -20,3 +20,4 @@ isort
 mypy
 yamllint
 bandit
+types-psycopg2

@@ -17,10 +17,10 @@ items:
       type: string
       description: "Specifies the connection type."
       enum:
-        - local     # Unix-domain sockets
-        - host      # Plain TCP/IP
-        - hostssl   # SSL-encrypted TCP/IP
-        - hostnossl # Non-SSL TCP/IP
+        - local
+        - host
+        - hostssl
+        - hostnossl
     database:
       type: string
       description: |
@@ -48,7 +48,7 @@ items:
         - reject
         - scram-sha-256
         - md5
-        - password # Sends password in clear-text, not recommended
+        - password
         - ident
         - peer
         - ldap
