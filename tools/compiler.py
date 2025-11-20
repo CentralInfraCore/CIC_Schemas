@@ -27,6 +27,7 @@ VAULT_CA_CERT_FILE = os.environ.get("VAULT_CA_CERT_FILE")
 
 # --- Helper Functions ---
 
+
 def convert_to_json_serializable(obj):
     """
     Recursively converts JsonRef objects, datetime objects, and other non-JSON-serializable
@@ -35,11 +36,11 @@ def convert_to_json_serializable(obj):
     if isinstance(obj, JsonRef):
         # If it's a JsonRef, first resolve it to its underlying value.
         # JsonRef objects can be dict-like, list-like, or primitive.
-        if hasattr(obj, 'keys'): # It's dict-like
+        if hasattr(obj, "keys"):  # It's dict-like
             obj = dict(obj)
-        elif isinstance(obj, list): # It's list-like
+        elif isinstance(obj, list):  # It's list-like
             obj = list(obj)
-        else: # It's a primitive JsonRef, just return its value
+        else:  # It's a primitive JsonRef, just return its value
             return obj
 
     if isinstance(obj, dict):
@@ -52,17 +53,20 @@ def convert_to_json_serializable(obj):
     else:
         return obj
 
+
 def load_and_resolve_schema(path):
     """
     Loads a YAML file and resolves all $ref references.
     The base URI is the directory of the file, allowing for relative references.
     """
     try:
+
         def yaml_loader(uri):
             from urllib.parse import urlparse
             from urllib.request import url2pathname
+
             local_path = url2pathname(urlparse(uri).path)
-            with open(local_path, 'r') as f_loader:
+            with open(local_path, "r") as f_loader:
                 content = f_loader.read()
                 if not content.strip():
                     return {}
@@ -87,7 +91,9 @@ def load_and_resolve_schema(path):
                     # Let the base class default method raise the TypeError.
                     return json.JSONEncoder.default(self, obj)
 
-            resolved_data_plain = json.loads(json.dumps(plain_python_data, cls=CustomJsonEncoder))
+            resolved_data_plain = json.loads(
+                json.dumps(plain_python_data, cls=CustomJsonEncoder)
+            )
             return resolved_data_plain
 
     except FileNotFoundError:
@@ -181,7 +187,9 @@ def _get_validator_schema(source_data):
     # Bootstrap case: A schema validates itself. This is for the meta-schema.
     schema_name = source_data.get("metadata", {}).get("name")
     if validator_name == schema_name:
-        print(f"[INFO] Self-validation (bootstrap) detected for '{schema_name}'. Using file itself as validator.")
+        print(
+            f"[INFO] Self-validation (bootstrap) detected for '{schema_name}'. Using file itself as validator."
+        )
         return source_data
 
     # Standard case: find the validator in the dependencies directory.

@@ -56,7 +56,7 @@ fmt:
 
 lint:
 	@echo "--- Linting Python code with Ruff (Project: $(COMPOSE_PROJECT_NAME)) ---"
-	@docker compose exec builder python3 -m ruff check .
+	@docker compose exec builder python3 -m ruff check . --exclude p_venv
 	@echo "--- Linting YAML files with yamllint (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder python3 -m yamllint .
 

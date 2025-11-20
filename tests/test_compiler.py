@@ -304,7 +304,6 @@ def test_get_sha256_hex():
 def test_get_sha256_b64():
     """Test that get_sha256_b64 correctly calculates the SHA256 hash and base64 encodes it."""
     data = b"test_string"
-    expected_hash_bytes = hashlib.sha256(data).digest()
     expected_b64_hash = base64.b64encode(hashlib.sha256(data).digest()).decode("utf-8")
     assert compiler.get_sha256_b64(data) == expected_b64_hash
 
@@ -312,7 +311,8 @@ def test_get_sha256_b64():
 def test_parse_certificate_info_error(mocker):
     """Test that _parse_certificate_info handles OpenSSLError."""
     mocker.patch(
-        "OpenSSL.crypto.load_certificate", side_effect=crypto.Error("Mocked OpenSSL error")
+        "OpenSSL.crypto.load_certificate",
+        side_effect=crypto.Error("Mocked OpenSSL error"),
     )
     name, email = compiler._parse_certificate_info("dummy_cert_data")
     assert name == "Unknown"
@@ -321,29 +321,44 @@ def test_parse_certificate_info_error(mocker):
 
 def test_get_validator_schema_missing_validated_by():
     """Test _get_validator_schema with missing 'validatedBy' block."""
-    with pytest.raises(ValueError, match="Source schema is missing the 'metadata.validatedBy' block."):
+    with pytest.raises(
+        ValueError, match="Source schema is missing the 'metadata.validatedBy' block."
+    ):
         compiler._get_validator_schema({"metadata": {}})
 
 
 def test_get_validator_schema_incomplete_validated_by():
     """Test _get_validator_schema with incomplete 'validatedBy' block."""
-    with pytest.raises(ValueError, match="'validatedBy' block must contain 'name' and 'version'."):
+    with pytest.raises(
+        ValueError, match="'validatedBy' block must contain 'name' and 'version'."
+    ):
         compiler._get_validator_schema({"metadata": {"validatedBy": {"name": "test"}}})
 
 
 def test_get_validator_schema_checksum_mismatch(mocker):
     """Test _get_validator_schema with a checksum mismatch."""
-    mocker.patch("tools.compiler.load_and_resolve_schema", return_value=copy.deepcopy(DUMMY_META_SCHEMA_DATA))
+    mocker.patch(
+        "tools.compiler.load_and_resolve_schema",
+        return_value=copy.deepcopy(DUMMY_META_SCHEMA_DATA),
+    )
     mocker.patch("tools.compiler.get_sha256_hex", return_value="incorrect_checksum")
-    with pytest.raises(RuntimeError, match="FATAL: Validator schema .* is corrupt or has been tampered with!"):
+    with pytest.raises(
+        RuntimeError,
+        match="FATAL: Validator schema .* is corrupt or has been tampered with!",
+    ):
         compiler._get_validator_schema(copy.deepcopy(DUMMY_SCHEMA_DATA))
 
 
 def test_run_release_schema_success(mocker):
     """Test the run_release_schema command for successful execution."""
     args = argparse.Namespace(source="dummy.yaml", version="v1.0.0")
-    mocker.patch("tools.compiler.load_and_resolve_schema", return_value=copy.deepcopy(DUMMY_SCHEMA_DATA))
-    mock_generate = mocker.patch("tools.compiler._generate_signed_artifact", return_value={"metadata": {}})
+    mocker.patch(
+        "tools.compiler.load_and_resolve_schema",
+        return_value=copy.deepcopy(DUMMY_SCHEMA_DATA),
+    )
+    mock_generate = mocker.patch(
+        "tools.compiler._generate_signed_artifact", return_value={"metadata": {}}
+    )
     mock_write = mocker.patch("tools.compiler.write_yaml")
 
     compiler.run_release_schema(args)
@@ -368,7 +383,10 @@ def test_run_release_schema_invalid_dev_version(mocker):
 def test_run_release_schema_target_dev_version(mocker):
     """Test run_release_schema with a .dev target version."""
     args = argparse.Namespace(source="dummy.yaml", version="v1.0.0.dev")
-    mocker.patch("tools.compiler.load_and_resolve_schema", return_value=copy.deepcopy(DUMMY_SCHEMA_DATA))
+    mocker.patch(
+        "tools.compiler.load_and_resolve_schema",
+        return_value=copy.deepcopy(DUMMY_SCHEMA_DATA),
+    )
 
     with pytest.raises(SystemExit) as excinfo:
         compiler.run_release_schema(args)
@@ -390,7 +408,10 @@ def test_run_release_schema_missing_name(mocker):
 def test_run_get_name_success(mocker, capsys):
     """Test the get-name command for successful execution."""
     args = argparse.Namespace()
-    mocker.patch("tools.compiler.load_and_resolve_schema", return_value=copy.deepcopy(DUMMY_SCHEMA_DATA))
+    mocker.patch(
+        "tools.compiler.load_and_resolve_schema",
+        return_value=copy.deepcopy(DUMMY_SCHEMA_DATA),
+    )
     compiler.run_get_name(args)
     captured = capsys.readouterr()
     assert captured.out.strip() == "test-schema"
@@ -418,7 +439,9 @@ def test_generate_signed_artifact_no_vault_ca(mocker):
             copy.deepcopy(DUMMY_META_SCHEMA_DATA),
         ],
     )
-    mocker.patch("tools.compiler.get_sha256_hex", return_value="d41d8cd98f00b204e9800998ecf8427e")
+    mocker.patch(
+        "tools.compiler.get_sha256_hex", return_value="d41d8cd98f00b204e9800998ecf8427e"
+    )
     mocker.patch("tools.compiler.validate")
     mock_post = mocker.patch("requests.post")
     mock_post.return_value.raise_for_status.return_value = None
@@ -442,24 +465,31 @@ def test_generate_signed_artifact_no_vault_ca(mocker):
     mock_cert_obj.get_extension_count.return_value = 0
     mocker.patch("OpenSSL.crypto.load_certificate", return_value=mock_cert_obj)
 
-    mocker.patch.object(os.path, "exists", return_value=False)  # Simulate missing CA file
+    mocker.patch.object(
+        os.path, "exists", return_value=False
+    )  # Simulate missing CA file
 
-    compiler._generate_signed_artifact(copy.deepcopy(DUMMY_SCHEMA_DATA), "v1.0.0", "release")
+    compiler._generate_signed_artifact(
+        copy.deepcopy(DUMMY_SCHEMA_DATA), "v1.0.0", "release"
+    )
 
 
 def test_generate_signed_artifact_missing_cert_data(mocker):
     """Test _generate_signed_artifact with missing certificate data in Vault response."""
-    args = argparse.Namespace(source="dummy.yaml", version="v1.0.0")
     mocker.patch.object(os, "getenv", return_value="http://localhost:8200")
     mocker.patch("builtins.open", mocker.mock_open(read_data="test_token"))
     mocker.patch(
         "tools.compiler.load_and_resolve_schema",
         side_effect=[
             copy.deepcopy(DUMMY_META_SCHEMA_DATA),  # For _get_validator_schema
-            copy.deepcopy(DUMMY_META_SCHEMA_DATA),  # For final meta-meta-schema validation
+            copy.deepcopy(
+                DUMMY_META_SCHEMA_DATA
+            ),  # For final meta-meta-schema validation
         ],
     )
-    mocker.patch("tools.compiler.get_sha256_hex", return_value="d41d8cd98f00b204e9800998ecf8427e")
+    mocker.patch(
+        "tools.compiler.get_sha256_hex", return_value="d41d8cd98f00b204e9800998ecf8427e"
+    )
     mocker.patch("tools.compiler.validate")
 
     mock_requests_post = mocker.patch("requests.post")
@@ -474,8 +504,13 @@ def test_generate_signed_artifact_missing_cert_data(mocker):
     mock_cert_resp_obj.json.return_value = bad_cert_response
     mock_requests_get.return_value = mock_cert_resp_obj
 
-    with pytest.raises(RuntimeError, match="Certificate PEM data not found in Vault response for 'crt'."):
-        compiler._generate_signed_artifact(copy.deepcopy(DUMMY_SCHEMA_DATA), "v1.0.0", "release")
+    with pytest.raises(
+        RuntimeError,
+        match="Certificate PEM data not found in Vault response for 'crt'.",
+    ):
+        compiler._generate_signed_artifact(
+            copy.deepcopy(DUMMY_SCHEMA_DATA), "v1.0.0", "release"
+        )
 
 
 def test_parse_certificate_info_with_san(mocker):
@@ -502,7 +537,9 @@ def test_get_validator_schema_bootstrap_case(mocker):
     """Test _get_validator_schema for the self-validation bootstrap case."""
     schema_data = copy.deepcopy(DUMMY_SCHEMA_DATA)
     schema_data["metadata"]["validatedBy"]["name"] = "template-schema"
-    mock_load = mocker.patch("tools.compiler.load_and_resolve_schema", return_value={"spec": {}})
+    mock_load = mocker.patch(
+        "tools.compiler.load_and_resolve_schema", return_value={"spec": {}}
+    )
 
     compiler._get_validator_schema(schema_data)
 
@@ -511,7 +548,10 @@ def test_get_validator_schema_bootstrap_case(mocker):
 
 def test_run_get_name_exception(mocker):
     """Test that run_get_name exits on a generic exception."""
-    mocker.patch("tools.compiler.load_and_resolve_schema", side_effect=Exception("Unexpected error"))
+    mocker.patch(
+        "tools.compiler.load_and_resolve_schema",
+        side_effect=Exception("Unexpected error"),
+    )
     with pytest.raises(SystemExit) as excinfo:
         compiler.run_get_name(argparse.Namespace())
     assert excinfo.value.code == 1
@@ -519,7 +559,11 @@ def test_run_get_name_exception(mocker):
 
 def test_main_release_schema_command(mocker):
     """Test that main correctly calls run_release_schema."""
-    mocker.patch.object(sys, "argv", ["compiler.py", "release-schema", "--source", "s.yaml", "--version", "v1"])
+    mocker.patch.object(
+        sys,
+        "argv",
+        ["compiler.py", "release-schema", "--source", "s.yaml", "--version", "v1"],
+    )
     mock_run = mocker.patch("tools.compiler.run_release_schema")
     compiler.main()
     mock_run.assert_called_once()
