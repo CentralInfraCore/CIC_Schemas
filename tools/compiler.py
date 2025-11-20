@@ -21,8 +21,8 @@ RELEASES_DIR = "release"
 META_META_SCHEMA_FILE = os.path.join(SCHEMAS_DIR, "index.yaml")
 CANONICAL_SOURCE_FILE = os.path.join(SCHEMAS_DIR, "index.yaml")
 VAULT_KEY_NAME = "cic-my-sign-key"  # Default key name for signing
-VAULT_TOKEN_FILE = "/var/run/secrets/vault-token"
-VAULT_CA_CERT_FILE = "/var/run/secrets/vault-ca.crt"
+VAULT_TOKEN_FILE = os.environ.get("VAULT_TOKEN_FILE")  # nosec B105: path, not secret
+VAULT_CA_CERT_FILE = os.environ.get("VAULT_CA_CERT_FILE")
 
 
 # --- Helper Functions ---
@@ -295,6 +295,7 @@ def _generate_signed_artifact(source_data, target_version, output_dir):
                 "hash_algorithm": "sha2-256",
             },
             verify=verify_param,
+            timeout=10,
         )
         response.raise_for_status()
         signature = response.json()["data"]["signature"]
@@ -310,6 +311,7 @@ def _generate_signed_artifact(source_data, target_version, output_dir):
             f"{vault_addr}/v1/{VAULT_KEY_NAME}/data/crt",  # Assuming KV v2 mount at VAULT_KEY_NAME, secret 'crt'
             headers={"X-Vault-Token": vault_token},
             verify=verify_param,
+            timeout=10,
         )
         cert_response.raise_for_status()
         certificate_pem = cert_response.json()["data"]["data"].get(
@@ -326,6 +328,7 @@ def _generate_signed_artifact(source_data, target_version, output_dir):
             f"{vault_addr}/v1/{VAULT_KEY_NAME}/data/CICRootCA",  # Assuming KV v2 mount at VAULT_KEY_NAME, secret 'CICRootCA'
             headers={"X-Vault-Token": vault_token},
             verify=verify_param,
+            timeout=10,
         )
         root_ca_response.raise_for_status()
         root_ca_pem = root_ca_response.json()["data"]["data"].get(

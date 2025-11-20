@@ -64,19 +64,23 @@ typecheck:
 	@echo "--- Running static type checking with MyPy (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@docker compose exec builder python3 -m mypy --exclude p_venv .
 
-check: fmt lint typecheck
+security:
+	@echo "--- Running security checks with Bandit ---"
+	@docker compose exec builder python3 -m bandit -r tools
+
+check: fmt lint typecheck security
 	@echo "--- Running all code quality checks (format, lint, typecheck) (Project: $(COMPOSE_PROJECT_NAME)) ---"
 
 # =============================================================================
 # Release Management
 # =============================================================================
 
-release-dependency:
+release-dependency: check
 	@if [ -z "$(VERSION)" ]; then echo "[ERROR] VERSION is required. Usage: make release-dependency VERSION=v1.0.0"; exit 1; fi
 	@echo "--- Releasing Dependency Schema version $(VERSION) (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@GIT_AUTHOR_NAME="$(shell git config user.name)" GIT_AUTHOR_EMAIL="$(shell git config user.email)" docker compose exec builder bash tools/release.sh dependency $(VERSION)
 
-release-schema:
+release-schema: check
 	@if [ -z "$(VERSION)" ]; then echo "[ERROR] VERSION is required. Usage: make release-schema VERSION=v1.0.0"; exit 1; fi
 	@echo "--- Releasing Application Schema version $(VERSION) (Project: $(COMPOSE_PROJECT_NAME)) ---"
 	@GIT_AUTHOR_NAME="$(shell git config user.name)" GIT_AUTHOR_EMAIL="$(shell git config user.email)" docker compose exec builder bash tools/release.sh schema $(VERSION)
