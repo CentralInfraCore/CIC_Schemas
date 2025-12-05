@@ -1,6 +1,6 @@
 ---
 metadata:
-  name: "template-schema"
+  name: "CICmeta"
   version: "v0.9.0"
   repo:
     url: "https://github.com/CentralInfraCore/base-repo.git"
