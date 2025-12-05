@@ -1,7 +1,10 @@
 ---
 metadata:
   name: "template-schema"
-  version: "v0.1.dev"
+  version: "v0.9.0"
+  repo:
+    url: "https://github.com/CentralInfraCore/base-repo.git"
+    base_branch: "CICmeta"
   description: "This is a template for creating new schemas. The actual schema definition is in the 'spec' block."
   owner: "Gabor Zoltan Sinko"
   tags:
@@ -161,9 +164,4 @@ spec:
               validatedBy:
                 required:
                   - checksum
-    spec:
-      type: object
-      description: |
-        The core schema definition itself, which should follow \
-        the JSON Schema specification.
   additionalProperties: false
