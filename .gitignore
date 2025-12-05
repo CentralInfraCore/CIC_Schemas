@@ -1,3 +1,5 @@
 /.idea/
 .pip-cache/
 __pycache__/
+p_venv/
+.coverage
