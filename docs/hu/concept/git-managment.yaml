@@ -1,0 +1,14 @@
+tags:
+  - doc
+  - core
+  - ci-cd
+related_nodes:
+  - docs/hu/concept/declarative_ecosystem_integration
+category:
+  - concept
+  - ci-cd
+entrypoint: false
+used_in:
+  - development-process
+description: |
+  Git branch management specification for CIC-Schemas.

@@ -1,0 +1,16 @@
+tags:
+  - doc
+  - schema
+  - core
+related_nodes:
+  - docs/en/architecture
+  - docs/en/workflow
+  - README.hu
+category:
+  - concept
+entrypoint: true
+used_in:
+  - onboarding
+  - validation
+description: |
+  Root README for CIC-Schemas: schema compiler and signing infrastructure. Provides governed, secure, reproducible workflow for versioned schema definitions using HashiCorp Vault and Docker.

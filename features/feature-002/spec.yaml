@@ -1,0 +1,12 @@
+tags:
+  - doc
+  - schema
+related_nodes:
+  - ../../feature-list
+category:
+  - concept
+entrypoint: false
+used_in:
+  - development-process
+description: |
+  Feature-002 specification for CIC-Schemas.

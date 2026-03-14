@@ -1,0 +1,14 @@
+tags:
+  - doc
+  - core
+  - ci-cd
+related_nodes:
+  - docs/hu/workflow
+  - docs/en/makefile-cheatsheet
+category:
+  - concept
+entrypoint: false
+used_in:
+  - development-process
+description: |
+  Az összes elérhető make parancs referenciája a CIC-Schemas keretrendszerben magyarul: konténer életciklus, sémafordítás, validáció, aláírás és release célok.

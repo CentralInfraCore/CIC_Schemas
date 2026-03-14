@@ -1,0 +1,17 @@
+tags:
+  - doc
+  - ecosystem
+  - platform-engineering
+  - ci-cd
+related_nodes:
+  - docs/hu/architecture
+  - docs/hu/concept/git-management
+category:
+  - concept
+  - architecture
+entrypoint: false
+used_in:
+  - development-process
+  - architecture-review
+description: |
+  Declarative two-speed ecosystem integration model as applied in CIC-Schemas context.

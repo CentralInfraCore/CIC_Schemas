@@ -1,0 +1,16 @@
+tags:
+  - doc
+  - schema
+  - core
+related_nodes:
+  - docs/hu/architecture
+  - docs/hu/workflow
+  - README
+category:
+  - concept
+entrypoint: true
+used_in:
+  - onboarding
+  - validation
+description: |
+  CIC-Schemas gyökér README magyarul: sémafordító és aláíró infrastruktúra. Verziózott séma definíciók kezelése HashiCorp Vault és Docker segítségével.

@@ -1,0 +1,17 @@
+tags:
+  - doc
+  - schema
+  - core
+related_nodes:
+  - ../../../README
+  - docs/en/workflow
+  - docs/hu/architecture
+category:
+  - architecture
+  - concept
+entrypoint: true
+used_in:
+  - architecture-review
+  - validation
+description: |
+  Architecture overview of the CIC-Schemas schema compilation and signing infrastructure. Describes the core philosophy of governed, reproducible schema workflows with cryptographic signing via HashiCorp Vault.

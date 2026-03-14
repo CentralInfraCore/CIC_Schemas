@@ -1,0 +1,17 @@
+tags:
+  - doc
+  - schema
+  - ci-cd
+related_nodes:
+  - docs/hu/architecture
+  - docs/hu/makefile-cheatsheet
+  - docs/en/workflow
+category:
+  - concept
+  - ci-cd
+entrypoint: false
+used_in:
+  - development-process
+  - validation
+description: |
+  Fejlesztői munkafolyamat útmutató a CIC-Schemas keretrendszerhez magyarul. Beállítás, séma létrehozás, validáció, aláírás és release folyamat.

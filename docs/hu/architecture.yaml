@@ -1,0 +1,17 @@
+tags:
+  - doc
+  - schema
+  - core
+related_nodes:
+  - ../../../README.hu
+  - docs/hu/workflow
+  - docs/en/architecture
+category:
+  - architecture
+  - concept
+entrypoint: true
+used_in:
+  - architecture-review
+  - validation
+description: |
+  A CIC-Schemas sémafordító és aláíró infrastruktúra architektúra áttekintése magyarul. HashiCorp Vault-alapú kriptográfiai aláírás, verziózott sémák kezelése.

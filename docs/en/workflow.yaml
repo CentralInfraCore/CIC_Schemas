@@ -1,0 +1,17 @@
+tags:
+  - doc
+  - schema
+  - ci-cd
+related_nodes:
+  - docs/en/architecture
+  - docs/en/makefile-cheatsheet
+  - docs/hu/workflow
+category:
+  - concept
+  - ci-cd
+entrypoint: false
+used_in:
+  - development-process
+  - validation
+description: |
+  Developer workflow guide for CIC-Schemas: first-time setup, creating and validating schemas, signing, and creating releases.
