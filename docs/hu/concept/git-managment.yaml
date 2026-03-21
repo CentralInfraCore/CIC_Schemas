@@ -3,6 +3,7 @@ tags:
   - core
   - ci-cd
 related_nodes:
+  - docs/en/concept/git-management
   - docs/hu/concept/declarative_ecosystem_integration
 category:
   - concept
@@ -11,4 +12,4 @@ entrypoint: false
 used_in:
   - development-process
 description: |
-  Git branch management specification for CIC-Schemas.
+  Git kezelési és fejlesztési workflow leírás magyarul. Branch-elnevezési konvenciók, commit üzenet szabályok, release és verziózási folyamat, PR folyamat.

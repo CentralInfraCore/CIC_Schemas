@@ -4,14 +4,14 @@ tags:
   - platform-engineering
   - ci-cd
 related_nodes:
-  - docs/en/architecture
   - docs/en/concept/git-management
+  - docs/hu/concept/declarative_ecosystem_integration
 category:
   - concept
   - architecture
-entrypoint: false
+entrypoint: true
 used_in:
   - development-process
   - architecture-review
 description: |
-  Declarative two-speed ecosystem integration model as applied in CIC-Schemas context.
+  Describes the declarative, two-speed ecosystem integration model used in CIC. Covers the fast (commit-level) and slow (release-level) circulation patterns, the role of ecosystem.yaml, Renovate, and CI/CD orchestration.

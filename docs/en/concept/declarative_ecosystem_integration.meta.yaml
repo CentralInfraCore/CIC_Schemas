@@ -17,12 +17,8 @@ used_in:
   - architecture-review
   - development-process
 description: |
-  This document outlines a blueprint for a declarative,
-  two-speed ecosystem for managing dependencies between
-  software components. The system uses a "fast" (commit-level)
-  and a "slow" (release-level) integration process to
-  ensure both maximum development speed and system stability
-  simultaneously. The central element is a version-controlled
-  "ecosystem map" that defines the relationships between components,
-  enabling automated, transparent feedback across the
-  entire system.
+  This document outlines a blueprint for a declarative, two-speed ecosystem for managing dependencies between
+  software components. The system uses a "fast" (commit-level) and a "slow" (release-level) integration process
+  to ensure both maximum development speed and system stability simultaneously. The central element is a
+  version-controlled "ecosystem map" that defines the relationships between components, enabling automated,
+  transparent feedback across the entire system.

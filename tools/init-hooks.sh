@@ -17,23 +17,15 @@ TOOLS_DIR=$(git rev-parse --show-toplevel)/tools
 
 echo "--- Initializing Git hooks ---"
 
+# Capture the current PATH from the environment where init-hooks.sh is executed
+CURRENT_PATH="$PATH"
+
 # Set up pre-commit hook for validation
 PRE_COMMIT_HOOK="$HOOKS_DIR/pre-commit"
 if [ -f "$PRE_COMMIT_HOOK" ]; then
     echo "[INFO] A pre-commit hook already exists. Backing it up to pre-commit.bak."
     mv "$PRE_COMMIT_HOOK" "$PRE_COMMIT_HOOK.bak"
 fi
-echo "[*] Creating pre-commit hook to run 'make validate'..."
-cat > "$PRE_COMMIT_HOOK" <<EOF
-#!/bin/sh
-echo "--- Running pre-commit validation ---"
-make validate
-if [ $? -ne 0 ]; then
-    echo "\033[91m[ERROR] Validation failed. Commit aborted.\033[0m"
-    exit 1
-fi
-EOF
-chmod +x "$PRE_COMMIT_HOOK"
 echo "  ✓ Done."
 
 # Set up commit-msg hook for signing

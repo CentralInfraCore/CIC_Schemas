@@ -1,17 +1,86 @@
-tags:
-  - doc
-  - schema
-  - core
-related_nodes:
-  - ../../../README
-  - docs/en/workflow
-  - docs/hu/architecture
-category:
-  - architecture
-  - concept
-entrypoint: true
-used_in:
-  - architecture-review
-  - validation
-description: |
-  Architecture overview of the CIC-Schemas schema compilation and signing infrastructure. Describes the core philosophy of governed, reproducible schema workflows with cryptographic signing via HashiCorp Vault.
+---
+title: System Architecture Overview
+description: >
+  Provides a high-level overview of the project's architecture and
+  operational philosophy.
+
+concepts:
+  - name: The "Template Factory" Concept
+    summary: >
+      This repository is a 'Template Factory' that produces templates for
+      creating other repositories.
+    components:
+      - type: Template Repo
+        description: >
+          The "source of truth" for CI/CD processes, release logic, and common
+          configurations.
+        repo: base-repo (this repo)
+      - type: Production Repo
+        description: >
+          A repository derived from a template, containing specific business
+          logic.
+
+  - name: The Repository Ecosystem
+    summary: >
+      The system consists of multiple interconnected repositories. Updates
+      automatically propagate from the template repo to the production repos.
+    diagram: |
+      graph TD
+          A[Template Repo (base-repo)] -- "Updated by Renovate" --> B(Production Repo 1);
+          A -- "Updated by Renovate" --> C(Production Repo 2);
+          A -- "Updated by Renovate" --> D(Production Repo N);
+
+  - name: "The Automation Engine: Renovate"
+    summary: >
+      Renovate monitors the release tags of the template repository and
+      automatically opens Pull Requests (PRs) on production repos.
+    details:
+      - >
+        Ensures that centralized logic (e.g., a security fix) is automatically
+        and consistently propagated to all products.
+
+  - name: The Role of the Unified Compiler (compiler.py)
+    summary: >
+      The system uses a single, unified `compiler.py` script with a dual role
+      depending on the execution context.
+    roles:
+      - role: Template Maintainer
+        context: When run in `base-repo`
+        responsibility: Maintaining and versioning the template repository.
+        task: >
+          Validating and "finalizing" the central `project.yaml` configuration
+          file when releasing a new version of the template.
+      - role: Product Manufacturer
+        context: When run in a derived production repo
+        responsibility: The "payload" of the template.
+        task: >
+          Creating a digitally signed and notarized "artifact" from a specific
+          source file during the production repo's own release process.
+    conclusion: >
+      This unified approach ensures that production repositories always use the
+      exact same logic and tools.
+
+  - name: The Path of Changes and the Branching Model
+    summary: >
+      Changes follow a strictly defined path through the systems.
+    diagram: |
+      graph LR
+          subgraph "Template Repo (base-repo)"
+              T_MAIN[main] -- "release tag" --> T_REL(v1.2.0);
+              T_DF[df/feature] --> T_MAIN;
+              T_SCHEMAS[schemas/f/1] -- "specializáció" --> T_MAIN;
+          end
+
+          subgraph "Production Repo"
+              P_MAIN[main];
+              P_DF[df/feature];
+              T_REL -- "Renovate PR" --> P_DF;
+              P_DF -- "merge" --> P_MAIN;
+          end
+
+          style T_REL fill:#f9f,stroke:#333,stroke-width:2px
+    steps:
+      - "1. Development in the Template Repo: On `df/xxx` branches."
+      - "2. Template Release: A new `release` tag is created from the `main` branch."
+      - "3. Propagation: Renovate opens a PR on the `df/xxx` branches of production repos."
+      - "4. Integration into the Product: Developers merge the update into their work, then to the `main` branch."

@@ -3,6 +3,7 @@ tags:
   - core
   - ci-cd
 related_nodes:
+  - docs/hu/concept/git-managment
   - docs/en/concept/declarative_ecosystem_integration
 category:
   - concept
@@ -11,4 +12,4 @@ entrypoint: false
 used_in:
   - development-process
 description: |
-  Git branch management specification for CIC-Schemas.
+  Git branch management specification for CIC projects. Defines branch naming conventions (main, devel, release, feature, hotfix), merge rules, CI feedback patterns, and deletion procedures.

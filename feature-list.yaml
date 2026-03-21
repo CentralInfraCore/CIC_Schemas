@@ -1,6 +1,6 @@
 tags:
   - doc
-  - schema
+  - core
 related_nodes:
   - features/feature-001/spec
   - features/feature-002/spec
@@ -11,4 +11,4 @@ entrypoint: false
 used_in:
   - development-process
 description: |
-  Feature list for CIC-Schemas. Tracks planned, in-progress, and completed features for the schema compiler and signing infrastructure.
+  Overview of all planned, in-progress, and completed features for the base-repo template. Tracks feature IDs, statuses, and links to spec documents.

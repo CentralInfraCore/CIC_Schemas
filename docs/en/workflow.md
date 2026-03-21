@@ -51,18 +51,42 @@ Follow these steps to initialize the project after cloning the repository:
 
 Your environment is now fully configured and ready for development.
 
+## Compiler Commands Reference
+
+The compiler (`python -m tools.compiler`) is the central tool. Available commands depend on the `repo_type` set in `compiler_settings` of `project.yaml`.
+
+| Command | Repo type | Description |
+|---|---|---|
+| `validate` | `schema` | Offline validation of source schema against its declared validator (with integrity check). |
+| `release --version X.Y.Z` | all | Full Git-workflow release: branch, sign, commit, tag, merge. |
+| `release-dependency --version X.Y.Z` | `schema` | Release a validator/meta schema into `dependencies/`. |
+| `release-schema --version X.Y.Z` | `schema` | Release an application schema into `release/`. |
+| `get-name` | all | Print `metadata.name` from `project.yaml`. |
+
+Global flags available on all commands:
+
+```
+--dry-run         Simulate all actions without writing or committing anything.
+--verbose / -v    Show INFO-level log messages.
+--debug   / -d    Show DEBUG-level log messages (most verbose).
+--git-timeout N   Git subprocess timeout in seconds (default: 60).
+--vault-timeout N Vault API timeout in seconds (default: 10).
+```
+
 ## Day-to-Day Development
 
 This is the typical cycle you will follow when modifying or creating schemas.
 
 1.  **Modify a Schema:**
-    Make your desired changes to a schema file located in the `/schemas` directory.
+    Make your desired changes to a schema file located in the `sources/` directory.
 
-2.  **Run Validation:**
-    Before creating a release, it's crucial to validate your changes. The `validate` command runs the compiler in a validation-only mode.
+2.  **Run Validation (schema repos only):**
+    Before creating a release, validate your changes. The `validate` command loads the source schema, resolves all `$ref` references, verifies the validator's integrity, and runs jsonschema validation.
 
     ```sh
     make validate
+    # or with verbose output:
+    make validate VERBOSE=1
     ```
 
 3.  **Run Tests:**
@@ -82,30 +106,70 @@ This is the typical cycle you will follow when modifying or creating schemas.
 
 ## Creating a Release
 
-When a schema is ready to be versioned and distributed, you will create a "release artifact". This is a signed, immutable version of the schema.
+### Schema Repositories
 
-1.  **Ensure Your Working Directory is Clean:**
-    The release script will abort if you have uncommitted changes.
+Schema repos support two release commands depending on what kind of artifact is produced:
 
-2.  **Run the Release Command:**
-    Use the `make release-dependency` command to generate a signed schema and place it in the `/dependencies` directory. The `VERSION` variable must be a valid semantic version (e.g., `v1.2.3`).
+- **`release-dependency`** — produces a signed validator schema into `dependencies/`. Used for meta-schemas consumed by other repos.
+- **`release-schema`** — produces a signed application schema into `release/`. Used for schemas consumed by services.
 
-    ```sh
-    make release-dependency VERSION=v1.0.0
-    ```
+```sh
+# Release a validator schema (e.g., template-schema)
+make release-dependency VERSION=v1.0.0
 
-3.  **Review the Process:**
-    The script will perform the following actions automatically:
-    - Create a new release branch (e.g., `template-schema/releases/v1.0.0`).
-    - Invoke the `compiler.py` script to generate the signed artifact.
-    - Commit the new artifact to the release branch.
-    - Create a GPG-signed Git tag for the release version.
-    - Switch back to your original branch.
+# Release an application schema (e.g., postgresql)
+make release-schema VERSION=v1.0.0
+```
 
-4.  **Push the Tag:**
-    The release process concludes by creating a local Git tag. To share the release with others, you must push this tag to the remote repository.
+The compiler will:
+1. Load and validate the source schema from `sources/index.yaml`.
+2. Verify the validator schema's integrity (checksum).
+3. Compute a SHA-256 checksum of the `spec` block.
+4. Fetch your signing certificate and the CIC Root CA from Vault.
+5. Sign the artifact metadata with your Vault key.
+6. Write the signed artifact to `dependencies/` or `release/`.
 
-    ```sh
-    # Example tag name: template-schema@v1.0.0
-    git push origin <tag_name>
-    ```
+### All Repository Types (Git workflow release)
+
+The `release` command runs the full Git workflow: creates a release branch, signs and commits `project.yaml`, then waits for the build step before finalizing.
+
+**Phase 1 — Developer preparation (run from main branch):**
+
+```sh
+make release VERSION=1.0.0
+```
+
+This creates a release branch (e.g., `base/releases/v1.0.0`), signs the project metadata, and commits `project.yaml`. You are then prompted to run the build process.
+
+**Phase 2 — Finalization (run from the release branch):**
+
+After the build step has updated `buildHash` in `project.yaml`:
+
+```sh
+make release VERSION=1.0.0
+```
+
+The compiler detects the release branch and runs finalization: validates `project.yaml`, creates an annotated tag, merges back to main, and deletes the release branch.
+
+**CIC Central Signing (optional post-step):**
+
+After finalization, the CIC authority can apply a second signature:
+
+```sh
+python -m tools.finalize_release project.yaml \
+  --cic-vault-key cic-root-ca-key \
+  --cic-cert-vault-path kv/data/secrets/CICRootCA:cert
+```
+
+This fills in `cicSign` and `cicSignedCA.certificate` in `project.yaml`.
+
+> **Note:** `finalize_release.py` is a temporary script. This step will be automated by the relay infrastructure in a future release.
+
+### Dry Run Mode
+
+All release commands support `--dry-run` (or `DRY_RUN=1` via make). No files are written, no Git operations are performed, and Vault calls return placeholder values.
+
+```sh
+make release VERSION=1.0.0 DRY_RUN=1
+make release-schema VERSION=v1.0.0 DRY_RUN=1
+```

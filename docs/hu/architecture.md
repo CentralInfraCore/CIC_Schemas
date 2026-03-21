@@ -1,54 +1,89 @@
-# Architektúra Áttekintés
+# Rendszer Architektúra Áttekintés
 
-Ez a dokumentum egy magas szintű áttekintést nyújt a sémafordító és aláíró infrastruktúráról.
+Ez a dokumentum a projekt magas szintű architektúráját és működési filozófiáját mutatja be. A cél, hogy egy új fejlesztő 5-10 perc alatt megértse a rendszer alapvető koncepcióit.
 
-## Alapfilozófia
+## A "Sablon Gyár" Koncepció
 
-A keretrendszer elsődleges célja egy irányított, biztonságos és reprodukálható munkafolyamat létrehozása a verziózott sémák kezelésére. Minden nem fejlesztői séma kriptográfiailag alá van írva, biztosítva ezzel az integritását és egy ellenőrizhető audit nyomvonalat.
+A legfontosabb megérteni, hogy ez a repository (`base-repo`) nem egy végterméket tartalmaz, hanem egy **"Sablon Gyár"** (Template Factory). A felelőssége, hogy olyan sablonokat gyártson és tartson karban, amelyekből később a tényleges "Termék Gyártó" (Production) repository-k jönnek létre.
 
-- **Irányítás (Governance):** Minden sémának meg kell felelnie egy központi meta-sémának.
-- **Biztonság:** Az aláírást a HashiCorp Vault kezeli, biztosítva, hogy a privát kulcsok soha ne kerüljenek ki a rendszerből.
-- **Reprodukálhatóság:** A teljes környezet Docker konténerekben fut, garantálva, hogy minden fejlesztő és CI/CD pipeline azonos környezetben működik.
+- **Sablon Repo (ez a repo):** A CI/CD folyamatok, a release logika, a build scriptek és a közös konfigurációk "forrása" (source of truth).
+- **Termelési Repo:** A sablonból származtatott, konkrét üzleti logikát (pl. egy Go alkalmazást, egy séma definíciót) tartalmazó repository.
 
-## Komponensek Felépítése
+## A Repók Ökoszisztémája
 
-A repository több kulcsfontosságú könyvtárra van osztva:
+A rendszer több, egymással kapcsolatban álló repository-ból épül fel. A frissítések a sablon repóból automatikusan terjednek a termelési repók felé.
 
-- **/schemas**: A "forrás" sémákat tartalmazza. A fejlesztők itt végeznek módosításokat. Az `index.yaml` fájl a központi **meta-meta-séma**, amely az összes többi sémára vonatkozó szabályokat definiálja.
-- **/dependencies**: Kiadott, aláírt és verziózott sémákat tárol, amelyeket más sémák validátorként használhatnak. Ezek az építőelemek.
-- **/release**: Végleges, aláírt, alkalmazás-specifikus sémákat tartalmaz, amelyek készen állnak az alkalmazások általi felhasználásra.
-- **/tools**: A keretrendszer működéséhez szükséges összes szkriptet és eszközt tartalmazza, beleértve a Python fordítót, a kiadási folyamat shell szkriptjeit és a Git hook-okat.
-- **/p_venv**: A Python függőségek helyi gyorsítótára, amelyet a `pip-tools` kezel. Ez a könyvtár nincs a Git-be commitolva.
-
-## A Kiadási és Aláírási Folyamat
-
-Az alábbi diagram a forrásfájlból történő aláírt séma-artefaktum létrehozásának folyamatát szemlélteti.
-
-```
-+----------------+      +----------------+      +----------------------+      +---------------------+
-|   Fejlesztő    |----->|  make release  |----->|   Docker Konténer    |----->|   Aláírt Artefaktum |
-| (Sémát módosít)|      | (Makefile-ben) |      |  (tools/compiler.py) |      | (pl. dependency.yaml) |
-+----------------+      +----------------+      +----------+-----------+      +---------------------+
-                                                           |
-                                                           | (HTTPS API Hívás)
-                                                           v
-                                                  +----------------+
-                                                  |  Vault Szerver |
-                                                  | (Aláírás & KV) |
-                                                  +----------------+
+```mermaid
+graph TD
+    A[Template Repo (base-repo)] -- "Renovate frissíti" --> B(Production Repo 1);
+    A -- "Renovate frissíti" --> C(Production Repo 2);
+    A -- "Renovate frissíti" --> D(Production Repo N);
 ```
 
-**A folyamat lépései:**
+## Az Automatizáció Motorja: Renovate
 
-1.  **Fejlesztői Művelet:** Egy fejlesztő módosít egy sémafájlt a `/schemas` könyvtárban.
-2.  **Kiadás Kezdeményezése:** A fejlesztő futtatja a `make release-dependency VERSION=v1.2.3` parancsot.
-3.  **Konténer Végrehajtás:** A `Makefile` parancs végrehajtja a `tools/release.sh` szkriptet a `builder` Docker konténeren belül.
-4.  **Fordítás és Aláírás:**
-    - A `release.sh` szkript meghívja a `tools/compiler.py` szkriptet.
-    - A fordító validálja a forrás sémát a deklarált meta-sémája alapján.
-    - Kiszámolja a séma `spec` blokkjának ellenőrzőösszegét (checksum).
-    - Lekéri az aláíró tanúsítványt és a kiállítói tanúsítványt a Vault KV tárolójából.
-    - Létrehoz egy metaadat blokkot, abból egy hash-t képez, és **csak a hash-t** küldi el a Vault Transit Engine-nek aláírásra.
-    - A Vault visszaad egy aláírást.
-5.  **Artefaktum Összeállítása:** A fordító összeállítja a végleges YAML fájlt, amely tartalmazza az eredeti sémát, az új verziószámot, az ellenőrzőösszeget, az aláírást és a `createdBy` blokkot a tanúsítvány részleteivel.
-6.  **Git Műveletek:** A `release.sh` szkript létrehoz egy új Git ágat, commitolja az aláírt artefaktumot, és létrehoz egy GPG-aláírt Git taget a kiadási verzióhoz.
+A rendszer lelke a **Renovate**. Ez az eszköz figyeli a sablon repository `release` tag-jeit, és amikor új verziót észlel, automatikusan Pull Requesteket (PR) nyit a termelési repókon.
+
+Ez biztosítja, hogy a központi logika (pl. egy biztonsági javítás a CI folyamatban) automatikusan és konzisztensen eljusson minden termékhez, minimális emberi beavatkozással.
+
+## Az Egységes Compiler (`compiler.py`) Szerepe
+
+A rendszer egyetlen, egységes `compiler.py` scriptet használ, amelynek a szerepe a futási környezettől függően kettős. Ez az eszköz egyszerre képviseli a "sablont kezelő motort" és a "terméket gyártó hasznos terhet".
+
+1.  **Sablon Karbantartó Szerepkör (a `base-repo`-ban futtatva)**
+    - **Felelősség:** A sablon repository karbantartása és verziózása.
+    - **Feladat:** A `project.yaml` központi konfigurációs fájl validálása és "lezárása" (finalizing) a sablon egy új verziójának kiadásakor. Ez a folyamat biztosítja a sablon belső konzisztenciáját.
+
+2.  **Termék Gyártó Szerepkör (a származtatott termelési repóban futtatva)**
+    - **Felelősség:** A sablon "hasznos terhe" (`payload`). Ez az az eszköz, amit a sablonból létrehozott termelési repo a saját végtermékének (pl. aláírt séma, Go bináris) előállítására használ.
+    - **Feladat:** Egy konkrét forrásfájlból egy digitálisan aláírt, ellenjegyzett "műtárgy" (artifact) létrehozása a termelési repo saját release folyamatában.
+
+Ez az egységes megközelítés biztosítja, hogy a termelési repók mindig pontosan ugyanazt a logikát és eszközt használják a saját termékük gyártására, mint amit a sablon repo használ a saját maga karbantartására.
+
+## A `tools/` Modul Szerkezete
+
+A fordítói eszközkészlet három rétegbe szerveződik:
+
+```
+tools/
+├── compiler.py          # CLI belépési pont — argumentum elemzés, service bekötés
+├── infra.py             # ReleaseManager — a teljes kiadási munkafolyamat koordinálása
+├── schemalib/           # Séma pipeline könyvtár (csak schema repo-khoz)
+│   ├── loader.py        # YAML betöltés $ref feloldással (JsonRef + round-trip)
+│   ├── validator.py     # Validátor integritás ellenőrzés + jsonschema validálás
+│   └── artifact.py      # Ellenőrzőösszeg, aláírási payload, artefaktum összeállítás
+├── releaselib/          # Git/Vault szolgáltatás absztrakciók
+│   ├── git_service.py   # GitService: ág, commit, tag, merge műveletek
+│   ├── vault_service.py # VaultService: sign, get_certificate API hívások
+│   └── exceptions.py    # Közös kivétel hierarchia
+└── finalize_release.py  # IDEIGLENES: CIC központi aláírás (relay váltja fel)
+```
+
+A `schemalib/` könyvtár csak akkor kerül meghívásra, ha a `project.yaml`-ban `compiler_settings.repo_type = schema` van beállítva. A modul és workflow típusú repók csak az `infra.py` Git/Vault munkafolyamat útvonalát használják.
+
+## A Változások Útja és a Branching Modell
+
+A változások egy szigorúan definiált útvonalon haladnak a rendszereken keresztül.
+
+```mermaid
+graph LR
+    subgraph "Template Repo (base-repo)"
+        T_MAIN[main] -- "release tag" --> T_REL(v1.2.0);
+        T_DF[df/feature] --> T_MAIN;
+        T_SCHEMAS[schemas/f/1] -- "specializáció" --> T_MAIN;
+    end
+
+    subgraph "Production Repo"
+        P_MAIN[main];
+        P_DF[df/feature];
+        T_REL -- "Renovate PR" --> P_DF;
+        P_DF -- "merge" --> P_MAIN;
+    end
+
+    style T_REL fill:#f9f,stroke:#333,stroke-width:2px
+```
+
+1.  **Fejlesztés a Sablon Repóban:** A fejlesztés `df/xxx` ágakon történik, amelyek a `main` vagy egy specializációs ágból (pl. `schemas/f/1`) indulnak.
+2.  **Sablon Release:** A `main` ágra merge-elt változásokból egy új `release` tag jön létre.
+3.  **Terjesztés:** A Renovate észleli az új taget, és PR-t nyit a termelési repók `df/xxx` fejlesztési ágaira.
+4.  **Integráció a Termékbe:** A fejlesztők beolvasztják a frissítést a saját munkájukba, majd a `main` ágra, ami a termék kiadását triggereli.

@@ -1,10 +1,9 @@
 tags:
   - doc
-  - schema
   - core
+  - schema
 related_nodes:
-  - docs/en/architecture
-  - docs/en/workflow
+  - docs/en/concept/declarative_ecosystem_integration
 category:
   - concept
   - architecture
@@ -13,4 +12,4 @@ used_in:
   - validation
   - development-process
 description: |
-  Documentation for the Vault signing agent tool in CIC-Schemas. HashiCorp Vault Transit engine integration for schema artifact signing (ECDSA SHA256).
+  Documentation for the Vault signing agent tool. Describes how HashiCorp Vault Transit engine is used for artifact signing (ECDSA SHA256) within the CIC release pipeline.

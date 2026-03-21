@@ -10,13 +10,18 @@ set -e
 KEYFILE=""
 ROOT_CA_FILE=""
 KEY_NAME="cic-my-sign-key"
+CIC_DIR=""
+CIC_CERTS=()
 
 show_help() {
   echo "Usage: $0 [OPTIONS]"
   echo "  -k, --keyfile <file>      Encrypted private key file"
   echo "  -c, --crtfile <file>      Public certificate file (crt format)"
-  echo "  --root-ca-file <file>   Public Root CA certificate file (crt format)"
+  echo "  --root-ca-file <file>     Public Root CA certificate file (crt format)"
   echo "  -n, --name <key-name>     Vault key name (default: cic-my-sign-key)"
+  echo "  --cic-dir <dir>           Load all CA PEM files from EEC directory tree"
+  echo "                            (skips out/, .key, .csr files)"
+  echo "  --cic-cert <file>         Load a single CA certificate into KV (repeatable)"
   echo "  -s, --stop                Stop the running Vault server"
   echo "  -h, --help                Display this help message"
   exit 0
@@ -39,6 +44,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     -n|--name)
       KEY_NAME="$2"
+      shift 2
+      ;;
+    --cic-dir)
+      CIC_DIR="$2"
+      shift 2
+      ;;
+    --cic-cert)
+      CIC_CERTS+=("$2")
       shift 2
       ;;
     -s|--stop|stop)
@@ -158,15 +171,46 @@ cat "$CRTFILE" | vault kv put -mount=$KEY_NAME crt bar=-
 echo "[*] Storing Root CA certificate in Vault..."
 cat "$ROOT_CA_FILE" | vault kv put -mount=$KEY_NAME CICRootCA bar=-
 
+# Load CIC CA certificates from directory
+if [[ -n "$CIC_DIR" ]]; then
+  if [[ ! -d "$CIC_DIR" ]]; then
+    echo "[!] --cic-dir '$CIC_DIR' does not exist or is not a directory."
+    exit 1
+  fi
+  echo "[*] Loading CIC CA certificates from: $CIC_DIR"
+  while IFS= read -r -d '' cert_file; do
+    if ! grep -q "BEGIN CERTIFICATE" "$cert_file" 2>/dev/null; then
+      continue
+    fi
+    cert_key=$(basename "$cert_file")
+    cert_key="${cert_key%.*}"
+    echo "[*]   Loading: $cert_file -> KV key: $cert_key"
+    cat "$cert_file" | vault kv put -mount=$KEY_NAME "$cert_key" bar=-
+  done < <(find "$CIC_DIR" -maxdepth 2 -name "*.pem" ! -path "*/out/*" -print0)
+fi
+
+# Load individually specified CIC certificates
+for cert_file in "${CIC_CERTS[@]}"; do
+  if [[ ! -f "$cert_file" ]]; then
+    echo "[!] --cic-cert '$cert_file' does not exist, skipping."
+    continue
+  fi
+  if ! grep -q "BEGIN CERTIFICATE" "$cert_file" 2>/dev/null; then
+    echo "[!] '$cert_file' does not appear to be a certificate, skipping."
+    continue
+  fi
+  cert_key=$(basename "$cert_file")
+  cert_key="${cert_key%.*}"
+  echo "[*] Loading: $cert_file -> KV key: $cert_key"
+  cat "$cert_file" | vault kv put -mount=$KEY_NAME "$cert_key" bar=-
+done
+
 # Create sign policy
 cat > "$TMPDIR/sign-policy.hcl" <<EOF
 path "transit/sign/$KEY_NAME" {
   capabilities = ["update"]
 }
-path "$KEY_NAME/data/crt" {
-  capabilities = ["read"]
-}
-path "$KEY_NAME/data/CICRootCA" {
+path "$KEY_NAME/data/*" {
   capabilities = ["read"]
 }
 EOF

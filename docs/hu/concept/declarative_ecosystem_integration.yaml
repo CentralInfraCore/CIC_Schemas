@@ -4,14 +4,14 @@ tags:
   - platform-engineering
   - ci-cd
 related_nodes:
-  - docs/hu/architecture
-  - docs/hu/concept/git-management
+  - docs/hu/concept/git-managment
+  - docs/en/concept/declarative_ecosystem_integration
 category:
   - concept
   - architecture
-entrypoint: false
+entrypoint: true
 used_in:
   - development-process
   - architecture-review
 description: |
-  Declarative two-speed ecosystem integration model as applied in CIC-Schemas context.
+  A CIC deklaratív, kétsebességes ökoszisztéma-integrációs modelljének leírása magyarul. Lefedi a gyors (commit-szintű) és lassú (release-szintű) vérkeringési mintákat, az ecosystem.yaml, Renovate és CI/CD orchestráció szerepét.

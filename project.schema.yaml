@@ -1,0 +1,197 @@
+---
+type: object
+title: "Project Definition Schema"
+description: "Defines the structure for the project's main descriptor and configuration file (project.yaml)."
+required:
+  - metadata
+properties:
+  metadata:
+    type: object
+    description: "General metadata about the repository."
+    required:
+      - name
+      - description
+      - license
+      - owner
+      - main_branch
+    properties:
+      name:
+        type: string
+        description: "The human-readable name of the repository."
+      description:
+        type: string
+        description: "A one-sentence summary of the repository's purpose."
+      version:
+        type: [string, "null"]
+        description: "The semantic version of the repository's codebase."
+        pattern: >-
+          ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+      license:
+        type: string
+        description: >-
+          The SPDX identifier for the repository's license (e.g., 'MIT',
+          'CC-BY-NC-SA-4.0').
+      main_branch:
+        type: string
+        description: >-
+          The prefix used for release branches and tags (e.g., 'main' or
+          'schemas').
+      owner:
+        type: string
+        description: >-
+          The team or individual responsible for the repository.
+      maintenance:
+        type: object
+        description: >-
+          Defines the maintenance status and support window for this version
+          of the repository.
+        properties:
+          status:
+            type: string
+            description: "The current maintenance status."
+            enum: ["active", "maintenance-only", "deprecated", "end-of-life"]
+          supported_until:
+            type: string
+            description: >-
+              The date (YYYY-MM-DD) until which this version receives support
+              or updates.
+            format: date
+
+      contacts:
+        type: array
+        description: "Points of contact for support or questions."
+        items:
+          type: object
+          required:
+            - type
+            - value
+          properties:
+            type:
+              type: string
+              enum: ["email", "slack", "msteams"]
+            value:
+              type: string
+      links:
+        type: array
+        description: "Important URLs related to the repository."
+        items:
+          type: object
+          required: ["name", "url"]
+          properties:
+            name:
+              type: string
+            url:
+              type: string
+
+  compiler_settings:
+    type: object
+    description: "Configuration for the build and release tools."
+    required:
+      - repo_type
+      - meta_schemas_dir
+      - source_dir
+      - meta_schema_file
+      - vault_key_name
+    properties:
+      repo_type:
+        type: string
+        description: "The type of repository. Controls which compiler commands are available."
+        enum: ["schema", "workflow", "module"]
+      meta_schemas_dir:
+        type: string
+      source_dir:
+        type: string
+      meta_schema_file:
+        type: string
+      vault_key_name:
+        type: string
+        description: "The Vault key name for the author's signature."
+      component_name:
+        type: string
+        description: "Used in release branch and tag naming."
+      main_branch:
+        type: string
+        description: "The target branch for merge-back after release."
+      canonical_source_file:
+        type: string
+        description: "Path to the canonical source schema file (schema repos only)."
+      dependencies_dir:
+        type: string
+        description: "Directory for validator schemas (schema repos only)."
+      release_dir:
+        type: string
+        description: "Output directory for released schemas (schema repos only)."
+      cic_root_ca_key_name:
+        type: string
+        description: "Vault key name for the CIC Root CA (used in finalize step)."
+      vault_cert_mount:
+        type: string
+        description: "Vault KV mount path for certificates."
+      vault_cert_secret_name:
+        type: string
+        description: "Secret name in Vault KV for the developer certificate."
+      vault_cert_secret_key:
+        type: string
+        description: "Key within the KV secret containing the PEM certificate."
+      cic_root_ca_secret_name:
+        type: string
+        description: "Secret name in Vault KV for the CIC Root CA certificate."
+      validity_days:
+        type: integer
+        description: "How many days a release artifact remains valid."
+
+  release:
+    type: object
+    description: >-
+      Contains the cryptographic proof for a given release version.
+      This block is populated by the CI/CD pipeline.
+    properties:
+      version:
+        type: string
+        description: "The semantic version of this release."
+      timestamp:
+        type: string
+        format: date-time
+        description: >-
+          The exact timestamp when this release was built and signed.
+      repository_tree_hash:
+        type: string
+        description: >-
+          The Git tree hash of the entire repository at the moment of release,
+          proving the integrity of the full codebase.
+      digest:
+        type: string
+        description: "The base64 encoded SHA256 digest of the repository tree hash used for signing."
+      signing_metadata:
+        type: array
+        description: "A list of cryptographic signatures."
+        minItems: 2
+        maxItems: 2
+        items:
+          type: object
+          required:
+            - type
+            - key
+            - signature
+            - hash_algorithm
+          properties:
+            type:
+              type: string
+              description: "The type of signature."
+              enum: ["author", "approval"]
+            key:
+              type: string
+              description: "The name of the key used for signing in Vault."
+            signature:
+              type: string
+              description: "The Vault-provided signature string."
+            hash_algorithm:
+              type: string
+              description: "The hashing algorithm used before signing."
+              enum: ["sha256"]
+    required:
+      - version
+      - timestamp
+      - repository_tree_hash
+      - digest
+      - signing_metadata

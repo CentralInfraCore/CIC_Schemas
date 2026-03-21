@@ -1,6 +1,6 @@
 tags:
   - doc
-  - schema
+  - core
 related_nodes:
   - ../../feature-list
 category:
@@ -9,4 +9,4 @@ entrypoint: false
 used_in:
   - development-process
 description: |
-  Feature-001 specification for CIC-Schemas.
+  Feature-001 specification: administering new features and specifications in the base-repo template system.

@@ -1,0 +1,156 @@
+---
+type: object
+required:
+  - package
+  - description
+  - tags
+  - category
+  - used_in
+  - entrypoint
+  - related_nodes
+  - objects
+properties:
+  package:
+    type: string
+    description: Go package name as declared in the source file.
+
+  description:
+    type: string
+    description: Human-readable summary of the file's purpose (Hungarian or English).
+
+  tags:
+    type: array
+    description: "Thematic tags for AI context integration. Allowed values:"
+    items:
+      type: string
+      enum:
+        - relay             # Related to AI relay modules
+        - compliance        # Compliance or validation logic
+        - workflow          # Process or pipeline logic
+        - cictor            # Part of the CICTOR decision system
+        - schema            # Schema processing
+        - parser            # Input parsing
+        - guard             # Access or protection logic
+        - core              # Core system logic
+        - doc               # Documentation or explanatory content
+        - interface         # Interface logic with external systems
+        - gateway           # Entry or gateway-related logic
+        - builder           # Build or generation tasks
+        - test              # Validation, testing or debugging logic
+        - meta              # Meta-structures or internal definitions
+        - orchestrator      # Coordinates control or decision chains
+        - decision          # Decision logic
+        - reflector         # Feedback or reflection module
+        - context           # Contextual management
+        - validator         # Data or schema validation
+        - executor          # Direct logic execution
+        - hook              # Event-triggered callable logic
+        - template          # Template component
+        - fallback          # Fallback or alternative behavior
+        - session           # Session or state-handling
+        - metrics           # Metric collection or monitoring
+        - storage           # Storage or persistence
+        - loader            # Config or module loading
+        - renderer          # Output generation
+        - platform-engineering
+        - ci-cd
+        - ecosystem
+
+  category:
+    type: array
+    description: "Functional role(s) of the file. Allowed values:"
+    items:
+      type: string
+      enum:
+        - modul             # General module
+        - decision          # Decision logic
+        - morális           # Moral or rule-based logic
+        - belépési          # Entry point (user or system)
+        - meta              # Internal meta structures
+        - elemző            # Evaluation or analysis logic
+        - concept           # High-level concept
+        - architecture      # Architectural blueprint
+        - ci-cd             # CI/CD related
+
+  used_in:
+    type: array
+    description: "Workflows or processes where this file is used. Allowed values:"
+    items:
+      type: string
+      enum:
+        - decision_flow         # Decision logic execution
+        - validation            # Validation process
+        - generation            # Build or generation pipeline
+        - onboarding            # System initialization
+        - fallback_process      # Fallback handling
+        - distribution          # Software distribution
+        - publishing            # Release publishing
+        - development-process   # Core development process
+        - architecture-review   # Architecture review
+
+  entrypoint:
+    type: boolean
+    description: Whether this file is a system or workflow entry point (e.g. main package, cmd/).
+
+  related_nodes:
+    type: array
+    items:
+      type: string
+    description: >
+      References to related concepts, modules, or other Go files.
+      Use relative paths (e.g. 'core/nexus/cabinet') or concept names.
+
+  objects:
+    type: array
+    description: All top-level objects defined in this Go file.
+    items:
+      type: object
+      required:
+        - name
+        - kind
+        - description
+      properties:
+        name:
+          type: string
+          description: Identifier name as declared in Go source.
+
+        kind:
+          type: string
+          description: Kind of the Go declaration.
+          enum:
+            - struct        # type Name struct { ... }
+            - interface     # type Name interface { ... }
+            - func          # func Name(...) ...
+            - method        # func (recv Type) Name(...) ...
+            - type          # type Name UnderlyingType
+            - var           # package-level var
+            - const         # package-level const
+
+        receiver:
+          type: string
+          description: >
+            Receiver type name for methods (kind: method).
+            Example: "relayServer" for func (s *relayServer) Handle(...)
+
+        description:
+          type: string
+          description: Human-readable summary of what this object does.
+
+        implements:
+          type: array
+          items:
+            type: string
+          description: >
+            Interface(s) this struct implements. Use "pkg.Interface" for
+            external interfaces, plain "Interface" for local ones.
+            Only relevant for kind: struct.
+
+        references:
+          type: array
+          items:
+            type: string
+          description: >
+            Non-stdlib types/objects referenced by this declaration.
+            Includes both third-party (e.g. "logrus.Logger") and same-module
+            cross-package references (e.g. "cabinet.Cabinet").
+            Format: "pkg.Type". Auto-generated by go.meta.gen.py — review and trim as needed.

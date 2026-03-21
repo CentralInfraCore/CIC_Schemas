@@ -17,11 +17,9 @@ used_in:
   - validation
   - onboarding
   - generation
-description: |
-  This document describes the branch management rules,
-  branch naming conventions, merge strategies, and CI
-  feedback processes for the CIC Relay project. It provides
-  a schema-driven approach for feature, hotfix, and
-  release branch handling and defines deletion, merge,
-  and feedback rules, supporting automated validation and
-  onboarding.
+description: >
+  This document describes the branch management rules, branch naming
+  conventions, merge strategies, and CI feedback processes for the CIC
+  Relay project. It provides a schema-driven approach for feature, hotfix,
+  and release branch handling and defines deletion, merge, and feedback
+  rules, supporting automated validation and onboarding.

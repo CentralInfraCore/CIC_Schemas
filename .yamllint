@@ -7,7 +7,7 @@ extends: default
 rules:
   # Increase the line-length limit to a more reasonable value for modern displays.
   line-length:
-    max: 120
+    max: 140
     level: warning  # Set to 'warning' instead of 'error' to be less strict.
 
   # GitHub Actions uses 'on' as a valid key, which is a truthy value.

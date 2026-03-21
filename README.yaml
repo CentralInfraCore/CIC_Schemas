@@ -1,16 +1,16 @@
 tags:
   - doc
-  - schema
   - core
+  - platform-engineering
 related_nodes:
-  - docs/en/architecture
-  - docs/en/workflow
-  - README.hu
+  - docs/en/concept/declarative_ecosystem_integration
+  - docs/hu/concept/declarative_ecosystem_integration
+  - feature-list
 category:
   - concept
 entrypoint: true
 used_in:
   - onboarding
-  - validation
+  - development-process
 description: |
-  Root README for CIC-Schemas: schema compiler and signing infrastructure. Provides governed, secure, reproducible workflow for versioned schema definitions using HashiCorp Vault and Docker.
+  Root README for the CentralInfraCore base-repo template. Entry point for understanding the repository structure, available make targets, and the overall CIC template system.

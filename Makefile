@@ -1,135 +1,164 @@
 # Makefile for Schema Development Environment
 
-.PHONY: all help up down shell validate test repo.init infra.deps infra.coverage infra.clean fmt lint check typecheck build release-dependency release-schema
+# ---- Includes ----
+include mk/infra.mk
+
+# ---- Phony ----
+.PHONY: all help validate release test up down shell build fmt lint check typecheck repo.init manifest-verify manifest-update
 
 # Default to showing help
 all: help
 
-# --- Configuration Variables ---
-# The Python command to be executed inside the container
-PYTHON_CMD = python3 tools/compiler.py
+# =============================================================================
+# Compiler Flags (can be overridden on command line, e.g., make release VERBOSE=1)
+# =============================================================================
+VERBOSE ?=
+DEBUG ?=
+DRY_RUN ?=
+VERSION ?= # New: Version for release command
+GIT_TIMEOUT ?= 60
+VAULT_TIMEOUT ?= 10
+TEST_FILE ?= # New: Specify a specific test file (e.g., tests/test_compiler.py)
+TEST_NAME ?= # New: Specify a specific test function name (e.g., test_load_yaml_valid)
+
+# Construct COMPILER_CLI_ARGS based on VERBOSE and DEBUG flags
+COMPILER_CLI_ARGS =
+ifeq ($(VERBOSE),1)
+    COMPILER_CLI_ARGS += --verbose
+endif
+ifeq ($(DEBUG),1)
+    COMPILER_CLI_ARGS += --debug
+endif
+ifeq ($(DRY_RUN),1)
+    COMPILER_CLI_ARGS += --dry-run
+endif
+COMPILER_CLI_ARGS += --git-timeout $(GIT_TIMEOUT)
+COMPILER_CLI_ARGS += --vault-timeout $(VAULT_TIMEOUT)
+
+# Construct PYTEST_ARGS based on TEST_FILE and TEST_NAME
+PYTEST_ARGS =
+ifeq ($(TEST_FILE),)
+    PYTEST_ARGS += tests/
+else
+    PYTEST_ARGS += $(TEST_FILE)
+endif
+ifeq ($(TEST_NAME),)
+    # No specific test name
+else
+    PYTEST_ARGS += -k "$(TEST_NAME)"
+endif
+
 
 # =============================================================================
-# Container Lifecycle Management
+# Container Lifecycle Management (Aliases)
 # =============================================================================
 
-up:
-	@echo "--- Starting development environment in the background ---"
-	@docker compose up -d builder
-
-down:
-	@echo "--- Stopping development environment ---"
-	@docker compose down -v
-
-shell:
-	@echo "--- Opening a shell into the running builder container ---"
-	@docker compose exec builder bash
-
-build:
-	@echo "--- Building Docker images ---"
-	@docker compose build
+up: infra.up
+down: infra.down
+shell: infra.shell
+build: infra.build
 
 # =============================================================================
 # Main Development Tasks
 # =============================================================================
 
 validate:
-	@echo "--- Validating current schema against its declared validator ---"
-	@docker compose exec builder $(PYTHON_CMD) validate
+	@echo "--- Validating all schemas against the meta-schema ---"
+	@docker compose exec builder python -m tools.compiler validate $(COMPILER_CLI_ARGS)
 
-test:
-	@echo "--- Running pytest for the compiler infrastructure ---"
-	@docker compose exec builder python3 -m pytest --cov=tools --cov-report=term-missing tests/
+release:
+ifeq ($(VERSION),)
+	$(error VERSION is required for the release command. Usage: make release VERSION=1.0.0)
+endif
+	@echo "--- Building and signing release schemas ---"
+	# Pass Git author and committer identity from host to container for commit operations
+	@docker compose exec \
+		-e GIT_AUTHOR_NAME="$(shell git config user.name)" \
+		-e GIT_AUTHOR_EMAIL="$(shell git config user.email)" \
+		-e GIT_COMMITTER_NAME="$(shell git config user.name)" \
+		-e GIT_COMMITTER_EMAIL="$(shell git config user.email)" \
+		builder python -m tools.compiler release --version $(VERSION) $(COMPILER_CLI_ARGS)
+	# The release.sh script is no longer needed as its functionality has been integrated into compiler.py
+	# @tools/release.sh project.yaml
+	# @git add project.yaml # This is now handled by compiler.py
 
-fmt:
-	@echo "--- Formatting Python code with Black and Isort ---"
-	@docker compose exec builder python3 -m black --exclude p_venv .
-	@docker compose exec builder python3 -m isort --skip-glob "p_venv/*" .
-
-lint:
-	@echo "--- Linting Python code with Ruff ---"
-	@docker compose exec builder python3 -m ruff check .
-	@echo "--- Linting YAML files with yamllint ---"
-	@docker compose exec builder python3 -m yamllint .
-
-typecheck:
-	@echo "--- Running static type checking with MyPy ---"
-	@docker compose exec builder python3 -m mypy --exclude p_venv .
-
-check: fmt lint typecheck
-	@echo "--- Running all code quality checks (format, lint, typecheck) ---"
+test: infra.test
 
 # =============================================================================
-# Release Management
+# Manifest Management
 # =============================================================================
 
-release-dependency:
-	@if [ -z "$(VERSION)" ]; then echo "[ERROR] VERSION is required. Usage: make release-dependency VERSION=v1.0.0"; exit 1; fi
-	@echo "--- Releasing Dependency Schema version $(VERSION) ---"
-	@GIT_AUTHOR_NAME="$(shell git config user.name)" GIT_AUTHOR_EMAIL="$(shell git config user.email)" docker compose exec builder bash tools/release.sh dependency $(VERSION)
+manifest-verify: ##manifest-verify
+	@echo "--- Verifying repository manifest ---"
+	@docker compose exec builder sh -c 'test -f MANIFEST.sha256 && sha256sum -c MANIFEST.sha256'
 
-release-schema:
-	@if [ -z "$(VERSION)" ]; then echo "[ERROR] VERSION is required. Usage: make release-schema VERSION=v1.0.0"; exit 1; fi
-	@echo "--- Releasing Application Schema version $(VERSION) ---"
-	@GIT_AUTHOR_NAME="$(shell git config user.name)" GIT_AUTHOR_EMAIL="$(shell git config user.email)" docker compose exec builder bash tools/release.sh schema $(VERSION)
-
-# =============================================================================
-# Repository Setup
-# =============================================================================
-
-repo.init:
-	@echo "--- Initializing repository hooks ---"
-	@sh tools/init-hooks.sh
+manifest-update: ##manifest-update
+	@echo "--- Updating repository manifest ---"
+	@docker compose exec builder sh -c 'git ls-files -z \
+		| xargs -0 sha256sum' | grep -v "MANIFEST.sha256" | LC_ALL=C sort > MANIFEST.sha256
+	@echo "MANIFEST.sha256 updated"
 
 # =============================================================================
-# Infrastructure & Maintenance Tasks
+# Code Quality & Formatting (Aliases)
 # =============================================================================
 
-infra.deps:
-	@echo "--- Initializing Python dependencies into ./p_venv cache ---"
-	@docker compose run --rm setup
+fmt: infra.fmt
+lint: infra.lint
+typecheck: infra.typecheck
+check: infra.check
 
-infra.coverage:
-	@echo "--- Generating HTML coverage report ---"
-	@docker compose exec builder python3 -m pytest --cov=tools --cov-report=html
-	@echo "HTML coverage report generated in ./htmlcov/index.html"
+# =============================================================================
+# Repository Setup (Aliases)
+# =============================================================================
 
-infra.clean:
-	@echo "--- Cleaning up all generated files and caches ---"
-	@docker compose down -v --remove-orphans
-	@rm -rf ./p_venv
-	@rm -f ./requirements.txt
-	@rm -rf ./htmlcov
+repo.init: infra.repo.init
 
 # =============================================================================
 # Help
 # =============================================================================
 
 help:
-	@echo "Usage: make [target]"
+	@echo "Usage: make [target] [OPTIONS]"
 	@echo ""
-	@echo "Container Lifecycle:"
-	@echo "  up            Start the development container in the background."
-	@echo "  down          Stop and remove the development container."
-	@echo "  shell         Open an interactive shell into the running container."
-	@echo "  build         Build Docker images."
+	@echo "--- High-Level Project Commands ---"
+	@echo "Development Environment:"
+	@echo "  up            Start the development environment."
+	@echo "  down          Stop and remove the development environment."
+	@echo "  shell         Open an interactive shell into the running environment."
+	@echo "  build         Build the development environment."
 	@echo ""
 	@echo "Main Tasks:"
-	@echo "  validate      Validate current schema (schemas/index.yaml) against its declared validator."
+	@echo "  validate      Run fast, offline validation of all schemas."
+	@echo "  release       Build, checksum, and sign all non-dev schemas (requires Vault)."
 	@echo "  test          Run pytest for the compiler infrastructure code."
-	@echo "  fmt           Format Python code with Black and Isort."
-	@echo "  lint          Lint Python code with Ruff and YAML files with yamllint."
-	@echo "  typecheck     Run static type checking with MyPy."
+	@echo ""
+	@echo "Manifest Management:"
+	@echo "  manifest-verify  Verify the integrity of the repository using MANIFEST.sha256."
+	@echo "  manifest-update  Re-generate the MANIFEST.sha256 file."
+	@echo ""
+	@echo "Options for validate/release:"
+	@echo "  VERBOSE=1     Enable verbose output."
+	@echo "  DEBUG=1       Enable debug output (most verbose)."
+	@echo "  DRY_RUN=1     Perform a trial run without making any changes."
+	@echo "  VERSION=X.Y.Z The semantic version to release (e.g., 1.0.0). Required for 'release' command."
+	@echo "  GIT_TIMEOUT=N Set Git command timeout in seconds (default: 60)."
+	@echo "  VAULT_TIMEOUT=N Set Vault API call timeout in seconds (default: 10)."
+	@echo ""
+	@echo "Options for test:"
+	@echo "  TEST_FILE=path/to/file.py  Specify a single test file to run."
+	@echo "  TEST_NAME=test_function    Specify a single test function to run (can be combined with TEST_FILE)."
+	@echo ""
+	@echo "Code Quality & Formatting:"
+	@echo "  fmt           Format all code."
+	@echo "  lint          Lint all code and files."
+	@echo "  typecheck     Run static type checking."
 	@echo "  check         Run all code quality checks (fmt, lint, typecheck)."
 	@echo ""
-	@echo "Release Management:"
-	@echo "  release-dependency VERSION=<version>  Release a meta-schema or shared library to the 'dependencies' directory."
-	@echo "  release-schema VERSION=<version>      Release an application-specific schema to the 'release' directory."
-	@echo ""
 	@echo "Repository Setup:"
-	@echo "  repo.init     Set up the Git hooks for this repository (pre-commit, commit-msg)."
+	@echo "  repo.init     Set up the Git hooks for this repository."
 	@echo ""
-	@echo "Infrastructure & Maintenance:"
-	@echo "  infra.deps    (Re)generate requirements.txt and install dependencies into the cache."
-	@echo "  infra.coverage Generate HTML coverage report."
-	@echo "  infra.clean   Remove all generated files, caches, and stopped containers."
+	@echo "Maintenance:"
+	@echo "  infra.deps    (Re)generate and install dependencies."
+	@echo "  infra.coverage Generate code coverage report."
+	@echo "  infra.clean   Remove all generated files and caches."
+	@$(MAKE) infra.help
